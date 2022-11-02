@@ -77,3 +77,58 @@ app.use("/api/datos/proyectos", routerProyectos);
 
 //El archivo quedaba demasiado grande. Entoces llega la separacion en distintos archivos
 //Carpeta routers
+
+//Probando POST mediante la extension REST Client
+
+//PUT - hay que enviar todos los campos de la entidad, aunque solo cambien algunos de esos valores
+// Sino, utilizar Patch
+routerPersonas.put("/:id", (req, res) => {
+  //actualizo con la info que viaja en el body, que en este caso simulo con la extension
+  const personalActualizado = req.body;
+  //capturo el id con req.params
+  const id = req.params.id;
+  //averiguo a que ìndice del array de personal pertene la persona con ese nro de id
+  //recordad que es == y no === porque en la URL viene como string y en la base de datos en number
+  const indiceArray = datos.personal.findIndex((persona) => persona.id == id);
+  //si ese id no esta en el array devuelve -1
+    if (indiceArray >= 0) {
+  //si esta, reemplazo los datos de ese indice, por el que viajo en el body
+      datos.personal[indiceArray] = personalActualizado;
+    }
+    res.send(json.stringify(datos.personal));
+});
+
+//PATCH - Reemplaza No todo, como put, sino solamente algunas propiedades
+routerPersonas.patch("/:id", (req, res) => {
+  const infoActualizada = req.body;
+  const id = req.params.id;
+
+  const indiceArray = datos.personal.findIndex((persona) => persona.id == id);
+
+  if (indiceArray >= 0) {
+    const personalAModificar = datos.personal[indiceArray];
+    //Metodo de Objetos que permite modificar SOLO ALGUNAS propiedades del objeto
+    //Recibe un objeto a modificar, y otro que tiene propiedades y valores
+    Object.assign(personalAModificar, infoActualizada);
+  }
+  res.send(JSON.stringify(datos.personal));
+});
+
+//DELETE
+routerPersonas.delete("/:id", (req, res) => {
+  const id = req.params.id;
+  const indiceArray = datos.personal.findIndex((persona) => persona.id == id);
+  if (indiceArray >= 0) {
+    datos.personal.splice(indiceArray, 1);
+    //splice(corta desde este ìndice, esta cantidad de elementos)
+  }
+  res.send(JSON.stringify(datos.personal));
+});
+
+//Obs!
+res.send(JSON.stringify(datos));
+// cuando envio un objeto, o un arreglo de JS con res.send, se va a enviar igual con JSON, aunque no ponga JSON.stringify
+res.send(datos);
+// tambien, cuando quiera asegurarme de que algo vaya en formato json, uso
+res.json(datos)
+//que lo que hace, es llamar detras de escena a json.stringify

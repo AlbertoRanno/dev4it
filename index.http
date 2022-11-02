@@ -1,0 +1,38 @@
+POST http://localhost:3000/api/datos/personal HTTP/1.1
+Content-Type: application/json
+
+{
+      "id": "5",
+      "nombre": "Alberto-Ranno",
+      "rol": "desarrollador",
+      "seniority": "jr"
+}
+
+###
+
+PUT http://localhost:3000/api/datos/personal/2 HTTP/1.1
+Content-Type: application/json
+
+{
+      "id": "2",
+      "nombre": "Ariel-Edgardo",
+      "rol": "gestor-de-proyectos",
+      "seniority": "Jr"
+}
+
+###
+
+PATCH http://localhost:3000/api/datos/personal/2 HTTP/1.1
+Content-Type: application/json
+
+{
+      "seniority": "Semi-Sr"
+}
+
+###
+
+DELETE http://localhost:3000/api/datos/personal/2 HTTP/1.1
+Content-Type: application/json
+
+
+

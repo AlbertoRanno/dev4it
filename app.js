@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 
 //Todos los datos en formato JSON
 app.get("/api/datos", (req, res) => {
-  res.send(JSON.stringify(datos));
+  res.send(datos);
 });
 
 /*****************  Listen  ***************/
