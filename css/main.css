@@ -1,0 +1,26 @@
+.encabezado {
+  font-size: 35px;
+  color: var(--color-variable);
+  font-family: "Kolker Brush", cursive;
+}
+
+img {
+  width: 200px;
+  border-width: 5px;
+  border-color: blue;
+  border-style: double solid dashed dotted;
+  border-radius: 50%;
+}
+/*border-radius: 20px*/
+
+.variables {
+  --color-variable: purple;
+}
+/* cuando un mismo color este en varios lados, para cambiarlo rapidamente*/
+
+.imagen-epigrafe {
+  background-color: var(--color-variable, black);
+  padding: 15px;
+  border: 5px solid red;
+  margin: 20px;
+}

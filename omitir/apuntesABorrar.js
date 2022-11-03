@@ -186,3 +186,43 @@ Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, 
 //head - elementos detras de escena. Importantes para el ranking
 
 //CSS
+// * { } - selector universal   // .nombre { } - class="" //  #nombre { } - id=""
+
+//font-family: 'Franklin Gothic Medium' va entre comillas porque son vs palabras
+/* En inspeccionar - Elementos - Calculados - por lo bajo figuran las fuentes renderizadas
+Muy util para saber si tomo el estilo o no
+https://fonts.google.com/   - copiar links al head, ver como llamarla en el css */
+
+// de mas interno a externo: contenido, padding, border, margin
+// 20vw depende del tamaño de la pantalla
+// 1.5em depende del tamaño de la fuente del contenedor
+// rem relativa al tamaño de letra del elemento raiz
+// vw relativa al 1% del ancho de la ventana grafica
+// vh relativa al 1% del alto de la ventana grafica 
+
+/* Priorizar estilos 
+*Caso 1: h1 class="texto-azul texto morado"  lo mismo da, que los escriba al reves
+el color que se aplicara, es el de la ultima regla del archivo de css
+Por ej:
+texto-azul { color: blue }
+texto-morado { color: purple }
+Determinara que el texto sera purple, independientemente del orden de las clases en el archivo .js
+*Caso 2: En css: a { text-decoration: purple wavy underline}
+Y al mismo elemento le pongo una clase .sin-subrayado { text-decoration: none }
+Tiene precedencia (mayor prioridad) la clase, por lo que no tendra subrayado
+*Caso 3: id vs class - Id tiene prioridad
+*Caso 4: estilo en linea vs id (ponerle en el html el atributo style="color:purple" gana esto)
+*Caso 5: si quiero que gane un estilo, sin importar nada, le tengo que agregar:" !important " 
+Ej. .texto-azul { color:blue !important}
+Prioridades: !important > estilo en linea > id > class > selectores
+*/
+
+/* Variables en CSS
+pongo al elemento la clase correspondiente, por ej "color-variable", y en el css:
+.color-variable {  --nombre-variable: blue   } 
+con eso defino la variable, y luego la aplico en las otras reglas que quiero usarla:
+.imagen-epigrafe {
+  background-color: var(--color-variable, black) 
+} asi, al cambiar el color en la variable, cambiara en todas las reglas donde la haya usado
+", black )" corresponde al color de respaldo, por si no se puede acceder a la variable
+*/
