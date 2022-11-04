@@ -240,18 +240,38 @@ background-color: var(--color-variable, black)
 
 // 4-11-22 *************
 
-//EJS (Embedded JS) - Template Engine
+//EJS (Embedded JS) - Template Engine (Se pueden usar varios otros)
 /*
-Hacen dinamicos los html, y me evitan repetir codigo (Headers, Footers, NavBars..)
+Hacen dinamicos los html (los muestra entrando a las URL), me permiten introducir en el html, contenido de js como arrays, ciclos for, etc mediante el uso de etiquetas como <% %>, y me evitan repetir codigo con los partials (Headers, Footers, NavBars..)
 La extension de los html debe pasar a .ejs
 npm install ejs
 en app.js Seteo el motor de plantillas que quiero usar mediante: */
 app.set("view engine", "ejs")
 /* todos los ejs deben estar en una carpeta views en la raiz del proyecto
-si quisiera reubicarla, o renombrarla:*/
-app.set("views", __dirname + "/nombreCarpeta")
-/* __dirname es la ruta absoluta desde c://usuario/... */
+si quisiera reubicarla, o renombrarla, por ejemplo:*/
+app.set("views", "./src/nombreCarpeta")
 /* M-V-C - las vistas se comunican con los controladores, y toman la informacion que estos reciben de los modelos*/
-
 /* Acordarse de setear en app.js la carpeta con contenido publico*/
 app.use(express.static("./public"))
+//En el sistema de ruteo de app, fijarse que las rutas mas especificas vayan primero, finalizando en la raiz "/"
+/* Archivo de ruta basico:
+const express = require("express");
+const routerMain = express.Router();
+const mainController = require("../controllers/mainController");
+
+routerMain.get("/", mainController.main);
+
+module.exports = routerMain; */
+/* Archivo de controlador basico 
+const controller = {
+  main: (req, res) => {
+    res.render("index");
+  },
+};
+
+module.exports = controller;
+Observar que ya con EJS uso el metodo render, para renderizar la vista (en lugar de send para enviar los datos*/
+
+/* Etiquetas EJS
+<% %> Para embeber codigo de JS como condicionales, ciclos, etc
+<%= %> Para imprimir en el html */

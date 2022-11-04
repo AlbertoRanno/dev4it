@@ -1,11 +1,10 @@
 const express = require("express");
 const routerProyectos = express.Router();
+const proyectsController = require("../controllers/proyectsController.js")
 
 const {datos} = require("../data/datos.js")
 
-routerProyectos.get("/", (req, res) => {
-  res.send(datos.proyectos);
-});
+routerProyectos.get("/", proyectsController.listado);
 
 routerProyectos.get("/:id", (req, res) => {
   const id = req.params.id;

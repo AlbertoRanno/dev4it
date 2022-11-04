@@ -1,5 +1,6 @@
 const express = require("express");
 const routerPersonas = express.Router();
+const personalController = require("../controllers/personalController.js")
 
 const { datos } = require("../data/datos.js")
 
@@ -7,14 +8,16 @@ const { datos } = require("../data/datos.js")
 //Permite procesar el cuerpo de la solicitud en formato json
 routerPersonas.use(express.json())
 
-routerPersonas.get("/", (req, res) => {
-  //Orden descendente para ver primero a los ultimos incorporados a la empresa
-  if (req.query.ordenar == "id") {
-    return res.send(datos.personal.sort((a, b) => b.id - a.id));
-  }
+routerPersonas.get("/", personalController.listado );
 
-  res.send(datos.personal);
-});
+// routerPersonas.get("/", (req, res) => {
+//   //Orden descendente para ver primero a los ultimos incorporados a la empresa
+//   if (req.query.ordenar == "id") {
+//     return res.send(datos.personal.sort((a, b) => b.id - a.id));
+//   }
+
+//   res.send(datos.personal);
+// });
 
 routerPersonas.get("/:id", (req, res) => {
   const id = req.params.id;
