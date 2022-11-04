@@ -1,4 +1,3 @@
-
 // 1-11-22 *************
 
 // npm init - package.json - dependencias/modulos
@@ -9,10 +8,13 @@
 const PUERTO = process.env.PORT || 3000;
 // cuando suba la pagina, el puerto lo asignara el entorno, por eso la primer opcion
 app.listen(PUERTO, () => {
-console.log(`El servidor se esta escuchando en el puerto ${PUERTO}...`)})
+  console.log(`El servidor se esta escuchando en el puerto ${PUERTO}...`);
+});
 
 //Ruteo
-app.get("/api/datos", (req, res) => {res.send(datos)})
+app.get("/api/datos", (req, res) => {
+  res.send(datos);
+});
 // Es la forma que usa express para rutear
 
 // 2-11-22 *************
@@ -31,20 +33,25 @@ app.get("/api/datos/personal/:id", (req, res) => {
   res.send(resultados);
 });
 
-
 //Doble Parámetro URL - Chequear, no funciona:
 routerPersonas.get("/:rol/:seniority", (req, res) => {
-  const rol = req.params.rol
-  const seniority = req.params.seniority
+  const rol = req.params.rol;
+  const seniority = req.params.seniority;
 
-  const resultados = datos.personal.filter(persona => persona.rol == rol && persona.seniority == seniority)
+  const resultados = datos.personal.filter(
+    (persona) => persona.rol == rol && persona.seniority == seniority
+  );
 
   if (resultados.length === 0) {
-    return res.status(404).send(`No se encontró personal que cumpla con rol ${rol} y sea ${seniority}`)
+    return res
+      .status(404)
+      .send(
+        `No se encontró personal que cumpla con rol ${rol} y sea ${seniority}`
+      );
   }
 
-  res.send(resultados)
-})
+  res.send(resultados);
+});
 
 //codigos de estado
 // "res.status(404)" porque el recurso no fue encontrado ".send"...
@@ -70,7 +77,7 @@ app.get("/api/datos/personal", (req, res) => {
 
 // Routers
 // Sirven para simplificar lo confuso que pueden llegar a ser varias rutas largas: /api/datos/proyectos
-const routerProyectos = express.Router()
+const routerProyectos = express.Router();
 app.use("/api/datos/proyectos", routerProyectos);
 // Reemplazan: app.get("/api/datos/proyectos/:id", (req,...
 // Por: routerProyectos.get("/:id", (req,...
@@ -91,11 +98,11 @@ routerPersonas.put("/:id", (req, res) => {
   //recordad que es == y no === porque en la URL viene como string y en la base de datos en number
   const indiceArray = datos.personal.findIndex((persona) => persona.id == id);
   //si ese id no esta en el array devuelve -1
-    if (indiceArray >= 0) {
-  //si esta, reemplazo los datos de ese indice, por el que viajo en el body
-      datos.personal[indiceArray] = personalActualizado;
-    }
-    res.send(json.stringify(datos.personal));
+  if (indiceArray >= 0) {
+    //si esta, reemplazo los datos de ese indice, por el que viajo en el body
+    datos.personal[indiceArray] = personalActualizado;
+  }
+  res.send(json.stringify(datos.personal));
 });
 
 //PATCH - Reemplaza No todo, como put, sino solamente algunas propiedades
@@ -130,7 +137,7 @@ res.send(JSON.stringify(datos));
 // cuando envio un objeto, o un arreglo de JS con res.send, se va a enviar igual con JSON, aunque no ponga JSON.stringify
 res.send(datos);
 // tambien, cuando quiera asegurarme de que algo vaya en formato json, uso
-res.json(datos)
+res.json(datos);
 //que lo que hace, es llamar detras de escena a json.stringify
 
 // 3-11-22 *************
@@ -156,7 +163,7 @@ Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, 
 <a href="#prueba">Prueba</a>
 <h4 id="prueba">Prueba</h4>*/
 
-//Dead Links href="#" se usan durante el desarrollo, para ver como quedan, antes de direccionar. 
+//Dead Links href="#" se usan durante el desarrollo, para ver como quedan, antes de direccionar.
 // Listas No ordenadas:   <ul> <li>1</li> <li>2</li> </ul> (viñetas)
 // Ordenadas: Idem con <ol> (numeradas)
 //<strong>Prueba</strong> <s>Prueba</s> <em>Prueba</em> <small>Prueba</small>
@@ -186,7 +193,7 @@ Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, 
 -Casillas de Verificacion, a igual name, mismo grupo, pero varias simultaneas a diferencia de radio
 -Checked - Hace que esa opcion venga determinada por defecto en la pagina  
 -value el valor que tomara el formulario cuando se envie
-*/    
+*/
 
 //div - cajita para contener elementos
 //head - elementos detras de escena (por ejemplo, titulo, links a css, a js, fuentes, bootstraps..) y son importantes para el ranking de google
@@ -204,7 +211,7 @@ https://fonts.google.com/   - copiar links al head, en la pagina, debajo de lo q
 // 1.5em depende del tamaño de la fuente del contenedor (si todo en ese contenedor tiene un tamaño de 16px, y quiero hacer resaltar algo, le pongo 1.5em y tendra 24px
 // rem relativa al tamaño de letra del elemento raiz
 // vw relativa al 1% del ancho de la ventana grafica
-// vh relativa al 1% del alto de la ventana grafica 
+// vh relativa al 1% del alto de la ventana grafica
 
 /* Priorizar estilos 
 *Caso 1: h1 class="texto-azul texto morado"  lo mismo da, que los escriba al reves
@@ -246,13 +253,13 @@ Hacen dinamicos los html (los muestra entrando a las URL), me permiten introduci
 La extension de los html debe pasar a .ejs
 npm install ejs
 en app.js Seteo el motor de plantillas que quiero usar mediante: */
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 /* todos los ejs deben estar en una carpeta views en la raiz del proyecto
 si quisiera reubicarla, o renombrarla, por ejemplo:*/
-app.set("views", "./src/nombreCarpeta")
+app.set("views", "./src/nombreCarpeta");
 /* M-V-C - las vistas se comunican con los controladores, y toman la informacion que estos reciben de los modelos*/
 /* Acordarse de setear en app.js la carpeta con contenido publico*/
-app.use(express.static("./public"))
+app.use(express.static("./public"));
 //En el sistema de ruteo de app, fijarse que las rutas mas especificas vayan primero, finalizando en la raiz "/"
 /* Archivo de ruta basico:
 const express = require("express");
@@ -275,3 +282,40 @@ Observar que ya con EJS uso el metodo render, para renderizar la vista (en lugar
 /* Etiquetas EJS
 <% %> Para embeber codigo de JS como condicionales, ciclos, etc
 <%= %> Para imprimir en el html */
+
+/* Bootstraps - Pegar links de CSS en header y de JS al fin del body
+Se puede descargar o instalar con npm - luego indagar */
+
+// CRUD **********************************
+
+// *********** Search ***********
+/* Vista:
+<h2>Buscador de Usuarios: </h2>
+Un form por Get, para que me traiga la vista con los resultados:
+<form action="/personal/search" method="GET">
+  <input type="text" name="search" />  // (*search*)
+  <input type="submit" value="Enviar" />
+</form>*/
+
+// Controlador: 
+search: (req, res) => {
+  //lo que busca el usuario lo levanto con una query, con el mismo nompre que le puse al input
+  const loQueBuscoElUsuario = req.query.search; // (*search*)
+
+  const results = [];
+
+  //paso ambos strings a minuscula para hacer la comparacion
+  for (let i = 0; i < datos.personal.length; i++) {
+    if (
+      datos.personal[i].nombre
+        .toLocaleLowerCase()
+        .includes(loQueBuscoElUsuario.toLocaleLowerCase())
+    ) {
+      results.push(datos.personal[i].nombre);
+    }
+  }
+
+  res.render("./staff/search", { loQueBuscoElUsuario, results });
+};
+
+//lo importante, es que los controladores le comparten, como segundo parametro, un objeto a la vista, que puede tener todas las propiedades valor que yo necesite. Notar que los nombres de las claves son los que necesitare en la vista para acudir al valor (clave: valor). Y recordar que {results} == {results: results}
