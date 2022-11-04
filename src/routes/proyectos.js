@@ -4,7 +4,7 @@ const proyectsController = require("../controllers/proyectsController.js")
 
 const {datos} = require("../data/datos.js")
 
-routerProyectos.get("/", proyectsController.listado);
+routerProyectos.get("/", proyectsController.list);
 
 routerProyectos.get("/:id", (req, res) => {
   const id = req.params.id;

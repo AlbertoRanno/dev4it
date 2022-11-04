@@ -1,8 +1,8 @@
 const { datos } = require("../data/datos.js")
 
 const controller = {
-  listado: (req, res) => {
-    res.render("proyects", {listado:datos.proyectos})
+  list: (req, res) => {
+    res.render("./proyects/proyects", {listado:datos.proyectos})
   }
 }
 

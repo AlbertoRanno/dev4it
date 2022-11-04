@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal</title>
+  </head>
+  <body>
+    <main>
+      <ul>
+        <% for( let i = 0; i < listado.length; i++ ) { %>
+        <li>
+          <a href="/personal/<%= listado[i].id %>"><%= listado[i].nombre %> </a>
+        </li>
+        <% } %>
+      </ul>
+      <h2>Buscador de Usuarios: </h2>
+      <form action="/personal/search" method="GET">
+        <input type="text" name="search" />
+        <input type="submit" value="Enviar" />
+      </form>
+    </main>
+  </body>
+</html>

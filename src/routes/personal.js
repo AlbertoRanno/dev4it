@@ -8,7 +8,7 @@ const { datos } = require("../data/datos.js")
 //Permite procesar el cuerpo de la solicitud en formato json
 routerPersonas.use(express.json())
 
-routerPersonas.get("/", personalController.listado );
+routerPersonas.get("/", personalController.list );
 
 // routerPersonas.get("/", (req, res) => {
 //   //Orden descendente para ver primero a los ultimos incorporados a la empresa
@@ -18,6 +18,8 @@ routerPersonas.get("/", personalController.listado );
 
 //   res.send(datos.personal);
 // });
+
+routerPersonas.use("/search", personalController.search)
 
 routerPersonas.get("/:id", (req, res) => {
   const id = req.params.id;
