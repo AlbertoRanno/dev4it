@@ -4,11 +4,11 @@ const app = express();
 
 // Set temple engine
 app.set("view engine", "ejs");
+app.set("views", "./src/views");
 
-// Access to Public
+
 app.use(express.static("./public"))
 
-// Data
 const { datos } = require("./data/datos");
 
 // Routers
@@ -18,11 +18,8 @@ const routerProyectos = require("./routes/proyectos.js");
 
 
 /*****************  Routing  ***************/
-app.use("/api/datos/personal", routerPersonas);
-app.use("/api/datos/proyectos", routerProyectos);
-app.get("/api/datos", (req, res) => {
-  res.send(datos);
-});
+app.use("/personal", routerPersonas);
+app.use("/proyectos", routerProyectos);
 app.use("/", routerMain);
 
 /*****************  Listen  ***************/
