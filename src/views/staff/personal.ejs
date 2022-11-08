@@ -13,7 +13,7 @@
         <li>
           <a href="/personal/<%= listado[i].id %>"><%= listado[i].nombre %> </a>
           <form
-            action="personal/delete/<%= listado[i].id %>?_method=DELETE"
+            action="/personal/delete/<%= listado[i].id %>?_method=DELETE"
             method="POST"
           >
             <button type="submit">Delete</button>

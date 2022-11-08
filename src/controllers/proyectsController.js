@@ -1,4 +1,8 @@
-const { datos } = require("../data/datos.js")
+// const { datos } = require("../data/datos.js")
+const fs = require("fs");
+
+let dataJSON = fs.readFileSync("src/data/data.json", "utf-8");
+let datos = JSON.parse(dataJSON);
 
 const controller = {
   list: (req, res) => {

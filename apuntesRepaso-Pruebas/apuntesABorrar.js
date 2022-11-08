@@ -380,7 +380,7 @@ console.log(directorio);// /registros/usuarios
 /* FS
 -es otro paquete nativo - permite levantar info de un archivo. Hay que requerirlo: */
 const fs = require("fs")
-/* 1er parametro, la ruta donde esta.
+/* 1er parametro, la ruta donde esta. - Ruta absoluta desde la raiz. Ej: let data = fs.readFileSync("src/data/data.json", "utf-8");
 2do parametro, "utf-8", para decodificarlo
 - si levanto un JSON, lo convierto a obj. lit con JSON.parse() */
 let users = fs.readFileSync("users.json", "utf-8")
