@@ -6,6 +6,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", "./src/views");
 
+//Public
 app.use(express.static("./public"))
 
 // Routers

@@ -8,6 +8,10 @@ const { datos } = require("../data/datos.js")
 //Permite procesar el cuerpo de la solicitud en formato json
 routerPersonas.use(express.json())
 
+routerPersonas.use("/search", personalController.search)
+
+routerPersonas.get("/:id", personalController.detail);
+
 routerPersonas.get("/", personalController.list );
 
 // routerPersonas.get("/", (req, res) => {
@@ -18,19 +22,6 @@ routerPersonas.get("/", personalController.list );
 
 //   res.send(datos.personal);
 // });
-
-routerPersonas.use("/search", personalController.search)
-
-routerPersonas.get("/:id", (req, res) => {
-  const id = req.params.id;
-  const resultados = datos.personal.filter((persona) => persona.id == id);
-
-  if (resultados.length === 0) {
-    return res.status(404).send(`No se encontro a nadie con el id ${id}`);
-  }
-
-  res.send(resultados);
-});
 
 routerPersonas.post("/", (req, res) => {
 let nuevoPersonal = req.body

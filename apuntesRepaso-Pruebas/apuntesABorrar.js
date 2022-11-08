@@ -295,12 +295,21 @@ Un form por Get, para que me traiga la vista con los resultados:
 <form action="/personal/search" method="GET">
   <input type="text" name="search" />  // (*search*)
   <input type="submit" value="Enviar" />
-</form>*/
+</form>
+Por estar bien configurado el form, cuando presione en Enviar, me dirijira a la siguiente URL:
+http://localhost:3000/personal/search?search=a
+donde el ..al/search?.. es porque ahi configure que fuera el form
+y el ?search=a es porque (*search*) lo llame... y "a" es lo que puse en el input para que se busque.
+La info del input del form, viaja en el query porque asi viene configurado el form? */
+
 
 // Controlador: 
 search: (req, res) => {
   //lo que busca el usuario lo levanto con una query, con el mismo nompre que le puse al input
   const loQueBuscoElUsuario = req.query.search; // (*search*)
+  // si buscara risotto por ej:
+  console.log(req.query); //{ search: 'risotto' }
+  console.log(req.query.search); //risotto
 
   const results = [];
 
@@ -316,6 +325,16 @@ search: (req, res) => {
   }
 
   res.render("./staff/search", { loQueBuscoElUsuario, results });
-};
+};;
 
 //lo importante, es que los controladores le comparten, como segundo parametro, un objeto a la vista, que puede tener todas las propiedades valor que yo necesite. Notar que los nombres de las claves son los que necesitare en la vista para acudir al valor (clave: valor). Y recordar que {results} == {results: results}
+
+/* Obs Orden de Rutas
+routerProyectos.use("/search", proyectsController.search);
+
+routerProyectos.get("/:id", proyectsController.detail);
+
+routerProyectos.get("/", proyectsController.list);
+
+Si /search, estuviera luego de /:id ... no podrìa acceder, dado que buscaria primero que que la palabra "search", fuera un id.. y por como lo configure, diria que no se encuentra dicho id */
+
