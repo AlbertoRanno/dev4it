@@ -44,21 +44,23 @@ const controller = {
       edad: req.body.edad,
       email: req.body.email,
     };
+
+    fs.appendFileSync("src/data/data.json", JSON.stringify(newPersonal));
     res.redirect("/personal");
   },
   save: (req, res) => {},
   edit: (req, res) => {
     let id = req.params.id;
-    let personalToEdit = datos.personal.find(persona => persona.id == id);
+    let personalToEdit = datos.personal.find((persona) => persona.id == id);
 
     res.render("./staff/edit", { personalToEdit: personalToEdit });
   },
   update: (req, res) => {
-    res.send("ok")
+    res.send("ok");
   },
   delete: (req, res) => {
-    res.send("me eliminaste")
-  }
+    res.send("me eliminaste");
+  },
 };
 
 module.exports = controller;

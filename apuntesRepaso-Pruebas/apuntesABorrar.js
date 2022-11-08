@@ -395,3 +395,16 @@ edit: (req, res) => {
      Pero, como es justamente, un unico elemento, uso "find", que devuelve el primer elemento que cumple
     res.render("./staff/edit", { personalToEdit: personalToEdit });
   }, */
+
+  /*  store: (req, res) => {
+    let newPersonal = {
+      nombre: req.body.nombre,
+      edad: req.body.edad,
+      email: req.body.email,
+    };
+
+    fs.appendFileSync("src/data/data.json", JSON.stringify(newPersonal));
+    res.redirect("/personal");
+  },
+  lo guarda al final del JSON, no puedo elegir en que parte, salvo desglose el json en personal y proyectos?
+   */

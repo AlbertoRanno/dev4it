@@ -23,15 +23,10 @@ routerPersonas.get("/", personalController.list );
 //   if (req.query.ordenar == "id") {
 //     return res.send(datos.personal.sort((a, b) => b.id - a.id));
 //   }
-
 //   res.send(datos.personal);
 // });
 
-// routerPersonas.post("/", (req, res) => {
-// let nuevoPersonal = req.body
-// datos.personal.push(nuevoPersonal)
-// res.send(datos.personal)
-// })
+
 
 // routerPersonas.put("/:id", (req, res) => {
 //   const personalActualizado = req.body
