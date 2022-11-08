@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit - <%= PersonalToEdit.nombre %></title>
+  <title>Edit - <%= personalToEdit.nombre %></title>
 </head>
 <body>
   <form action="/personal/update/:id?_method=PUT" method="POST">
       <label for="nombre">
         Nombre:
-        <input type="text" name="nombre" value=<%= PersonalToEdit.nombre %> />
+        <input type="text" name="nombre" value=<%= personalToEdit.nombre %> />
       </label>
       <br />
-      <label for="rol"> Rol: <input type="text" name="rol" value=<%= PersonalToEdit.rol %> /> </label>
+      <label for="rol"> Rol: <input type="text" name="rol" value=<%= personalToEdit.rol %> /> </label>
       <br />
       <label for="seniority">
         Seniority:
-        <input type="text" name="seniority" value="<%= PersonalToEdit.seniority %> " />
+        <input type="text" name="seniority" value="<%= personalToEdit.seniority %> " />
       </label>
       <br />
       <input type="submit" value="Actualizar"/> 

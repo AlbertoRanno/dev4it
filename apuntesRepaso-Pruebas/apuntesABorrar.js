@@ -385,3 +385,13 @@ const fs = require("fs")
 - si levanto un JSON, lo convierto a obj. lit con JSON.parse() */
 let users = fs.readFileSync("users.json", "utf-8")
 let usersJson = JSON.parse(users)
+
+/*
+edit: (req, res) => {
+    let id = req.params.id;
+    let personalToEdit = datos.personal.find(persona => persona.id == id);
+    //OBS! antes tenia filter.. y me daba un array.. entonces tenia que poner:
+     personalToEdit: personalToEdit[0] para indicar que era el primer (y unico) elemento del mismo..
+     Pero, como es justamente, un unico elemento, uso "find", que devuelve el primer elemento que cumple
+    res.render("./staff/edit", { personalToEdit: personalToEdit });
+  }, */

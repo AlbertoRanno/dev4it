@@ -45,11 +45,9 @@ const controller = {
   save: (req, res) => {},
   edit: (req, res) => {
     let id = req.params.id;
-    let PersonalToEdit = datos.personal.filter((persona) => persona.id == id);
-    console.log(id);
-    console.log(PersonalToEdit);
-    console.log(PersonalToEdit[0].nombre);
-    res.render("./staff/edit", { PersonalToEdit: PersonalToEdit[0] });
+    let personalToEdit = datos.personal.find(persona => persona.id == id);
+
+    res.render("./staff/edit", { personalToEdit: personalToEdit });
   },
   update: (req, res) => {
     res.send("ok")
