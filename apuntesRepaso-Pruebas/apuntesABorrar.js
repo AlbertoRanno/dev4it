@@ -302,14 +302,14 @@ donde el ..al/search?.. es porque ahi configure que fuera el form
 y el ?search=a es porque (*search*) lo llame... y "a" es lo que puse en el input para que se busque.
 La info del input del form, viaja en el query porque asi viene configurado el form? */
 
-
-// Controlador: 
+// Controlador:
 search: (req, res) => {
   //lo que busca el usuario lo levanto con una query, con el mismo nompre que le puse al input
   const loQueBuscoElUsuario = req.query.search; // (*search*)
   // si buscara risotto por ej:
   console.log(req.query); //{ search: 'risotto' }
   console.log(req.query.search); //risotto
+  // LA INFO VIAJA EN EL QUERY PORQUE ESTOY USANDO EL METODO GET! (probar de cambiar el POST del register por un get, y vere los clave valor de los inputs todos en la URL! )
 
   const results = [];
 
@@ -325,7 +325,7 @@ search: (req, res) => {
   }
 
   res.render("./staff/search", { loQueBuscoElUsuario, results });
-};;
+};
 
 //lo importante, es que los controladores le comparten, como segundo parametro, un objeto a la vista, que puede tener todas las propiedades valor que yo necesite. Notar que los nombres de las claves son los que necesitare en la vista para acudir al valor (clave: valor). Y recordar que {results} == {results: results}
 
@@ -338,3 +338,50 @@ routerProyectos.get("/", proyectsController.list);
 
 Si /search, estuviera luego de /:id ... no podrìa acceder, dado que buscaria primero que que la palabra "search", fuera un id.. y por como lo configure, diria que no se encuentra dicho id */
 
+// En app.js , para capturar todo lo que venga de un Form, en forma de un Obj. Lit: (*sigue*)
+app.use(express.urlencoded({ extended: false }));
+//y que, a su vez, me permita convertir dicha data a un formato JSON, si asi lo quiero:
+app.use(express.json());
+//*sigue* - la info viaja en el body. Body es el objeto literal (clave / valor) donde los nombres de las claves son los "name" que le haya puesto a los inputs. Y el valor, lo que el visitante haya ingresado. Obs! Si el input no tuviera name, el valor no llega al body..
+
+/*   store: (req, res) => {
+    //al viajar por post, la info viene en el body (por get venia por query) ****IMPORTANTE****
+    //res.send(req.body) //todos los inputs con sus valores
+    let usuario = {nombre: req.body.nombre, edad: req.body.edad, email: req.body.email}
+    console.log(usuario);
+    //falta guardarlo
+    //Para los metodos que no son GET, recordar el "redirect"
+    res.redirect("/personal")
+  } */
+
+/* Dado que "no todos los navegadores soportan PUT/DELETE" (method solo por GET y POST), instalo method-override para asegurar compatibilidad.
+npm install method-override -save
+luego lo requiero en app.js*/
+const methodOverride = require("method-override");
+app.use(methodOverride("_method"));
+/* con esto voy a poder sobrescribir los methods originales de los form (GET y POST) 
+Este "_method" es el que voy a utilizar en la etiqueta de los Form, para decir que, indistintamente del method que diga, lo que quiero enviar, irá por el verbo que yo pase como query string
+<form action="/personal/:id/update?_method=PUT" method="POST">
+*/
+
+//Obs los put/patch/delete viajan en los form - No hacer botones sueltos
+
+/* PATH
+viene por defecto en Node.js - lo requiero donde lo quiere usar: */
+let path = require("path")
+/* La funcion que trae, join(), permite: */
+let archivoUsuarios = path.join("registros","usuarios","archivo.json")
+console.log(archivoUsuarios); // /registros/usuarios/archivo.json
+let extension = path.extname(archivoUsuarios);
+console.log(extension);//.json
+let directorio = path.dirname(archivoUsuarios);
+console.log(directorio);// /registros/usuarios
+
+/* FS
+-es otro paquete nativo - permite levantar info de un archivo. Hay que requerirlo: */
+const fs = require("fs")
+/* 1er parametro, la ruta donde esta.
+2do parametro, "utf-8", para decodificarlo
+- si levanto un JSON, lo convierto a obj. lit con JSON.parse() */
+let users = fs.readFileSync("users.json", "utf-8")
+let usersJson = JSON.parse(users)

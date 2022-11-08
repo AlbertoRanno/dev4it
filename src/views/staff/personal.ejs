@@ -12,14 +12,20 @@
         <% for( let i = 0; i < listado.length; i++ ) { %>
         <li>
           <a href="/personal/<%= listado[i].id %>"><%= listado[i].nombre %> </a>
+          <form
+            action="personal/delete/<%= listado[i].id %>?_method=DELETE"
+            method="POST"
+          >
+            <button type="submit">Delete</button>
+          </form>
         </li>
         <% } %>
       </ul>
-      <h2>Buscador de Usuarios: </h2>
+      <h2>Buscador de Usuarios:</h2>
       <form action="/personal/search" method="GET">
         <input type="text" name="search" />
         <input type="submit" value="Enviar" />
-      </form> 
+      </form>
     </main>
   </body>
 </html>

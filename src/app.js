@@ -1,13 +1,18 @@
 /*****************  Requires  ***************/
 const express = require("express");
 const app = express();
+const methodOverride = require("method-override");
 
-// Set temple engine
+//view engine setup
 app.set("view engine", "ejs");
 app.set("views", "./src/views");
 
-//Public
 app.use(express.static("./public"))
+
+app.use(express.urlencoded({extended:false}))
+app.use(express.json())
+
+app.use(methodOverride("_method"))
 
 // Routers
 const routerMain = require("./routes/main.js")

@@ -6,9 +6,19 @@ const { datos } = require("../data/datos.js")
 
 //Middleware
 //Permite procesar el cuerpo de la solicitud en formato json
-routerPersonas.use(express.json())
+routerPersonas.use(express.json()) 
+
+routerPersonas.get("/register", personalController.register)
+
+routerPersonas.post("/register", personalController.store)
 
 routerPersonas.use("/search", personalController.search)
+
+routerPersonas.get("/edit/:id", personalController.edit);
+
+routerPersonas.put("/update/:id", personalController.update);
+
+routerPersonas.delete("/delete/:id", personalController.delete)
 
 routerPersonas.get("/:id", personalController.detail);
 

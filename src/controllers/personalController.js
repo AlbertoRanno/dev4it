@@ -31,6 +31,32 @@ const controller = {
 
     res.render("./staff/search", { loQueBuscoElUsuario, results });
   },
+  register: (req, res) => {
+    res.render("./staff/register");
+  },
+  store: (req, res) => {
+    let newPersonal = {
+      nombre: req.body.nombre,
+      edad: req.body.edad,
+      email: req.body.email,
+    };
+    res.redirect("/personal");
+  },
+  save: (req, res) => {},
+  edit: (req, res) => {
+    let id = req.params.id;
+    let PersonalToEdit = datos.personal.filter((persona) => persona.id == id);
+    console.log(id);
+    console.log(PersonalToEdit);
+    console.log(PersonalToEdit[0].nombre);
+    res.render("./staff/edit", { PersonalToEdit: PersonalToEdit[0] });
+  },
+  update: (req, res) => {
+    res.send("ok")
+  },
+  delete: (req, res) => {
+    res.send("me eliminaste")
+  }
 };
 
 module.exports = controller;
