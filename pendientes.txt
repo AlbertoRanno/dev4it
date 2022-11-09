@@ -1,0 +1,6 @@
+*Vistas:
+- Detalle Personas
+- Not Found
+
+*Dudas:
+- El EJS solo levanta el primer nombre.. no recuerdo como corregirlo

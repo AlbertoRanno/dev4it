@@ -463,3 +463,34 @@ function Persona(nombrePersona) {
 let persona1 = new Persona ("Adán")
 let persona2 = new Persona("Eva");
 
+/* JsonModel
+const JsonModel = require("../models/jsonModel");
+const personalModel = new JsonModel("personal");
+//console.log(personalModel);
+/*
+JsonModel {
+  name: 'personal',
+  dataDir: '../data/',
+  dataPath: 'C:\\Users\\Albert\\Desktop\\dev4it\\src\\data\\personal.json' 
+}
+*/
+
+// let dataJSON = fs.readFileSync("src/data/personal.json", "utf-8");
+// let datos = JSON.parse(dataJSON);
+let datos = personalModel.readJsonFile() 
+
+/*
+detail: (req, res) => {
+    const id = req.params.id;
+  //antes: const resultados = datos.filter((persona) => persona.id == id);
+    let persona = personalModel.buscar(id)
+
+    if (!persona) {
+  //  if (resultados.length === 0) {
+      return res.status(404).send(`No se encontro a nadie con el id ${id}`);
+    }
+
+    res.send(resultados);
+  },
+  
+  */

@@ -1,34 +1,29 @@
-// const { datos } = require("../data/datos.js");
-const fs = require("fs");
+const JsonModel = require("../models/jsonModel");
+const personalModel = new JsonModel("personal");
 
-let dataJSON = fs.readFileSync("src/data/personal.json", "utf-8");
-let datos = JSON.parse(dataJSON);
+let datos = personalModel.readJsonFile();
 
 const controller = {
   list: (req, res) => {
     res.render("./staff/personal", { listado: datos });
   },
   detail: (req, res) => {
-    const id = req.params.id;
-    const resultados = datos.filter((persona) => persona.id == id);
+    let id = req.params.id;
+    let persona = personalModel.buscar(id);
 
-    if (resultados.length === 0) {
+    if (!persona) {
       return res.status(404).send(`No se encontro a nadie con el id ${id}`);
     }
 
-    res.send(resultados);
+    res.send(persona);
   },
   search: (req, res) => {
-    const loQueBuscoElUsuario = req.query.search;
+    const loQueBuscoElUsuario = req.query.search.toLocaleLowerCase();
 
     const results = [];
 
     for (let i = 0; i < datos.length; i++) {
-      if (
-        datos[i].nombre
-          .toLocaleLowerCase()
-          .includes(loQueBuscoElUsuario.toLocaleLowerCase())
-      ) {
+      if (datos[i].nombre.toLocaleLowerCase().includes(loQueBuscoElUsuario)) {
         results.push(datos[i].nombre);
       }
     }
@@ -44,14 +39,13 @@ const controller = {
       edad: req.body.edad,
       email: req.body.email,
     };
-
-    fs.appendFileSync("src/data/data.json", JSON.stringify(newPersonal));
-    res.redirect("/personal");
+    res.send("ok")
+    // fs.appendFileSync("src/data/data.json", JSON.stringify(newPersonal));
+    //res.redirect("/personal");
   },
-  save: (req, res) => {},
   edit: (req, res) => {
     let id = req.params.id;
-    let personalToEdit = datos.find((persona) => persona.id == id);
+    let personalToEdit = personalModel.buscar(id)
 
     res.render("./staff/edit", { personalToEdit: personalToEdit });
   },
