@@ -1,16 +1,16 @@
 // const { datos } = require("../data/datos.js");
 const fs = require("fs");
 
-let dataJSON = fs.readFileSync("src/data/data.json", "utf-8");
+let dataJSON = fs.readFileSync("src/data/personal.json", "utf-8");
 let datos = JSON.parse(dataJSON);
 
 const controller = {
   list: (req, res) => {
-    res.render("./staff/personal", { listado: datos.personal });
+    res.render("./staff/personal", { listado: datos });
   },
   detail: (req, res) => {
     const id = req.params.id;
-    const resultados = datos.personal.filter((persona) => persona.id == id);
+    const resultados = datos.filter((persona) => persona.id == id);
 
     if (resultados.length === 0) {
       return res.status(404).send(`No se encontro a nadie con el id ${id}`);
@@ -23,13 +23,13 @@ const controller = {
 
     const results = [];
 
-    for (let i = 0; i < datos.personal.length; i++) {
+    for (let i = 0; i < datos.length; i++) {
       if (
-        datos.personal[i].nombre
+        datos[i].nombre
           .toLocaleLowerCase()
           .includes(loQueBuscoElUsuario.toLocaleLowerCase())
       ) {
-        results.push(datos.personal[i].nombre);
+        results.push(datos[i].nombre);
       }
     }
 
@@ -51,7 +51,7 @@ const controller = {
   save: (req, res) => {},
   edit: (req, res) => {
     let id = req.params.id;
-    let personalToEdit = datos.personal.find((persona) => persona.id == id);
+    let personalToEdit = datos.find((persona) => persona.id == id);
 
     res.render("./staff/edit", { personalToEdit: personalToEdit });
   },

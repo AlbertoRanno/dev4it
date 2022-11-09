@@ -1,16 +1,16 @@
 // const { datos } = require("../data/datos.js")
 const fs = require("fs");
 
-let dataJSON = fs.readFileSync("src/data/data.json", "utf-8");
+let dataJSON = fs.readFileSync("src/data/proyects.json", "utf-8");
 let datos = JSON.parse(dataJSON);
 
 const controller = {
   list: (req, res) => {
-    res.render("./proyects/proyects", { listado: datos.proyectos });
+    res.render("./proyects/proyects", { listado: datos });
   },
   detail: (req, res) => {
     const id = req.params.id;
-    const resultados = datos.proyectos.filter((proyecto) => proyecto.id == id);
+    const resultados = datos.filter((proyecto) => proyecto.id == id);
     console.log(resultados);
 
     if (resultados.length === 0) {
@@ -26,13 +26,13 @@ const controller = {
 
     const results = [];
 
-    for (let i = 0; i < datos.proyectos.length; i++) {
+    for (let i = 0; i < datos.length; i++) {
       if (
-        datos.proyectos[i].nombre
+        datos[i].nombre
           .toLocaleLowerCase()
           .includes(loQueBuscoElUsuario.toLocaleLowerCase())
       ) {
-        results.push(datos.proyectos[i].nombre);
+        results.push(datos[i].nombre);
       }
     }
 

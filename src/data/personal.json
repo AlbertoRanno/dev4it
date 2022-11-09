@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "nombre": "Hernán Mercado",
+    "rol": "Gestor de proyectos",
+    "seniority": "Sr."
+  },
+  {
+    "id": "2",
+    "nombre": "Ariel Edgardo",
+    "rol": "Gestor de proyectos",
+    "seniority": "Sr."
+  },
+  {
+    "id": "3",
+    "nombre": "Garavaglia María Victoria",
+    "rol": "Especialista UX",
+    "seniority": "Jr."
+  },
+  {
+    "id": "4",
+    "nombre": "Díaz Lucas",
+    "rol": "Data Analytics",
+    "seniority": "Sr."
+  }
+]

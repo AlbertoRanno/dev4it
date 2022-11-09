@@ -368,23 +368,23 @@ Este "_method" es el que voy a utilizar en la etiqueta de los Form, para decir q
 
 /* PATH
 viene por defecto en Node.js - lo requiero donde lo quiere usar: */
-let path = require("path")
+let path = require("path");
 /* La funcion que trae, join(), permite: */
-let archivoUsuarios = path.join("registros","usuarios","archivo.json")
+let archivoUsuarios = path.join("registros", "usuarios", "archivo.json");
 console.log(archivoUsuarios); // /registros/usuarios/archivo.json
 let extension = path.extname(archivoUsuarios);
-console.log(extension);//.json
+console.log(extension); //.json
 let directorio = path.dirname(archivoUsuarios);
-console.log(directorio);// /registros/usuarios
+console.log(directorio); // /registros/usuarios
 
 /* FS
 -es otro paquete nativo - permite levantar info de un archivo. Hay que requerirlo: */
-const fs = require("fs")
+const fs = require("fs");
 /* 1er parametro, la ruta donde esta. - Ruta absoluta desde la raiz. Ej: let data = fs.readFileSync("src/data/data.json", "utf-8");
 2do parametro, "utf-8", para decodificarlo
 - si levanto un JSON, lo convierto a obj. lit con JSON.parse() */
-let users = fs.readFileSync("users.json", "utf-8")
-let usersJson = JSON.parse(users)
+let users = fs.readFileSync("users.json", "utf-8");
+let usersJson = JSON.parse(users);
 
 /*
 edit: (req, res) => {
@@ -396,7 +396,7 @@ edit: (req, res) => {
     res.render("./staff/edit", { personalToEdit: personalToEdit });
   }, */
 
-  /*  store: (req, res) => {
+/*  store: (req, res) => {
     let newPersonal = {
       nombre: req.body.nombre,
       edad: req.body.edad,
@@ -408,3 +408,58 @@ edit: (req, res) => {
   },
   lo guarda al final del JSON, no puedo elegir en que parte, salvo desglose el json en personal y proyectos?
    */
+
+/* POO
+  - con la palabra clave "new", y el objeto preconstruido "Object()"
+  - tengo un especie de marco en blanco para construir cualquier objeto.
+  - al cual le puedo ir agregando cualquier propiedad:
+  */
+nuevoObjeto = new Object();
+console.log(nuevoObjeto); //{}
+nuevoObjeto.info = "Soy la 1er prop de este objeto!";
+console.log(nuevoObjeto); //{ info: 'Soy la 1er prop de este objeto!' }
+nuevoObjeto.mostrarInfo = function () {
+  alert(this.info);
+};
+console.log(nuevoObjeto); /* { info: 'Soy la 1er prop de este objeto!',
+                                    mostrarInfo: [Function (anonymous)]} */
+/* Esta forma sirve, si tuviera que crear un solo objeto - "Patron de diseño Singleton"
+ Pero si tuviera que ir creando varios objetos, cada uno con sus propiedades, lo mejor es una:
+ Funcion Constructora: (multiples instancias) - una especie de plantilla para instanciar los objetos que quiera */
+function Constructora() {
+  this.info = "Soy un nuevo objeto";
+  this.mostrarInfo = function () {
+    alert(this.info);
+  };
+  this.configurarInfo = function (nuevaInfo) {
+    this.info = nuevaInfo;
+  };
+}
+
+let nuevoObjeto1 = new Constructora();
+console.log(nuevoObjeto1); /*
+    Constructora {
+  info: 'Soy un nuevo objeto',
+  mostrarInfo: [Function (anonymous)],
+  configurarInfo: [Function (anonymous)]
+} */
+let nuevoObjeto2 = new Constructora();
+nuevoObjeto2.configurarInfo("Cambio!");
+console.log(nuevoObjeto2); /*
+    Constructora {
+  info: 'Cambio!',
+  mostrarInfo: [Function (anonymous)],
+  configurarInfo: [Function (anonymous)]
+} */
+
+/* Otro Ej. con Argumentos */
+function Persona(nombrePersona) {
+  this.nombre = nombrePersona;
+  this.info = "Esta persona se llama " + this.nombre;
+  this.mostrarInfo = function () {
+    alert(this.info);
+  };
+}
+let persona1 = new Persona ("Adán")
+let persona2 = new Persona("Eva");
+
