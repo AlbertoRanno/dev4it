@@ -3,7 +3,7 @@
 // npm init - package.json - dependencias/modulos
 // npm install express - requerirlo - guardar su ejecución en una constante "app"
 //Express me permite manejar las peticiones de los diferentes verbos HTTP, en diferentes caminos URL (rutas)
-// creo datos como un objeto con propiedades clave-valor, y lo exporto - lo requiero en app.js
+// creo datos como un objeto con propiedades clave-valor, y lo exporto - lo requiero en app.js - Mas adelante reemplazare por JSON
 
 const PUERTO = process.env.PORT || 3000;
 // cuando suba la pagina, el puerto lo asignara el entorno, por eso la primer opcion
@@ -63,6 +63,7 @@ routerPersonas.get("/:rol/:seniority", (req, res) => {
 // si en esa ruta, pongo: console.log(req.query.ordenar); en consola veré "id"
 
 // Sirven, entre otros, para ordenar los resultados en un orden especifico:
+//en el query viaja la info por GET - Probar de a un Form , ponerle method GET, y vere los clave valor de los inputs viajar por la URL
 
 app.get("/api/datos/personal", (req, res) => {
   //http://localhost:3000/api/datos/personal?ordenar=id
@@ -83,9 +84,9 @@ app.use("/api/datos/proyectos", routerProyectos);
 // Por: routerProyectos.get("/:id", (req,...
 
 //El archivo quedaba demasiado grande. Entoces llega la separacion en distintos archivos
-//Carpeta routers
+//Carpeta routers y controladores
 
-//Probando POST mediante la extension REST Client
+//Probando POST/PUT/PATCH/DELETE mediante la extension REST Client - luego la desinstale
 
 //PUT - hay que enviar todos los campos de la entidad, aunque solo cambien algunos de esos valores (el resto se sobreescribe)
 // Sino, utilizar Patch
@@ -199,7 +200,7 @@ Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, 
 //head - elementos detras de escena (por ejemplo, titulo, links a css, a js, fuentes, bootstraps..) y son importantes para el ranking de google
 
 //CSS
-// * { } - selector universal   // .nombre { } - class="" //  #nombre { } - id=""
+// * { } - selector universal   // etiquetas { }  // .nombre { } - class="" //  #nombre { } - id=""
 
 //font-family: 'Franklin Gothic Medium' va entre comillas porque son vs palabras, sino no hace falta
 /* En inspeccionar - Elementos - Calculados - por lo bajo figuran las fuentes renderizadas
@@ -261,6 +262,7 @@ app.set("views", "./src/nombreCarpeta");
 /* Acordarse de setear en app.js la carpeta con contenido publico*/
 app.use(express.static("./public"));
 //En el sistema de ruteo de app, fijarse que las rutas mas especificas vayan primero, finalizando en la raiz "/"
+
 /* Archivo de ruta basico:
 const express = require("express");
 const routerMain = express.Router();
@@ -269,13 +271,13 @@ const mainController = require("../controllers/mainController");
 routerMain.get("/", mainController.main);
 
 module.exports = routerMain; */
+
 /* Archivo de controlador basico 
 const controller = {
   main: (req, res) => {
     res.render("index");
   },
 };
-
 module.exports = controller;
 Observar que ya con EJS uso el metodo render, para renderizar la vista (en lugar de send para enviar los datos*/
 
@@ -300,16 +302,17 @@ Por estar bien configurado el form, cuando presione en Enviar, me dirijira a la 
 http://localhost:3000/personal/search?search=a
 donde el ..al/search?.. es porque ahi configure que fuera el form
 y el ?search=a es porque (*search*) lo llame... y "a" es lo que puse en el input para que se busque.
-La info del input del form, viaja en el query porque asi viene configurado el form? */
+La info del input del form, viaja en el query porque por ahi viaja la info por GET */
 
 // Controlador:
 search: (req, res) => {
-  //lo que busca el usuario lo levanto con una query, con el mismo nompre que le puse al input
+  //lo que busca el usuario, como fue por GET, viajo en la query, por lo que la levanto, con el mismo nompre que le puse al input
+  //que seria el nombre de la propiedad del objeto req.query, y lo que busco el usuario, su valor
   const loQueBuscoElUsuario = req.query.search; // (*search*)
   // si buscara risotto por ej:
   console.log(req.query); //{ search: 'risotto' }
   console.log(req.query.search); //risotto
-  // LA INFO VIAJA EN EL QUERY PORQUE ESTOY USANDO EL METODO GET! (probar de cambiar el POST del register por un get, y vere los clave valor de los inputs todos en la URL! )
+  // LA INFO VIAJA EN EL QUERY PORQUE ESTOY USANDO EL METODO GET (probar de cambiar el POST del register por un get, y vere los clave valor de los inputs todos en la URL )
 
   const results = [];
 
@@ -336,7 +339,7 @@ routerProyectos.get("/:id", proyectsController.detail);
 
 routerProyectos.get("/", proyectsController.list);
 
-Si /search, estuviera luego de /:id ... no podrìa acceder, dado que buscaria primero que que la palabra "search", fuera un id.. y por como lo configure, diria que no se encuentra dicho id */
+Si /search, estuviera luego de /:id ... no podrìa acceder, dado que buscaria primero que la palabra "search", fuera un id.. y por como lo configure, diria que no se encuentra dicho id */
 
 // En app.js , para capturar todo lo que venga de un Form, en forma de un Obj. Lit: (*sigue*)
 app.use(express.urlencoded({ extended: false }));
@@ -406,9 +409,10 @@ edit: (req, res) => {
     fs.appendFileSync("src/data/data.json", JSON.stringify(newPersonal));
     res.redirect("/personal");
   },
-  lo guarda al final del JSON, no puedo elegir en que parte, salvo desglose el json en personal y proyectos?
+  lo guarda al final del JSON, no puedo elegir en que parte
    */
 
+// 9-11-22 *************
 /* POO
   - con la palabra clave "new", y el objeto preconstruido "Object()"
   - tengo un especie de marco en blanco para construir cualquier objeto.
@@ -422,7 +426,7 @@ nuevoObjeto.mostrarInfo = function () {
   alert(this.info);
 };
 console.log(nuevoObjeto); /* { info: 'Soy la 1er prop de este objeto!',
-                                    mostrarInfo: [Function (anonymous)]} */
+                              mostrarInfo: [Function (anonymous)]} */
 /* Esta forma sirve, si tuviera que crear un solo objeto - "Patron de diseño Singleton"
  Pero si tuviera que ir creando varios objetos, cada uno con sus propiedades, lo mejor es una:
  Funcion Constructora: (multiples instancias) - una especie de plantilla para instanciar los objetos que quiera */
@@ -476,14 +480,14 @@ JsonModel {
 */
 
 // let dataJSON = fs.readFileSync("src/data/personal.json", "utf-8");
-// let datos = JSON.parse(dataJSON);
+// let datos = JSON.parse(dataJSON);  // Se reduce a :
 let datos = personalModel.readJsonFile() 
 
 /*
 detail: (req, res) => {
     const id = req.params.id;
   //antes: const resultados = datos.filter((persona) => persona.id == id);
-    let persona = personalModel.buscar(id)
+    let persona = personalModel.buscar(id) //se redujo a esta expresion
 
     if (!persona) {
   //  if (resultados.length === 0) {
@@ -532,7 +536,7 @@ Ya con multer, ahora al viajar por post, tengo, ademas del objeto body, el objet
 
 siguiendo con express-validations
 requiero body en la ruta:
-const { body } = require("express-validator")
+const { body } = require("express-validator") // body o check
 (solo necesito la funcion body)
 esto me permite pasar el middleware de validaciones:
 const validations = [
@@ -548,7 +552,7 @@ routerPersonas.post(
   personalController.store
 );
 
-requiero validationResult en el controlador para capturar las validaciones
+requiero validationResult en el controlador para capturar el resultado de las validaciones
 const { validationResult } = require("express-validator")
   store: (req, res) => {
     const resultValidation = validationResult(req);
@@ -575,8 +579,10 @@ const { validationResult } = require("express-validator")
   /*
     store: (req, res) => {
     const resultValidation = validationResult(req);
-    //console.log(resultValidation.errors); //es un array
-    console.log(resultValidation.errors.mapped()); //es un objeto - mejor para trabajar
+    console.log(resultValidation.mapped()); 
+
+    //mapped() returns: an object where the keys are the field names, and the values are the validation errors
+
     
     {
   name: {
@@ -604,11 +610,6 @@ const { validationResult } = require("express-validator")
     location: 'body'
   }
 }
-    
-
-    if (resultValidation.length > 0) {
-      res.render("./staff/register", { errors: resultValidation.mapped() });
-    }
-  },
+  
   */
 

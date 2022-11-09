@@ -43,6 +43,7 @@ const controller = {
         oldData: req.body,
       });
     }
+    //mapped() returns: an object where the keys are the field names, and the values are the validation errors
 
     res.redirect("/personal");
   },

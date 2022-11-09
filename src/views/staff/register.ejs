@@ -30,8 +30,8 @@
                 <div class="form-group">
                   <label for="name"><b>Nombre completo:</b></label>
                   <input type="text" name="name" class="form-control <%=
-                  locals.errors && errors.name ? "is-invalid" : null %>" value="
-                  <%= locals.oldData ? oldData.name : null %> " /> <% if
+                  locals.errors && errors.name ? "is-invalid" : null %>"
+                  value="<%= locals.oldData ? oldData.name : null %>" /><% if
                   (locals.errors && errors.name) { %>
                   <div class="text-danger"><%= errors.name.msg %></div>
                   <% } %>
