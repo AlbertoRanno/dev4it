@@ -494,3 +494,121 @@ detail: (req, res) => {
   },
   
   */
+
+  /* VALIDACIONES
+  npm install express-validator
+  para usar en rutas y controladores
+
+  en el ejs:
+  <form action="/personal/register" method="POST" enctype="multipart/form-data">
+  para usar Multer (imagenes) - la informacion ahora no solo es texto, sino que viene con archivos
+  npm install multer - es un middleware
+  lo requiero en el archivo de RUTAS y lo configuro:
+  const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/images/avatars");
+  },
+  filename: (req, file, cb) => {
+    console.log(file)
+    let filename = `${Date.now()}_img${path.extname(file.originalname)}`;
+    cb(null, filename);
+  },
+});
+
+const uploadFile = multer({ storage });
+
+y lo paso en la ruta como el middleware que es:
+
+routerPersonas.post(
+  "/register",
+  uploadFile.single("avatar"),   // "avatar" porque es el nombre del input del form
+  personalController.store       // "single" porque levanto de a una sola foto
+);
+
+Ya con multer, ahora al viajar por post, tengo, ademas del objeto body, el objeto file
+
+siguiendo con express-validations
+requiero body en la ruta:
+const { body } = require("express-validator")
+(solo necesito la funcion body)
+esto me permite pasar el middleware de validaciones:
+const validations = [
+  body("name").notEmpty(),
+  body("rol").notEmpty(),
+  body("seniority").notEmpty(),
+  body("email").notEmpty()
+];
+
+routerPersonas.post(
+  "/register",
+  uploadFile.single("avatar"), validations,
+  personalController.store
+);
+
+requiero validationResult en el controlador para capturar las validaciones
+const { validationResult } = require("express-validator")
+  store: (req, res) => {
+    const resultValidation = validationResult(req);
+    return res.send(resultValidation);
+   
+//     {
+// "errors": [
+// {
+// "value": "",
+// "msg": "Invalid value", // se cambia si en las validaciones pongo .withmessage("Otro msj")
+// "param": "email",
+// "location": "body"
+// }
+// ]
+// } 
+
+    //res.send({ body:req.body, file:req.file});
+
+    //res.redirect("/personal");
+  },
+
+   */
+
+  /*
+    store: (req, res) => {
+    const resultValidation = validationResult(req);
+    //console.log(resultValidation.errors); //es un array
+    console.log(resultValidation.errors.mapped()); //es un objeto - mejor para trabajar
+    
+    {
+  name: {
+    value: '',
+    msg: 'Este campo no puede estar vacio',
+    param: 'name',
+    location: 'body'
+  },
+  rol: {
+    value: '',
+    msg: 'Este campo no puede estar vacio',
+    param: 'rol',
+    location: 'body'
+  },
+  seniority: {
+    value: '',
+    msg: 'Este campo no puede estar vacio',
+    param: 'seniority',
+    location: 'body'
+  },
+  email: {
+    value: '',
+    msg: 'Este campo no puede estar vacio',
+    param: 'email',
+    location: 'body'
+  }
+}
+    
+
+    if (resultValidation.length > 0) {
+      res.render("./staff/register", { errors: resultValidation.mapped() });
+    }
+  },
+  */
+

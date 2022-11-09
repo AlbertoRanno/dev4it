@@ -4,3 +4,4 @@
 
 *Dudas:
 - El EJS solo levanta el primer nombre.. no recuerdo como corregirlo
+-app.use(express.urlencoded({extended:false}))

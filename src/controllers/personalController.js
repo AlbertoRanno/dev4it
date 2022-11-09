@@ -1,5 +1,6 @@
 const JsonModel = require("../models/jsonModel");
 const personalModel = new JsonModel("personal");
+const { validationResult } = require("express-validator");
 
 let datos = personalModel.readJsonFile();
 
@@ -34,18 +35,20 @@ const controller = {
     res.render("./staff/register");
   },
   store: (req, res) => {
-    let newPersonal = {
-      nombre: req.body.nombre,
-      edad: req.body.edad,
-      email: req.body.email,
-    };
-    res.send("ok")
-    // fs.appendFileSync("src/data/data.json", JSON.stringify(newPersonal));
-    //res.redirect("/personal");
+    const resultValidation = validationResult(req);
+
+    if (resultValidation.errors.length > 0) {
+      res.render("./staff/register", {
+        errors: resultValidation.mapped(),
+        oldData: req.body,
+      });
+    }
+
+    res.redirect("/personal");
   },
   edit: (req, res) => {
     let id = req.params.id;
-    let personalToEdit = personalModel.buscar(id)
+    let personalToEdit = personalModel.buscar(id);
 
     res.render("./staff/edit", { personalToEdit: personalToEdit });
   },
