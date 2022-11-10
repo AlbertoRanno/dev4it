@@ -1,7 +1,11 @@
 *Vistas:
-- Detalle Personas
+- Detalle Personas y Proyectos
 - Not Found
 
-*Dudas:
+*Dudas puntuales:
 - El EJS solo levanta el primer nombre.. no recuerdo como corregirlo
--app.use(express.urlencoded({extended:false}))
+- la info en los form, cuando viaja, se asocia a los ID o a los name? no recuerdo tampoco.. 
+- sigue siendo necesario methodOverride?? los navegadores aun no consideran put/delete/.. ? .. ya murió "e"..
+
+*Dudas conceptuales:
+- Bases de Datos Documentales =(

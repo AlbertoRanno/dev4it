@@ -6,7 +6,7 @@
     <%- include('../partials/header.ejs')%>
     <div class=".container">
       <div class="row justify-content-center bt-3">
-        <div class="col-md-10">
+        <div class="col-md-10 mt-3">
           <h2>Formulario de registro</h2>
 
           <form
@@ -15,7 +15,7 @@
             enctype="multipart/form-data"
           >
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="name"><b>Nombre completo:</b></label>
                   <input type="text" name="name" class="form-control <%=
@@ -26,7 +26,7 @@
                   <% } %>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="rol"><b>Rol:</b></label>
                   <input type="text" name="rol" class="form-control <%=
@@ -37,31 +37,29 @@
                   <% } %>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="seniority"><b>Seniority:</b></label>
                   <input type="text" name="seniority" class="form-control <%=
                   locals.errors && errors.seniority ? "is-invalid" : null %>"
-                  value="<%= locals.oldData ? oldData.seniority : null %>" />
-                   <% if
-                  (locals.errors && errors.name) { %>
+                  value="<%= locals.oldData ? oldData.seniority : null %>" /> <%
+                  if (locals.errors && errors.name) { %>
                   <div class="text-danger"><%= errors.seniority.msg %></div>
                   <% } %>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="email"><b>Correo electrónico:</b></label>
                   <input type="text" name="email" class="form-control <%=
                   locals.errors && errors.email ? "is-invalid" : null %>"
-                  value="<%= locals.oldData ? oldData.email : null %>" />
-                   <% if
+                  value="<%= locals.oldData ? oldData.email : null %>" /> <% if
                   (locals.errors && errors.name) { %>
                   <div class="text-danger"><%= errors.email.msg %></div>
                   <% } %>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="avatar"><b>Imagen de Perfil:</b></label>
                   <input type="file" name="avatar" class="form-control <%=
@@ -71,11 +69,10 @@
                   <% } %>
                 </div>
               </div>
-              <div class="col-12">
-                <button type="submit" class="btn btn-primary">
-                  Registrarse
-                </button>
-              </div>
+            </div>
+            <br />
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Registrarse</button>
             </div>
           </form>
         </div>

@@ -160,7 +160,7 @@ Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, 
 
 //<a href="https://translate.google.com.ar/" target="_blank" rel="nooper noreferrer">tablero React</a> Para que el enlace abra otra pestaña (sin irse de la actual) y por motivos de seguridad (para prevenir un ataque donde la pestaña de origen se reemplaza, para que le usuario deje sus datos, lo cual es una brecha de seguridad)
 
-/*Enlaces a otros lugares de la misma pagina:
+/*Enlaces a otros lugares de la misma pagina - en lugar de una ruta, le paso un id
 <a href="#prueba">Prueba</a>
 <h4 id="prueba">Prueba</h4>*/
 
@@ -200,7 +200,10 @@ Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, 
 //head - elementos detras de escena (por ejemplo, titulo, links a css, a js, fuentes, bootstraps..) y son importantes para el ranking de google
 
 //CSS
-// * { } - selector universal   // etiquetas { }  // .nombre { } - class="" //  #nombre { } - id=""
+// * { } - selector universal   
+// selectores { }  
+// .nombre { } - class="" 
+//  #nombre { } - id=""
 
 //font-family: 'Franklin Gothic Medium' va entre comillas porque son vs palabras, sino no hace falta
 /* En inspeccionar - Elementos - Calculados - por lo bajo figuran las fuentes renderizadas
@@ -692,3 +695,5 @@ const { validationResult } = require("express-validator")
       </form>
     </div>
    */
+
+    /* Seguiste con Formularios - Vistas - Validaciones - Partiales - Navbar  */
