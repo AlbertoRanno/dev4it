@@ -10,7 +10,12 @@
         Nombre:
       </label>
       <div class="col-10">
-        <input type="text" id="name" class="form-control" />
+        <input type="text" id="name" class="form-control <%=
+                  locals.errors && errors.name ? "is-invalid" : null %>"
+                  value="<%= locals.oldData ? oldData.name : null %>" /><% if
+                  (locals.errors && errors.name) { %>
+                  <div class="text-danger"><%= errors.name.msg %></div>
+                  <% } %>
       </div>
     </div>
     <div class="row mb-3">

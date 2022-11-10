@@ -1,10 +1,20 @@
 const JsonModel = require("../models/jsonModel");
-const personalModel = new JsonModel("personal")
+const personalModel = new JsonModel("personal");
 const proyectsModel = new JsonModel("proyects");
 const { validationResult } = require("express-validator");
 
 let datos = proyectsModel.readJsonFile();
-let datosPersonal = personalModel.readJsonFile()
+let datosPersonal = personalModel.readJsonFile();
+let estados = [
+  "Activo",
+  "Finalizado",
+  "En elaboración de propuesta",
+  "En espera de respuesta",
+  "Pausado por el cliente",
+  "Pausado por CDT",
+  "En análisis",
+  "Pausado",
+];
 
 const controller = {
   list: (req, res) => {
@@ -12,7 +22,7 @@ const controller = {
   },
   detail: (req, res) => {
     const id = req.params.id;
-    const proyect = proyectsModel.buscar(id)
+    const proyect = proyectsModel.buscar(id);
 
     if (!proyect) {
       return res
@@ -40,13 +50,23 @@ const controller = {
     res.render("./staff/search", { loQueBuscoElUsuario, results });
   },
   register: (req, res) => {
-    let estados = ["Activo", "Finalizado", "En elaboración de propuesta", "En espera de respuesta", "Pausado por el cliente", "Pausado por CDT", "En análisis", "Pausado"];
     res.render("./proyects/register.ejs", { personal: datosPersonal, estados });
   },
   store: (req, res) => {
+    const resultValidation = validationResult(req);
+
+    if (resultValidation.errors.length > 0) {
+      res.render("./proyects/register", {
+        personal: datosPersonal,
+        estados,
+        errors: resultValidation.mapped(),
+        oldData: req.body,
+      });
+    }
+    //mapped() returns: an object where the keys are the field names, and the values are the validation errors
     res.send("store pendiente");
     ////res.redirect("/proyectos");
-  }
+  },
 };
 
-module.exports = controller
+module.exports = controller;
