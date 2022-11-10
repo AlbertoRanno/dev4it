@@ -4,6 +4,8 @@ const proyectsController = require("../controllers/proyectsController.js")
 
 routerProyectos.get("/register", proyectsController.register)
 
+routerProyectos.post("/register", proyectsController.store)
+
 routerProyectos.use("/search", proyectsController.search);
 
 routerProyectos.get("/:id", proyectsController.detail);

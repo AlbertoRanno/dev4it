@@ -44,8 +44,8 @@ const controller = {
       });
     }
     //mapped() returns: an object where the keys are the field names, and the values are the validation errors
-
-    res.redirect("/personal");
+    res.send("store pendiente");
+    //res.redirect("/personal");
   },
   login: (req, res) => {
     res.render("./staff/login")

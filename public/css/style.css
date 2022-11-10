@@ -1,0 +1,26 @@
+.encabezado {
+  font-size: 35px;
+  color: var(--color-variable);
+  font-family: "Kolker Brush", cursive;
+}
+
+.variables {
+  --color-variable: purple;
+}
+
+/*Header*/
+.logo {
+  max-width: 100px;
+  animation: aumentar 1000ms linear 2 alternate;
+}
+@keyframes aumentar {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+}
