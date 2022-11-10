@@ -47,6 +47,9 @@ const controller = {
 
     res.redirect("/personal");
   },
+  login: (req, res) => {
+    res.render("./staff/login")
+  },
   edit: (req, res) => {
     let id = req.params.id;
     let personalToEdit = personalModel.buscar(id);

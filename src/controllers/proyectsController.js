@@ -38,6 +38,9 @@ const controller = {
 
     res.render("./staff/search", { loQueBuscoElUsuario, results });
   },
+  register: (req, res) => {
+    res.render("./proyects/register.ejs")
+  }
 };
 
 module.exports = controller

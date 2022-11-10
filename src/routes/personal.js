@@ -53,6 +53,8 @@ routerPersonas.post(
   personalController.store
 );
 
+routerPersonas.get("/login", personalController.login)
+
 routerPersonas.use("/search", personalController.search);
 
 routerPersonas.get("/edit/:id", personalController.edit);

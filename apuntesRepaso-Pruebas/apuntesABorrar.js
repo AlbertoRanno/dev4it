@@ -464,7 +464,7 @@ function Persona(nombrePersona) {
     alert(this.info);
   };
 }
-let persona1 = new Persona ("Adán")
+let persona1 = new Persona("Adán");
 let persona2 = new Persona("Eva");
 
 /* JsonModel
@@ -481,7 +481,7 @@ JsonModel {
 
 // let dataJSON = fs.readFileSync("src/data/personal.json", "utf-8");
 // let datos = JSON.parse(dataJSON);  // Se reduce a :
-let datos = personalModel.readJsonFile() 
+let datos = personalModel.readJsonFile();
 
 /*
 detail: (req, res) => {
@@ -499,7 +499,7 @@ detail: (req, res) => {
   
   */
 
-  /* VALIDACIONES
+/* VALIDACIONES
   npm install express-validator
   para usar en rutas y controladores
 
@@ -576,7 +576,7 @@ const { validationResult } = require("express-validator")
 
    */
 
-  /*
+/*
     store: (req, res) => {
     const resultValidation = validationResult(req);
     console.log(resultValidation.mapped()); 
@@ -613,3 +613,82 @@ const { validationResult } = require("express-validator")
   
   */
 
+// 10-11-22 *************
+/* Bootstrap
+-Un estilo de formulario responsive - con una sola row, y columnas dentro, donde cada vez que se superan las 12 columnas, se pasa al renglón debajo
+
+<body>
+    <div class="container">
+    Siempre como marco
+
+      <form action="" method="post" class="row g-3 mt-3">
+      row para que ponga los inputs en fila, uno al lado del otro
+      g-3 para el espacio vertical entre etiquetas
+      la clase row la puede tener directo el form como en este caso
+      o hacer un div que lo envuelva, si luego del form, y dentro del div, quiesiera poner mas cosas
+      mt-3 - margin top de 3, para que lo separe un poco
+
+        <div class="col-6">
+          el espacio disponible lo divide en 12 columnas, 6 ocupa la mitad
+          12 para que ocupe todo el espacio disponible
+          puedo completar 6 - 3 - 3, o, 9 - 3 , o dejar solo un input de cualquier tamaño
+
+          <label for="email" class="form-label">Email</label>
+          form-label para estilos etiquetas
+
+          <input
+            type="email"
+            class="form-control"
+            form-control para estilos inputs
+
+            id="email"
+            placeholder="Ingresa tu mail"
+          />
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+          un div con form-check es necesario para envolver a los checkboxs. Sino no funcionan las clases internas
+
+            <label for="checkTerms" class="form-check-label">Acepto los términos</label>
+            form-check-label para que la etiqueta se acomode al lado del checkbox
+
+            <input type="checkbox" class="form-check-input" id="checkTerms" />
+            form-check-input para que el cuadradito tome el mismo formato que los inputs
+          </>
+        </div>
+
+          <div class="col-12">
+          <button type="submit" class="btn btn-primary">Resgistrarse</button>
+          btn btn-primary estilo del boton a gusto
+
+        </div>
+
+      </form>
+    </div>
+  </body> */
+
+  /* Otro Estilo de form con bootstrap - para que queden los nombres de los inputs, al costado de los mismos:
+
+      <div class="container">
+      <form action="" class="mt-3">
+        <div class="row mb-3">
+        mb-3 margin boton para dejar espacio con el que esta abajo
+
+          <label for="name" class="col-2 col-form-label"> Nombre del proyecto: </label>
+          la clase ahora se llama col-form-label
+
+          <div class="col-10">
+            <input type="text" id="name" class="form-control" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="date" class="col-2 col-form-label"> Fecha de inicio: </label>
+          <div class="col-2">
+            <input type="date" id="date" class="form-control" />
+          </div>
+        </div>
+        
+      </form>
+    </div>
+   */
