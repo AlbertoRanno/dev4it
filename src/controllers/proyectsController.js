@@ -40,7 +40,8 @@ const controller = {
     res.render("./staff/search", { loQueBuscoElUsuario, results });
   },
   register: (req, res) => {
-    res.render("./proyects/register.ejs", { personal: datosPersonal });
+    let estados = ["Activo", "Finalizado", "En elaboración de propuesta", "En espera de respuesta", "Pausado por el cliente", "Pausado por CDT", "En análisis", "Pausado"];
+    res.render("./proyects/register.ejs", { personal: datosPersonal, estados });
   },
   store: (req, res) => {
     res.send("store pendiente");
