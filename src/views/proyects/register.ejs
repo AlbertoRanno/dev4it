@@ -42,7 +42,7 @@
         <option value="sinAsignar" checked> Elige uno:</option>
         <% for (let i=0; i<personal.length ; i++) { %>
         <% if(personal[i].rol == "Gestor de proyectos"){ %>
-        <option value=<%= personal[i].id %>> <%= personal[i].nombre %> </option>
+        <option value=<%= personal[i].id %>> <%= personal[i].name %> </option>
         <% }} %>
       </select>
     </div>
@@ -86,7 +86,7 @@
         <% if(personal[i].rol != "Gestor de proyectos"){ %>
         <label for="involved<%= [i] %>" class="form-check-label">
           <input type="checkbox" id="involved<%= [i] %>" class="form-check-input" name="personal" />
-          <%= personal[i].nombre %> <br> <%= personal[i].rol %> - <%= personal[i].seniority %>
+          <%= personal[i].name %> <br> <%= personal[i].rol %> - <%= personal[i].seniority %>
         </label>
         <br>
         <% } }%>

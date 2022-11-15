@@ -39,11 +39,11 @@ const controller = {
 
     for (let i = 0; i < datos.length; i++) {
       if (
-        datos[i].nombre
+        datos[i].name
           .toLocaleLowerCase()
           .includes(loQueBuscoElUsuario.toLocaleLowerCase())
       ) {
-        results.push(datos[i].nombre);
+        results.push(datos[i].name);
       }
     }
 

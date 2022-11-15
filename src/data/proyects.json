@@ -1,12 +1,12 @@
 [
   {
     "id": "1",
-    "nombre": "DevOps interno",
+    "name": "DevOps interno",
     "fechaDeinicio": "pendiente"
   },
   {
     "id": "2",
-    "nombre": "Exp. de producto",
+    "name": "Exp. de producto",
     "fechaDeinicio": "01/11/2021"
   }
 ]

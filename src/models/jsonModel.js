@@ -19,7 +19,7 @@ class JsonModel {
 
   /** Escribe el archivo JSON */
   writeJsonFile(data) {
-    let jsonData = JSON.stringify(data, null, " ");
+    let jsonData = JSON.stringify(data, null, " "); // Para que conserve el formato de la B.D.
     fs.writeFileSync(this.dataPath, jsonData);
   }
 
@@ -29,10 +29,10 @@ class JsonModel {
     let lastItem = items.pop(); // extraigo al último usuario
 
     if (lastItem) {
-      return ++lastItem.id; // es lo mismo a hacer: "lastItem.id + 1"
+      return lastItem.id + 1; 
     }
 
-    return 1;
+    return 1; //si no tuviera registros, el primero será el nro 1
   }
 
   /** Trae todos los registros */
@@ -61,15 +61,15 @@ class JsonModel {
     item.id = this.generatePk(); // el id NO va a venir del formulario, lo tiene que crear este modelo
 
     // Se hace esto para setear como enteros campos id, price y discount. Sino quedan como strings en BD.
-    item.id = parseInt(item.id);
-    item.price = parseInt(item.price);
-    item.discount = parseInt(item.discount);
+    // item.id = parseInt(item.id);
+    // item.price = parseInt(item.price);
+    // item.discount = parseInt(item.discount);
 
     items.push(item);
 
     this.writeJsonFile(items);
 
-    return item.id;
+    return "Se creó el registro con el ID " + item.id;
   }
 
   /** Actualiza el registro de la colección */
@@ -83,14 +83,14 @@ class JsonModel {
       return currentItem;
     });
 
-    // Se hace esto para setear como enteros campos id, price y discount. Sino quedan como strings en BD.
-    updatedItems = updatedItems.map((currentItem) => {
-      currentItem.id = parseInt(currentItem.id);
-      currentItem.price = parseInt(currentItem.price);
-      currentItem.discount = parseInt(currentItem.discount);
+    // // Se hace esto para setear como enteros campos id, price y discount. Sino quedan como strings en BD.
+    // updatedItems = updatedItems.map((currentItem) => {
+    //   currentItem.id = parseInt(currentItem.id);
+    //   currentItem.price = parseInt(currentItem.price);
+    //   currentItem.discount = parseInt(currentItem.discount);
 
-      return currentItem;
-    });
+    //   return currentItem;
+    // });
 
     this.writeJsonFile(updatedItems);
 
@@ -104,6 +104,8 @@ class JsonModel {
     let filteredItems = items.filter((currentItem) => currentItem.id != id);
     //recorre el array de usuarios de a 1, y devuelve todos aquellos cuyos id NO coinciden con el indicado
     this.writeJsonFile(filteredItems); // y sobreescribe ese nuevo array en el json
+
+    return "se eliminó el registro con el ID " + id
   }
 }
 

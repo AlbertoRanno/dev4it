@@ -1,26 +1,41 @@
 [
-  {
-    "id": "1",
-    "nombre": "Hernán Mercado",
-    "rol": "Gestor de proyectos",
-    "seniority": "Sr."
-  },
-  {
-    "id": "2",
-    "nombre": "Ariel Edgardo",
-    "rol": "Gestor de proyectos",
-    "seniority": "Sr."
-  },
-  {
-    "id": "3",
-    "nombre": "Garavaglia María Victoria",
-    "rol": "Especialista UX",
-    "seniority": "Jr."
-  },
-  {
-    "id": "4",
-    "nombre": "Díaz Lucas",
-    "rol": "Data Analytics",
-    "seniority": "Sr."
-  }
+ {
+  "id": 1,
+  "name": "Hernán Mercado",
+  "rol": "Gestor de proyectos",
+  "seniority": "Sr.",
+  "email": "email@gmail.com",
+  "avatar": "/avatars/avatarDef.png"
+ },
+ {
+  "id": 2,
+  "name": "Ariel Edgardo",
+  "rol": "Gestor de proyectos",
+  "seniority": "Sr.",
+  "email": "email@gmail.com",
+  "avatar": "/avatars/avatarDef.png"
+ },
+ {
+  "id": 3,
+  "name": "Garavaglia María Victoria",
+  "rol": "Especialista UX",
+  "seniority": "Jr.",
+  "email": "email@gmail.com",
+  "avatar": "/avatars/avatarDef.png"
+ },
+ {
+  "id": 4,
+  "name": "Díaz Lucas",
+  "rol": "Data Analytics",
+  "seniority": "Sr.",
+  "email": "email@gmail.com",
+  "avatar": "/avatars/avatarDef.png"
+ },
+ {
+  "name": "Alberto Daniel Ranno",
+  "rol": "Magic Dev",
+  "seniority": "Jr.",
+  "email": "albertoranno@hotmail.com",
+  "id": 5
+ }
 ]

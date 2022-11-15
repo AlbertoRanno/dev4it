@@ -24,8 +24,8 @@ const controller = {
     const results = [];
 
     for (let i = 0; i < datos.length; i++) {
-      if (datos[i].nombre.toLocaleLowerCase().includes(loQueBuscoElUsuario)) {
-        results.push(datos[i].nombre);
+      if (datos[i].name.toLocaleLowerCase().includes(loQueBuscoElUsuario)) {
+        results.push(datos[i].name);
       }
     }
 
@@ -44,11 +44,20 @@ const controller = {
       });
     }
     //mapped() returns: an object where the keys are the field names, and the values are the validation errors
-    res.send("store pendiente");
-    //res.redirect("/personal");
+
+    let userToCreate = {
+      ...req.body,
+      avatar: req.file.filename,
+    };
+
+    console.log(userToCreate);
+
+    personalModel.save(userToCreate);
+
+    res.redirect("/personal");
   },
   login: (req, res) => {
-    res.render("./staff/login")
+    res.render("./staff/login");
   },
   edit: (req, res) => {
     let id = req.params.id;
@@ -60,7 +69,10 @@ const controller = {
     res.send("ok");
   },
   delete: (req, res) => {
-    res.send("me eliminaste");
+    let id = req.params.id;
+    personalModel.destroy(id);
+
+    res.redirect("/personal");
   },
 };
 

@@ -703,4 +703,47 @@ const { validationResult } = require("express-validator")
     /* Seguiste con Formularios - Vistas - Validaciones - Partiales - Navbar  */
 
     // 15-11-22 *************
-    /* Sesions y Cookies */
+    /* Sesions y Cookies 
+    
+    Carpeta Middlewares, y paso los middlewares que estaban en las rutas, y los exporto/importo,
+    cada uno en un archivo (multer por un lado, y el conjunto de validaciones de cada pogina por otro.
+    
+    Hasta ahora, del modelo M-V-C, tengo las vistas y controladores, pero falta el modelo.
+    Aun no toque base de datos de lleno por tratarse de Documentales (solo vi relacionales - MySQL)
+    por lo que voy a usar el JsonModel que tiene las funciones basicas del CRUD:
+
+  Guardar al usuario en la DB
+  Buscar al usuario a loguear (por su email)
+  Buscar al usuario por ID
+  Editar info usuario
+  Eliminar usuario de la DB
+    
+    Recordar luego que los nombres de los Modelos van con Mayuscula, por convencion
+*/
+
+{store: (req, res) => {
+    const resultValidation = validationResult(req);
+
+    if (resultValidation.errors.length > 0) {
+      res.render("./staff/register", {
+        errors: resultValidation.mapped(),
+        oldData: req.body,
+      });
+    }
+    //mapped() returns: an object where the keys are the field names, and the values are the validation errors
+    
+    //Hago esto para que me grabe tambien el nombre de la imagen
+    let userToCreate = {
+      ...req.body,
+      avatar: req.file.filename //"filename" xq asi configure en el storage, que se llama la prop que guarde 
+      //el nombre bajo la funcion que determiné
+    }
+    
+    console.log(userToCreate);
+
+    personalModel.save(userToCreate);
+
+    res.redirect("/personal");
+  }}
+
+  
