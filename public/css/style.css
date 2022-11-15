@@ -1,11 +1,12 @@
+
+.variables {
+  --color-variable: purple;
+}
+
 .encabezado {
   font-size: 35px;
   color: var(--color-variable);
   font-family: "Kolker Brush", cursive;
-}
-
-.variables {
-  --color-variable: purple;
 }
 
 /*Header*/

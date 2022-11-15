@@ -2,7 +2,7 @@
 
 // npm init - package.json - dependencias/modulos
 // npm install express - requerirlo - guardar su ejecución en una constante "app"
-//Express me permite manejar las peticiones de los diferentes verbos HTTP, en diferentes caminos URL (rutas)
+// Express me permite manejar las peticiones de los diferentes verbos HTTP, en diferentes caminos URL (rutas)
 // creo datos como un objeto con propiedades clave-valor, y lo exporto - lo requiero en app.js - Mas adelante reemplazare por JSON
 
 const PUERTO = process.env.PORT || 3000;
@@ -188,12 +188,13 @@ Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, 
       <button type="submit">Enviar</button>
     </form>
 
--Label hace que al hacer click en el texto al lado del circulito, este se seleccione, lo cual es mas comodo para el usuario
+-Label hace que al hacer click en el texto al lado del checkbox, este se seleccione, lo cual es mas comodo para el usuario
 -For="" la vincula al input con el id correspondiente
 -name hace referencia al grupo (todos los que tengan el mismo name) de ellos, solo uno podra quedar seleccionado
+name es el nombre de la prop con la que viajara la info en el body
 -Casillas de Verificacion, a igual name, mismo grupo, pero varias simultaneas a diferencia de radio
 -Checked - Hace que esa opcion venga determinada por defecto en la pagina  
--value el valor que tomara el formulario cuando se envie
+-value el valor que tomara el formulario cuando se envie (no todos tienen "VALUE", por ej. TextArea no lo tiene)
 */
 
 //div - cajita para contener elementos
@@ -238,11 +239,14 @@ Prioridades: !important > estilo en linea > id > class > selectores
 
 /* Variables en CSS
 pongo al elemento la clase correspondiente, por ej "color-variable", y en el css:
-.color-variable {  --nombre-variable: blue   } 
+.variables {  --nombre-variable: blue   } 
 con eso (los "--") defino la variable, y luego la aplico en las otras reglas que quiero usarla:
-.imagen-epigrafe {
+.encabezado {
   background-color: var(--color-variable, black) 
 } asi, al cambiar el color en la variable, cambiara en todas las reglas donde la haya usado.
+
+Se necesitan ambas clases en la etiqueta: <h1 class="encabezado variables">dev4it</h1>
+
 El: ...", black )" corresponde al color de respaldo, por si no se puede acceder a la variable.
 En el caso de que algunos navegadores no reconozcan las variables de CSS, se solìa poner la propiedad antes. Cosa de que configuren el color, y si, toman las variables, lo reemplacen. Y si no las toman, al menos ya quedo ese color. Ejemplo:
 background-color: black
@@ -304,7 +308,7 @@ Un form por Get, para que me traiga la vista con los resultados:
 Por estar bien configurado el form, cuando presione en Enviar, me dirijira a la siguiente URL:
 http://localhost:3000/personal/search?search=a
 donde el ..al/search?.. es porque ahi configure que fuera el form
-y el ?search=a es porque (*search*) lo llame... y "a" es lo que puse en el input para que se busque.
+y el ?search=a es porque (*search*) lo llame con NAME (no con ID)... y "a" es lo que puse en el input para que se busque.
 La info del input del form, viaja en el query porque por ahi viaja la info por GET */
 
 // Controlador:
@@ -313,7 +317,7 @@ search: (req, res) => {
   //que seria el nombre de la propiedad del objeto req.query, y lo que busco el usuario, su valor
   const loQueBuscoElUsuario = req.query.search; // (*search*)
   // si buscara risotto por ej:
-  console.log(req.query); //{ search: 'risotto' }
+  console.log(req.query); //{ search: 'risotto' } - AHI VEO EL NOMBRE DEL INPUT
   console.log(req.query.search); //risotto
   // LA INFO VIAJA EN EL QUERY PORQUE ESTOY USANDO EL METODO GET (probar de cambiar el POST del register por un get, y vere los clave valor de los inputs todos en la URL )
 
@@ -348,7 +352,7 @@ Si /search, estuviera luego de /:id ... no podrìa acceder, dado que buscaria pr
 app.use(express.urlencoded({ extended: false }));
 //y que, a su vez, me permita convertir dicha data a un formato JSON, si asi lo quiero:
 app.use(express.json());
-//*sigue* - la info viaja en el body. Body es el objeto literal (clave / valor) donde los nombres de las claves son los "name" que le haya puesto a los inputs. Y el valor, lo que el visitante haya ingresado. Obs! Si el input no tuviera name, el valor no llega al body..
+//*sigue* - la info viaja en el body. Body es el objeto literal (clave / valor) donde los nombres de las claves son los "name"!! que le haya puesto a los inputs. Y el valor, lo que el visitante haya ingresado. Obs! Si el input no tuviera name, el valor no llega al body..
 
 /*   store: (req, res) => {
     //al viajar por post, la info viene en el body (por get venia por query) ****IMPORTANTE****
@@ -512,9 +516,9 @@ detail: (req, res) => {
   npm install multer - es un middleware
   lo requiero en el archivo de RUTAS y lo configuro:
   const multer = require("multer");
-const path = require("path");
+  const path = require("path");
 
-const storage = multer.diskStorage({
+  const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/images/avatars");
   },
@@ -523,17 +527,17 @@ const storage = multer.diskStorage({
     let filename = `${Date.now()}_img${path.extname(file.originalname)}`;
     cb(null, filename);
   },
-});
+  });
 
-const uploadFile = multer({ storage });
+  const uploadFile = multer({ storage });
 
 y lo paso en la ruta como el middleware que es:
 
-routerPersonas.post(
+  routerPersonas.post(
   "/register",
   uploadFile.single("avatar"),   // "avatar" porque es el nombre del input del form
   personalController.store       // "single" porque levanto de a una sola foto
-);
+  );
 
 Ya con multer, ahora al viajar por post, tengo, ademas del objeto body, el objeto file
 
@@ -662,7 +666,7 @@ const { validationResult } = require("express-validator")
         </div>
 
           <div class="col-12">
-          <button type="submit" class="btn btn-primary">Resgistrarse</button>
+          <button type="submit" class="btn btn-primary">Registrarse</button>
           btn btn-primary estilo del boton a gusto
 
         </div>
@@ -697,3 +701,6 @@ const { validationResult } = require("express-validator")
    */
 
     /* Seguiste con Formularios - Vistas - Validaciones - Partiales - Navbar  */
+
+    // 15-11-22 *************
+    /* Sesions y Cookies */
