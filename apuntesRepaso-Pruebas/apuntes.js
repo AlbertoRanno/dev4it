@@ -201,9 +201,9 @@ name es el nombre de la prop con la que viajara la info en el body
 //head - elementos detras de escena (por ejemplo, titulo, links a css, a js, fuentes, bootstraps..) y son importantes para el ranking de google
 
 //CSS
-// * { } - selector universal   
-// selectores { }  
-// .nombre { } - class="" 
+// * { } - selector universal
+// selectores { }
+// .nombre { } - class=""
 //  #nombre { } - id=""
 
 //font-family: 'Franklin Gothic Medium' va entre comillas porque son vs palabras, sino no hace falta
@@ -675,7 +675,7 @@ const { validationResult } = require("express-validator")
     </div>
   </body> */
 
-  /* Otro Estilo de form con bootstrap - para que queden los nombres de los inputs, al costado de los mismos:
+/* Otro Estilo de form con bootstrap - para que queden los nombres de los inputs, al costado de los mismos:
 
       <div class="container">
       <form action="" class="mt-3">
@@ -700,10 +700,10 @@ const { validationResult } = require("express-validator")
     </div>
    */
 
-    /* Seguiste con Formularios - Vistas - Validaciones - Partiales - Navbar  */
+/* Seguiste con Formularios - Vistas - Validaciones - Partiales - Navbar  */
 
-    // 15-11-22 *************
-    /* Sesions y Cookies 
+// 15-11-22 *************
+/* Sesions y Cookies 
     
     Carpeta Middlewares, y paso los middlewares que estaban en las rutas, y los exporto/importo,
     cada uno en un archivo (multer por un lado, y el conjunto de validaciones de cada pogina por otro.
@@ -721,22 +721,23 @@ const { validationResult } = require("express-validator")
     Recordar luego que los nombres de los Modelos van con Mayuscula, por convencion
 */
 
-{ store: (req, res) => {
+{
+  store: (req, res) => {
     const resultValidation = validationResult(req);
 
     //Verifico que no haya sido cargado previamente:
     let userInDB = personalModel.filtrarPorCampoValor("email", req.body.email);
 
-    if (userInDB.length >= 1) {     
+    if (userInDB.length >= 1) {
       res.render("./staff/register", {
         /*Para usar la misma config de validaciones, le comparto a la vista un objeto de igual nombre:
         "errors", con la misma prop y msg, para que salte como una validacion mas.
         Notar que no estoy asociando este errors a a validationResult */
         errors: {
-          email: { msg: "Ya existe un usuario registrado con este email" }},
-        oldData: req.body,        
+          email: { msg: "Ya existe un usuario registrado con este email" },
+        },
+        oldData: req.body,
       });
-       
     } else if (resultValidation.isEmpty()) {
       /* Si el mail no estaba ya ingresado, y el no hubo errores de validacion (isEmpty es una propiedad
         que viene con validationResult), procedo a guardar en BD, pero cambio los valores de las props
@@ -747,7 +748,7 @@ const { validationResult } = require("express-validator")
 
       //bcryptjs.compareSync("contraseña", hash)
       console.log(req.body);
-      
+
       /* guardo en la BD, y obtengo el nuevo ID, el cual uso para enviar al detalle de usuario */
       let updatedUserId = personalModel.save(req.body);
 
@@ -759,9 +760,10 @@ const { validationResult } = require("express-validator")
       });
     }
     //mapped() returns: an object where the keys are the field names, and the values are the validation errors
-  }}
+  };
+}
 
-  /* Encriptado de Contraseñas:
+/* Encriptado de Contraseñas:
   npm install bcryptjs */
 const bcryptjs = require("bcryptjs");
 let hash = bcryptjs.hashSync("contraseña", 10);
@@ -770,4 +772,62 @@ console.log(bcryptjs.compareSync("contraseña", hash)); // T o F
 
 // 16-11-22 *************
 /* Continuo con el CRUD
-Completando el register de personas - Vista Detalles */
+Completando el register de personas - Vista Detalles - Login - Profile -etc
+
+Session, es un objeto literal, que cruza toda la app (req.session), y va a tener la info que yo quiera.
+Session se destruye al cerrar el navegador.
+Los datos de profile vienen de Session.
+Pero para usarlo, tengo que instalarlo:
+npm install express-session
+Y requerirlo en app:
+const session = require("express-session")
+Y se va a pasar como un middleware a nivel app para que cruce toda la app:
+app.use(
+  session({
+    secret:
+      "texto único aleatorio para identificar este sitio web y evitar que otras páginas usen lo que guardo en session",
+    //tendría que ir encriptada con bcrypts??
+    resave: false, 
+    saveUninitialized: false, //https://github.com/expressjs/session#options"
+  })
+); */
+//En el login , si email y password OK, guardo al usuario en session. Inventandole a session una prop. userLogged:
+req.session.userLogged = userToLogin;
+console.log(req.session);
+/*
+Session {
+  cookie: { path: '/', _expires: null, originalMaxAge: null, httpOnly: true },
+  userLogged: {
+    name: 'Alberto Daniel Ranno',
+    email: 'albert@hotmail.com',
+    rol: 'Magic Dev',
+    password: '$2a$10$uLtPpvXS64Po0euX1QcrE.4Guu1pmbuXnjyuyJtjix3u1nse7bVCa',
+    seniority: 'Jr.',
+    repeatPassword: '$2a$10$jkLVCYZbBwc7dnIoUP9fT.KtAzWqlAzPTL953L1adIQKMJ3jtFjPy',
+    proyects: [ 'DevOps interno', 'Exp. de producto' ],
+    avatar: '/images/avatars/1668619176234_img.png',
+    id: 5
+  }
+}
+*/
+/* implementé los: */
+delete req.body.repeatPassword; // en el register, para que directamente no se guarde
+delete req.body.password; // en el login, cuando estoy guardando al usuario en session, para que no ande viajando el password por toda la app
+
+/* Si estoy logueado, no entrar al register/login. Hago middleware a nivel ruta - si hay alguien en session, redirijo al profile, sino sigue camino */
+function guest(req, res, next) {
+  if (req.session.userLogged) {
+    res.redirect("/personal/profile/:id");
+  }
+  next();
+}
+
+module.exports = guest;
+/* complemento: si no hay nadie en session, por la URL no deberia de poder acceder al profile */
+
+{logout: (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
+  }}
+
+  

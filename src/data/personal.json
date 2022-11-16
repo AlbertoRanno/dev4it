@@ -5,7 +5,6 @@
   "rol": "Gestor de proyectos",
   "password": "$2a$10$jaW06F4E8GXnXwf3r7oGCOETVgOAo4bbyAq6NBVbJX8W2N75w7taq",
   "seniority": "Sr.",
-  "repeatPassword": "$2a$10$gifY1Ua7yKTUy2cnV91z6O.W4SFgxYzHngR8dMSjVtMyQjow8nSWu",
   "proyects": [
    "DevOps interno",
    "Exp. de producto"
@@ -19,7 +18,6 @@
   "rol": "Gestor de proyectos",
   "password": "$2a$10$jaW06F4E8GXnXwf3r7oGCOETVgOAo4bbyAq6NBVbJX8W2N75w7taq",
   "seniority": "Sr.",
-  "repeatPassword": "$2a$10$gifY1Ua7yKTUy2cnV91z6O.W4SFgxYzHngR8dMSjVtMyQjow8nSWu",
   "proyects": [
    "DevOps interno",
    "Exp. de producto"
@@ -33,7 +31,6 @@
   "rol": "Especialista UX",
   "password": "$2a$10$jaW06F4E8GXnXwf3r7oGCOETVgOAo4bbyAq6NBVbJX8W2N75w7taq",
   "seniority": "Jr.",
-  "repeatPassword": "$2a$10$gifY1Ua7yKTUy2cnV91z6O.W4SFgxYzHngR8dMSjVtMyQjow8nSWu",
   "proyects": [
    "DevOps interno",
    "Exp. de producto"
@@ -47,7 +44,6 @@
   "rol": "Data Analytics",
   "password": "$2a$10$jaW06F4E8GXnXwf3r7oGCOETVgOAo4bbyAq6NBVbJX8W2N75w7taq",
   "seniority": "Sr.",
-  "repeatPassword": "$2a$10$gifY1Ua7yKTUy2cnV91z6O.W4SFgxYzHngR8dMSjVtMyQjow8nSWu",
   "proyects": [
    "DevOps interno",
    "Exp. de producto"
@@ -61,12 +57,24 @@
   "rol": "Magic Dev",
   "password": "$2a$10$uLtPpvXS64Po0euX1QcrE.4Guu1pmbuXnjyuyJtjix3u1nse7bVCa",
   "seniority": "Jr.",
-  "repeatPassword": "$2a$10$jkLVCYZbBwc7dnIoUP9fT.KtAzWqlAzPTL953L1adIQKMJ3jtFjPy",
   "proyects": [
    "DevOps interno",
    "Exp. de producto"
   ],
   "avatar": "/images/avatars/1668619176234_img.png",
   "id": 5
+ },
+ {
+  "name": "Producto Prueba 1",
+  "email": "alberdft@hotmail.com",
+  "rol": "asf",
+  "password": "$2a$10$8y0pdSwGRdC0HgNE1wUMJOQuNeQsCHFaIANIugvvqdHkCxVaGLIOS",
+  "seniority": "asfa",
+  "proyects": [
+   "DevOps interno",
+   "Exp. de producto"
+  ],
+  "avatar": "/images/avatars/1668628976123_img.jpg",
+  "id": 6
  }
 ]

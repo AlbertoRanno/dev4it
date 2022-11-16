@@ -3,7 +3,8 @@
 <%- include('../partials/head.ejs', {title: "Profile" })%>
 <body>
   <%- include('../partials/header.ejs')%>
-  <h1>HOLA <%= persona.name %>!</h1>
+  <h1>HOLA <%= user.name %>!</h1>
+  <img src="<%= user.avatar %>" alt="<%= user.name %>" class="avatar">
   <h2> Bienvenido a tu perfil </h2>
   <h2> Pronto tendremos más recursos a tu disposición </h2>
 </body>

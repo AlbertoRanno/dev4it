@@ -62,11 +62,8 @@ const controller = {
       });
     } else if (resultValidation.isEmpty()) {
       (req.body.password = bcryptjs.hashSync(req.body.password, 10)),
-        (req.body.repeatPassword = bcryptjs.hashSync(
-          req.body.repeatPassword,
-          10
-        )),
         (req.body.avatar = "/images/avatars/" + req.file.filename);
+      delete req.body.repeatPassword;
 
       //bcryptjs.compareSync("contraseña", hash)
       console.log(req.body);
@@ -90,22 +87,36 @@ const controller = {
       "email",
       req.body.email
     );
-    let userToLogin = usersToLogin[0]
-    
-    if(userToLogin){
-      let isOkThePassword = bcryptjs.compareSync(req.body.password, userToLogin.password)
-      if(isOkThePassword){
-        res.redirect("./profile/" + userToLogin.id)
-      } else { res.render("./staff/login", {errors:{email:{msg:"Credenciales inválidas"}}})}
-      
+    let userToLogin = usersToLogin[0];
+
+    if (userToLogin) {
+      let isOkThePassword = bcryptjs.compareSync(
+        req.body.password,
+        userToLogin.password
+      );
+      if (isOkThePassword) {
+        //si email y password OK, guardo al usuario en session. Pero antes, por seguridad, elimino el Password
+        delete userToLogin.password;
+        req.session.userLogged = userToLogin;
+        console.log(req.session);
+        res.redirect("./profile/" + userToLogin.id);
+      } else {
+        res.render("./staff/login", {
+          errors: { email: { msg: "Credenciales inválidas" } },
+        });
+      }
     } else {
-      res.render("./staff/login", {errors:{email:{msg:"Usuario no encontrado en la base de datos"}}})
+      res.render("./staff/login", {
+        errors: { email: { msg: "Usuario no encontrado en la base de datos" } },
+      });
     }
   },
   profile: (req, res) => {
-    let id = req.params.id
-    let persona = personalModel.buscar(id)
-    res.render("./staff/profile", { persona });
+    res.render("./staff/profile", { user: req.session.userLogged });
+  },
+  logout: (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
   },
   edit: (req, res) => {
     let id = req.params.id;
