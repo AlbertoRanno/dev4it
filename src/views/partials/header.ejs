@@ -19,26 +19,11 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/personal">Personal</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/proyectos">Proyectos</a>
-          </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="/personal/login">login</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="/personal/logout">logout</a>
-          </li>
-
-          <!--
-          
+          <% if( locals.isLogged ){ %>
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -47,23 +32,47 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Dropdown
+              <img
+                src="<%= locals.userLogged.avatar %>"
+                alt="Logo"
+                width="30"
+                height="24"
+                class="d-inline-block align-text-top"
+              />
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a class="dropdown-item" href="#">Something else here</a>
+              <li class="nav-item">
+                <a class="nav-link dropdown-item" href="/personal/logout"
+                  >logout</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link dropdown-item" href="/personal/profile/:id"
+                  >profile</a
+                >
               </li>
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
+            <a class="nav-link active" aria-current="page" href="/personal"
+              >Personal</a
+            >
           </li>
-          -->
-
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/proyectos"
+              >Proyectos</a
+            >
+          </li>
+          <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/personal/login">login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/personal/register">register</a>
+          </li>
+          <% } %>
         </ul>
+        
         <form class="d-flex" role="search">
           <input
             class="form-control me-2"

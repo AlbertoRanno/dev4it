@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
 const session = require("express-session");
+const userLogged = require("./middlewares/userLogged")
 
 //view engine setup
 app.set("view engine", "ejs");
@@ -20,10 +21,14 @@ app.use(
   })
 );
 
+app.use(userLogged);
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(methodOverride("_method"));
+
+
 
 // Routers
 const routerMain = require("./routes/main.js");

@@ -6,7 +6,7 @@ const validations = require("../middlewares/validationsPersReg")
 const guest = require("../middlewares/guest")
 const auth = require("../middlewares/auth");
 
-routerPersonas.get("/register", guest, personalController.register);
+routerPersonas.get("/register", personalController.register);
 
 routerPersonas.post(
   "/register", guest,

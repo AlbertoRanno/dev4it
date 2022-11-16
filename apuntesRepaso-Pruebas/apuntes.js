@@ -825,9 +825,32 @@ function guest(req, res, next) {
 module.exports = guest;
 /* complemento: si no hay nadie en session, por la URL no deberia de poder acceder al profile */
 
-{logout: (req, res) => {
+{
+  logout: (req, res) => {
     req.session.destroy();
     res.redirect("/");
-  }}
+  };
+}
 
-  
+/* middleware userLogged - middleware a nivel app, para saber si hay alguien logueado y mostrar/no-mostrar menues. Lo paso en la app. Sin ejecutarlo, porque al no tener parametros el solo sabra cuando ejecutarse */
+const userLogged = require("./middlewares/userLogged");
+app.use(userLogged);
+
+/* recordar que el orden en que ponga los middleware de app, en ese orden se ejecutaran.
+POR LO TANTO, este middleware, tiene que ir despues del middleware de session!
+
+Y recordar que si pusiera un console.log("Pasé por el middleware userLogged") dentro del archivo userLogged en la carpeta middlewares, por cada pagina a la que entre, veria la leyende un monton de veces, porque se
+ejecuta por cada peticion que hace la app */
+
+/* res.locals son variables que cruzan toda la app, (esté o no, en session... ) por eso les creo una prop
+"isLogged" y en base a esa informo rapidamente a cada seccion si hay un usuario logueado, o no, y su comportamiento:*/
+function userLogged(req, res, next) {
+  if (req.session && req.session.userLogged) {
+    /*req.session se crea una vez que entro al login, por eso tmb tengo que preguntar si hay alguien logueado */
+    res.locals.isLogged = true;
+    res.locals.userLogged = req.session.userLogged; //paso obj session, a locals, para tenerlo disponible globalmente
+  }
+  next();
+}
+
+module.exports = userLogged;
