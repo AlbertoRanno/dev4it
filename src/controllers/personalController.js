@@ -40,6 +40,7 @@ const controller = {
     });
   },
   register: (req, res) => {
+    res.cookie("testing", "Hola!", {maxAge: 1000 * 30})
     res.render("./staff/register", {
       datosProyectos,
     });

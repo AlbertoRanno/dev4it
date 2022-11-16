@@ -4,6 +4,7 @@ const app = express();
 const methodOverride = require("method-override");
 const session = require("express-session");
 const userLogged = require("./middlewares/userLogged")
+const cookies = require("cookie-parser")
 
 //view engine setup
 app.set("view engine", "ejs");
@@ -20,6 +21,8 @@ app.use(
     saveUninitialized: false, //https://github.com/expressjs/session#options"
   })
 );
+
+app.use(cookies())
 
 app.use(userLogged);
 

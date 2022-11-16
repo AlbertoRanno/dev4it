@@ -854,3 +854,12 @@ function userLogged(req, res, next) {
 }
 
 module.exports = userLogged;
+
+/* https://developer.mozilla.org/es/docs/Web/HTTP/Cookies
+RECORDAR: session se guarda del lado del servidor, y cookies del lado del cliente (por navegador. Lo que guardo en Firefox, no estara disponible en chrome)
+npm i cookie-parser
+idem, es un middleware a nivel app: */
+const cookies = require("cookie-parser");
+app.use(cookies()); //este si se ejecuta
+/* idem, es otro objeto literal */
+
