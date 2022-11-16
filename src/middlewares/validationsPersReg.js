@@ -31,6 +31,9 @@ const validations = [
 
     return true;
   }),
+  body("password")
+    .notEmpty()
+    .withMessage("La contraseña será necesaria para ingresar a la app"),
 ];
 
 module.exports = validations;

@@ -69,7 +69,7 @@ class JsonModel {
 
     this.writeJsonFile(items);
 
-    return "Se creó el registro con el ID " + item.id;
+    return item.id;
   }
 
   /** Actualiza el registro de la colección */

@@ -53,8 +53,8 @@
                   <label for="email"><b>Correo electrónico:</b></label>
                   <input type="text" name="email" class="form-control <%=
                   locals.errors && errors.email ? "is-invalid" : null %>"
-                  value="<%= locals.oldData ? oldData.email : null %>" /> <% if
-                  (locals.errors && errors.name) { %>
+                  value="<%= locals.oldData ? oldData.email : null %>" /> 
+                  <% if(locals.errors && errors.email) { %>
                   <div class="text-danger"><%= errors.email.msg %></div>
                   <% } %>
                 </div>
@@ -66,6 +66,16 @@
                   locals.errors && errors.avatar ? "is-invalid" : null %>" /> <%
                   if (locals.errors && errors.avatar) { %>
                   <div class="text-danger"><%= errors.avatar.msg %></div>
+                  <% } %>
+                </div>
+              </div>
+              <div class="col-md-6 mt-3">
+                <div class="form-group">
+                  <label for="password"><b>Contraseña:</b></label>
+                  <input type="password" name="password" class="form-control <%=
+                  locals.errors && errors.password ? "is-invalid" : null %>"/> 
+                  <% if (locals.errors && errors.password) { %>
+                  <div class="text-danger"><%= errors.password.msg %></div>
                   <% } %>
                 </div>
               </div>

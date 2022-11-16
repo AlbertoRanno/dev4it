@@ -721,29 +721,49 @@ const { validationResult } = require("express-validator")
     Recordar luego que los nombres de los Modelos van con Mayuscula, por convencion
 */
 
-{store: (req, res) => {
+{ store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    if (resultValidation.errors.length > 0) {
+    //Verifico que no haya sido cargado previamente:
+    let userInDB = personalModel.filtrarPorCampoValor("email", req.body.email);
+
+    if (userInDB.length >= 1) {     
+      res.render("./staff/register", {
+        /*Para usar la misma config de validaciones, le comparto a la vista un objeto de igual nombre:
+        "errors", con la misma prop y msg, para que salte como una validacion mas.
+        Notar que no estoy asociando este errors a a validationResult */
+        errors: {
+          email: { msg: "Ya existe un usuario registrado con este email" }},
+        oldData: req.body,        
+      });
+       
+    } else if (resultValidation.isEmpty()) {
+      /* Si el mail no estaba ya ingresado, y el no hubo errores de validacion (isEmpty es una propiedad
+        que viene con validationResult), procedo a guardar en BD, pero cambio los valores de las props
+        password (lo encripto), y avatar /(que me guarde la ruta, no solo el nombre). FIlename es como defini
+        el nombre en la config del storage */
+      (req.body.password = bcryptjs.hashSync(req.body.password, 10)),
+        (req.body.avatar = "/images/avatars/" + req.file.filename);
+
+      //bcryptjs.compareSync("contraseña", hash)
+      console.log(req.body);
+      
+      /* guardo en la BD, y obtengo el nuevo ID, el cual uso para enviar al detalle de usuario */
+      let updatedUserId = personalModel.save(req.body);
+
+      res.redirect("/personal/" + updatedUserId);
+    } else {
       res.render("./staff/register", {
         errors: resultValidation.mapped(),
         oldData: req.body,
       });
     }
     //mapped() returns: an object where the keys are the field names, and the values are the validation errors
-    
-    //Hago esto para que me grabe tambien el nombre de la imagen
-    let userToCreate = {
-      ...req.body,
-      avatar: req.file.filename //"filename" xq asi configure en el storage, que se llama la prop que guarde 
-      //el nombre bajo la funcion que determiné
-    }
-    
-    console.log(userToCreate);
-
-    personalModel.save(userToCreate);
-
-    res.redirect("/personal");
   }}
 
-  
+  /* Encriptado de Contraseñas:
+  npm install bcryptjs */
+const bcryptjs = require("bcryptjs");
+let hash = bcryptjs.hashSync("contraseña", 10);
+console.log(hash); //hashea la contraseña, 10 o 12 era el nivel de salt..
+console.log(bcryptjs.compareSync("contraseña", hash)); // T o F

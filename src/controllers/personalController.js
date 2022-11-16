@@ -1,6 +1,7 @@
 const JsonModel = require("../models/jsonModel");
 const personalModel = new JsonModel("personal");
 const { validationResult } = require("express-validator");
+const bcryptjs = require("bcryptjs");
 
 let datos = personalModel.readJsonFile();
 
@@ -37,24 +38,33 @@ const controller = {
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    if (resultValidation.errors.length > 0) {
+    //Verifico que no haya sido cargado previamente:
+    let userInDB = personalModel.filtrarPorCampoValor("email", req.body.email);
+
+    if (userInDB.length >= 1) {     
+      res.render("./staff/register", {
+        errors: {
+          email: { msg: "Ya existe un usuario registrado con este email" }},
+        oldData: req.body,        
+      });
+       
+    } else if (resultValidation.isEmpty()) {
+      (req.body.password = bcryptjs.hashSync(req.body.password, 10)),
+        (req.body.avatar = "/images/avatars/" + req.file.filename);
+
+      //bcryptjs.compareSync("contraseña", hash)
+      console.log(req.body);
+
+      let updatedUserId = personalModel.save(req.body);
+
+      res.redirect("/personal/" + updatedUserId);
+    } else {
       res.render("./staff/register", {
         errors: resultValidation.mapped(),
         oldData: req.body,
       });
     }
     //mapped() returns: an object where the keys are the field names, and the values are the validation errors
-
-    let userToCreate = {
-      ...req.body,
-      avatar: req.file.filename,
-    };
-
-    console.log(userToCreate);
-
-    personalModel.save(userToCreate);
-
-    res.redirect("/personal");
   },
   login: (req, res) => {
     res.render("./staff/login");
@@ -66,7 +76,9 @@ const controller = {
     res.render("./staff/edit", { personalToEdit: personalToEdit });
   },
   update: (req, res) => {
-    res.send("ok");
+    personalModel.update(req.body);
+    console.log(req.body);
+    res.redirect("/personal");
   },
   delete: (req, res) => {
     let id = req.params.id;
