@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('../partials/head.ejs', {title: " - Login" })%>
+  <%- include('../partials/head.ejs', {title: " - Login" })%>
   <body>
     <%- include('../partials/header.ejs')%>
-<div class="container">
-      <form action="" method="post" class="row g-3 mt-3">
+    <div class="container">
+      <form action="/personal/login" method="post" class="row g-3 mt-3">
         <div class="col-6">
           <label for="email" class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            placeholder="Ingresa tu mail"
-          />
+          <input type="email" class="form-control <%= locals.errors &&
+          errors.email ? "is-invalid" : null %>" id="email" name="email"
+          placeholder="Ingresa tu mail" /> <% if (locals.errors &&
+          errors.email) { %>
+          <div class="text-danger"><%= errors.email.msg %></div>
+          <% } %>
         </div>
         <div class="col-6">
           <label for="password" class="form-label">Contraseña</label>
@@ -20,6 +20,7 @@
             type="password"
             class="form-control"
             id="password"
+            name="password"
             placeholder="Ingresa tu contraseña"
           />
         </div>
@@ -28,7 +29,12 @@
             <label for="rememberPassword" class="form-check-label"
               >Recordar contraseña</label
             >
-            <input type="checkbox" class="form-check-input" id="rememberPassword" />
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="rememberPassword"
+              name="rememberPassword"
+            />
           </div>
         </div>
 
@@ -37,6 +43,5 @@
         </div>
       </form>
     </div>
-  
-</body>
+  </body>
 </html>

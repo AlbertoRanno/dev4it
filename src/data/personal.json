@@ -1,62 +1,72 @@
 [
  {
-  "id": 1,
   "name": "Hernán Mercado",
+  "email": "email1@gmail.com",
   "rol": "Gestor de proyectos",
+  "password": "$2a$10$jaW06F4E8GXnXwf3r7oGCOETVgOAo4bbyAq6NBVbJX8W2N75w7taq",
   "seniority": "Sr.",
-  "email": "email@gmail.com",
-  "avatar": "/avatars/avatarDef.png"
+  "repeatPassword": "$2a$10$gifY1Ua7yKTUy2cnV91z6O.W4SFgxYzHngR8dMSjVtMyQjow8nSWu",
+  "proyects": [
+   "DevOps interno",
+   "Exp. de producto"
+  ],
+  "avatar": "/images/avatars/1668618312588_img.png",
+  "id": 1
  },
  {
-  "id": 2,
   "name": "Ariel Edgardo",
+  "email": "email2@gmail.com",
   "rol": "Gestor de proyectos",
+  "password": "$2a$10$jaW06F4E8GXnXwf3r7oGCOETVgOAo4bbyAq6NBVbJX8W2N75w7taq",
   "seniority": "Sr.",
-  "email": "email@gmail.com",
-  "avatar": "/avatars/avatarDef.png"
+  "repeatPassword": "$2a$10$gifY1Ua7yKTUy2cnV91z6O.W4SFgxYzHngR8dMSjVtMyQjow8nSWu",
+  "proyects": [
+   "DevOps interno",
+   "Exp. de producto"
+  ],
+  "avatar": "/images/avatars/1668618312588_img.png",
+  "id": 2
  },
  {
-  "id": 3,
   "name": "Garavaglia María Victoria",
+  "email": "email3@gmail.com",
   "rol": "Especialista UX",
+  "password": "$2a$10$jaW06F4E8GXnXwf3r7oGCOETVgOAo4bbyAq6NBVbJX8W2N75w7taq",
   "seniority": "Jr.",
-  "email": "email@gmail.com",
-  "avatar": "/avatars/avatarDef.png"
+  "repeatPassword": "$2a$10$gifY1Ua7yKTUy2cnV91z6O.W4SFgxYzHngR8dMSjVtMyQjow8nSWu",
+  "proyects": [
+   "DevOps interno",
+   "Exp. de producto"
+  ],
+  "avatar": "/images/avatars/1668618312588_img.png",
+  "id": 3
  },
  {
-  "id": 4,
   "name": "Díaz Lucas",
+  "email": "email4@gmail.com",
   "rol": "Data Analytics",
+  "password": "$2a$10$jaW06F4E8GXnXwf3r7oGCOETVgOAo4bbyAq6NBVbJX8W2N75w7taq",
   "seniority": "Sr.",
-  "email": "email@gmail.com",
-  "avatar": "/avatars/avatarDef.png"
+  "repeatPassword": "$2a$10$gifY1Ua7yKTUy2cnV91z6O.W4SFgxYzHngR8dMSjVtMyQjow8nSWu",
+  "proyects": [
+   "DevOps interno",
+   "Exp. de producto"
+  ],
+  "avatar": "/images/avatars/1668618312588_img.png",
+  "id": 4
  },
  {
   "name": "Alberto Daniel Ranno",
-  "email": "fghfg@hotmail.com",
+  "email": "albert@hotmail.com",
   "rol": "Magic Dev",
-  "password": "$2a$10$x4PJne3famLZUC1kkaI7JeRfnid4AsN.vyELR4qXE7dE2XuuXwpLC",
-  "seniority": "asfa",
-  "repeatPassword": "$2a$10$WDyr.EXySBMrYYDu0.ynxenAH2UiuJFsWilS3fSAHJ6GkwhlSzWNm",
-  "proyects": [
-   "DevOps interno",
-   "Exp. de producto"
-  ],
-  "avatar": "/images/avatars/1668612902226_img.jpg",
-  "id": 5
- },
- {
-  "name": "Albertos",
-  "email": "albertdd@hotmail.com",
-  "rol": "Magic Dev",
-  "password": "$2a$10$0N9PMrwFGtrf7Fa3lJ5fN.Xqhvls9q/aMdE/nfjOi2yabNkjEIuW2",
+  "password": "$2a$10$uLtPpvXS64Po0euX1QcrE.4Guu1pmbuXnjyuyJtjix3u1nse7bVCa",
   "seniority": "Jr.",
-  "repeatPassword": "$2a$10$SOiAYzqlTUoMd3.qQcgcAOQ0jlQ9fFXoMNOCvAQOdrIqXcmrYAKd6",
+  "repeatPassword": "$2a$10$jkLVCYZbBwc7dnIoUP9fT.KtAzWqlAzPTL953L1adIQKMJ3jtFjPy",
   "proyects": [
    "DevOps interno",
    "Exp. de producto"
   ],
-  "avatar": "/images/avatars/1668614892419_img.png",
-  "id": 6
+  "avatar": "/images/avatars/1668619176234_img.png",
+  "id": 5
  }
 ]

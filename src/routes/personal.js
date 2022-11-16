@@ -15,11 +15,15 @@ routerPersonas.post(
 
 routerPersonas.get("/login", personalController.login)
 
+routerPersonas.post("/login", personalController.access);
+
 routerPersonas.use("/search", personalController.search);
 
 routerPersonas.get("/edit/:id", personalController.edit);
 
 routerPersonas.put("/update/:id", personalController.update);
+
+routerPersonas.get("/profile/:id", personalController.profile)
 
 routerPersonas.delete("/delete/:id", personalController.delete);
 
