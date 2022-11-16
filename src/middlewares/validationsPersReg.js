@@ -33,7 +33,20 @@ const validations = [
   }),
   body("password")
     .notEmpty()
-    .withMessage("La contraseña será necesaria para ingresar a la app"),
+    .withMessage("La contraseña será necesaria para ingresar a la app")
+    .bail() 
+    .isLength({ min: 3 })
+    .withMessage("La contraseña debe tener al menos 3 caracteres"),
+  body("repeatPassword")
+    .notEmpty()
+    .withMessage("Tienes que repetir la contraseña elegida")
+    .bail()
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error("Las contraseñas no coinciden");
+      }
+      return true;
+    }),
 ];
 
 module.exports = validations;

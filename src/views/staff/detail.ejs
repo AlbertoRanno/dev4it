@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head.ejs', {title: persona.name })%>
+
+<body>
+  <%- include('../partials/header.ejs')%>
+  <img src="<%= persona.avatar %>" alt="<%= persona.name %>" class="img-thumbnail avatar" />
+  <hr>
+  <ul class="list-group">
+    <li class="list-group-item"><%=persona.name%></li>
+    <li class="list-group-item"><%= persona.rol %></li>
+    <li class="list-group-item"><%= persona.seniority %></li>
+    <li class="list-group-item"><%= persona.email %></li>
+    <li class="list-group-item">
+      <ol>
+        <% for (let i=0; i<persona.proyects.length ; i++) { %>
+        <li><%= persona.proyects[i] %></li>
+        <% } %>
+      </ol>
+    </li>
+  </ul>
+  <hr>
+  <form action="/personal/delete/<%= persona.id %>?_method=DELETE" method="POST">
+    <button type="submit">Eliminar</button>
+  </form>
+  <form action="/personal/edit/<%= persona.id %>" method="GET">
+    <button type="submit">Modificar</button>
+  </form>
+</body>
+</html>

@@ -33,11 +33,30 @@
  },
  {
   "name": "Alberto Daniel Ranno",
+  "email": "fghfg@hotmail.com",
   "rol": "Magic Dev",
-  "seniority": "Jr.",
-  "email": "albert@hotmail.com",
-  "password": "$2a$10$1xit2/56e0KY2vCvvw7ZTeNqHm7jlZDW1ZdN2IBYbSf.OJY8PYBpm",
-  "avatar": "/images/avatars/1668605874612_img.jpg",
+  "password": "$2a$10$x4PJne3famLZUC1kkaI7JeRfnid4AsN.vyELR4qXE7dE2XuuXwpLC",
+  "seniority": "asfa",
+  "repeatPassword": "$2a$10$WDyr.EXySBMrYYDu0.ynxenAH2UiuJFsWilS3fSAHJ6GkwhlSzWNm",
+  "proyects": [
+   "DevOps interno",
+   "Exp. de producto"
+  ],
+  "avatar": "/images/avatars/1668612902226_img.jpg",
   "id": 5
+ },
+ {
+  "name": "Albertos",
+  "email": "albertdd@hotmail.com",
+  "rol": "Magic Dev",
+  "password": "$2a$10$0N9PMrwFGtrf7Fa3lJ5fN.Xqhvls9q/aMdE/nfjOi2yabNkjEIuW2",
+  "seniority": "Jr.",
+  "repeatPassword": "$2a$10$SOiAYzqlTUoMd3.qQcgcAOQ0jlQ9fFXoMNOCvAQOdrIqXcmrYAKd6",
+  "proyects": [
+   "DevOps interno",
+   "Exp. de producto"
+  ],
+  "avatar": "/images/avatars/1668614892419_img.png",
+  "id": 6
  }
 ]

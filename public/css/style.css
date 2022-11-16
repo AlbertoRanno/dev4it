@@ -9,7 +9,7 @@
   font-family: "Kolker Brush", cursive;
 }
 
-/*Header*/
+/*Logo*/
 .logo {
   max-width: 100px;
   animation: aumentar 1000ms linear 2 alternate;
@@ -24,4 +24,9 @@
   100% {
     transform: scale(1.5);
   }
+}
+
+/*Avatar*/
+.avatar {
+  max-width: 100px;
 }
