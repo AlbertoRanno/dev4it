@@ -3,7 +3,7 @@
 // npm init - package.json - dependencias/modulos
 // npm install express - requerirlo - guardar su ejecución en una constante "app"
 // Express me permite manejar las peticiones de los diferentes verbos HTTP, en diferentes caminos URL (rutas)
-// creo datos como un objeto con propiedades clave-valor, y lo exporto - lo requiero en app.js - Mas adelante reemplazare por JSON
+// BD: creo datos como un objeto con propiedades clave-valor, y lo exporto - lo requiero en app.js - Mas adelante reemplazare por JSON
 
 const PUERTO = process.env.PORT || 3000;
 // cuando suba la pagina, el puerto lo asignara el entorno, por eso la primer opcion
@@ -152,11 +152,7 @@ res.json(datos);
 // Alt + Z adapta a que todo el codigo se vea sin tener que desplazarse lateralmente
 //<!---->
 
-/*seleccionando codigo Ctrl + / lo comenta .. No funciona
-Ir a Preferences->Key Bindings - User y pegar lo siguiente:
-{ "keys": ["ctrl+7"], "command": "toggle_comment", "args": { "block": false } },
-{ "keys": ["ctrl+shift+7"], "command": "toggle_comment", "args": { "block": true } }
-Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, a disfrutar! La solución fue reemplazar el métodos abreviados de teclado por defecto Ctrl/. Por Ctrl7, que es la misma tecla en el teclado.*/
+/*seleccionando codigo HTML y CSS, tambien lo comento con ctrl + k + c */
 
 //<a href="https://translate.google.com.ar/" target="_blank" rel="nooper noreferrer">tablero React</a> Para que el enlace abra otra pestaña (sin irse de la actual) y por motivos de seguridad (para prevenir un ataque donde la pestaña de origen se reemplaza, para que le usuario deje sus datos, lo cual es una brecha de seguridad)
 
@@ -191,7 +187,7 @@ Para probarlo, selecciona el texto, y presiona simultáneamente Ctrl7. Y listo, 
 -Label hace que al hacer click en el texto al lado del checkbox, este se seleccione, lo cual es mas comodo para el usuario
 -For="" la vincula al input con el id correspondiente
 -name hace referencia al grupo (todos los que tengan el mismo name) de ellos, solo uno podra quedar seleccionado
-name es el nombre de la prop con la que viajara la info en el body
+name es el nombre de la prop con la que viajara la info en el body !!!
 -Casillas de Verificacion, a igual name, mismo grupo, pero varias simultaneas a diferencia de radio
 -Checked - Hace que esa opcion venga determinada por defecto en la pagina  
 -value el valor que tomara el formulario cuando se envie (no todos tienen "VALUE", por ej. TextArea no lo tiene)
@@ -425,7 +421,7 @@ edit: (req, res) => {
   - tengo un especie de marco en blanco para construir cualquier objeto.
   - al cual le puedo ir agregando cualquier propiedad:
   */
-nuevoObjeto = new Object();
+let nuevoObjeto = new Object();
 console.log(nuevoObjeto); //{}
 nuevoObjeto.info = "Soy la 1er prop de este objeto!";
 console.log(nuevoObjeto); //{ info: 'Soy la 1er prop de este objeto!' }
@@ -739,9 +735,9 @@ const { validationResult } = require("express-validator")
         oldData: req.body,
       });
     } else if (resultValidation.isEmpty()) {
-      /* Si el mail no estaba ya ingresado, y el no hubo errores de validacion (isEmpty es una propiedad
+      /* Si el mail no estaba ya ingresado, y no hubo errores de validacion (isEmpty es una propiedad
         que viene con validationResult), procedo a guardar en BD, pero cambio los valores de las props
-        password (lo encripto), y avatar /(que me guarde la ruta, no solo el nombre). FIlename es como defini
+        password (lo encripto), y avatar /(que me guarde la ruta, no solo el nombre). Filename es como defini
         el nombre en la config del storage */
       (req.body.password = bcryptjs.hashSync(req.body.password, 10)),
         (req.body.avatar = "/images/avatars/" + req.file.filename);
@@ -767,7 +763,7 @@ const { validationResult } = require("express-validator")
   npm install bcryptjs */
 const bcryptjs = require("bcryptjs");
 let hash = bcryptjs.hashSync("contraseña", 10);
-console.log(hash); //hashea la contraseña, 10 o 12 era el nivel de salt..
+console.log(hash); //hashea la contraseña, 10 o 12 era el nivel de salt, "suficiente para contraseñas".
 console.log(bcryptjs.compareSync("contraseña", hash)); // T o F
 
 // 16-11-22 *************
@@ -796,8 +792,8 @@ req.session.userLogged = userToLogin;
 console.log(req.session);
 /*
 Session {
-  cookie: { path: '/', _expires: null, originalMaxAge: null, httpOnly: true },
-  userLogged: {
+  cookie: { path: '/', _expires: null, originalMaxAge: null, httpOnly: true }, // viene por default
+  userLogged: {                                                                // prop que agrego p/guardar al usuario
     name: 'Alberto Daniel Ranno',
     email: 'albert@hotmail.com',
     rol: 'Magic Dev',
@@ -823,7 +819,7 @@ function guest(req, res, next) {
 }
 
 module.exports = guest;
-/* complemento: si no hay nadie en session, por la URL no deberia de poder acceder al profile */
+/* complemento: hago otro middleware, auth, si no hay nadie en session, por la URL no deberia de poder acceder al profile */
 
 {
   logout: (req, res) => {
@@ -839,11 +835,12 @@ app.use(userLogged);
 /* recordar que el orden en que ponga los middleware de app, en ese orden se ejecutaran.
 POR LO TANTO, este middleware, tiene que ir despues del middleware de session!
 
-Y recordar que si pusiera un console.log("Pasé por el middleware userLogged") dentro del archivo userLogged en la carpeta middlewares, por cada pagina a la que entre, veria la leyende un monton de veces, porque se
+Y recordar que si pusiera un console.log("Pasé por el middleware userLogged") dentro del archivo userLogged en la carpeta middlewares, por cada pagina a la que entre, veria la leyenda un monton de veces, porque se
 ejecuta por cada peticion que hace la app */
 
 /* res.locals son variables que cruzan toda la app, (esté o no, en session... ) por eso les creo una prop
-"isLogged" y en base a esa informo rapidamente a cada seccion si hay un usuario logueado, o no, y su comportamiento:*/
+"isLogged" y en base a esa informo rapidamente a cada seccion si hay un usuario logueado, o no, y su comportamiento.
+Si lo hiciera directo con session, tendrìa que poner condicionales en cada lado, en cambio, asì hago uno solo para todos los casos*/
 function userLogged(req, res, next) {
   if (req.session && req.session.userLogged) {
     /*req.session se crea una vez que entro al login, por eso tmb tengo que preguntar si hay alguien logueado */

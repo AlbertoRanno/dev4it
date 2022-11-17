@@ -3,28 +3,27 @@
   <%- include('../partials/head.ejs', {title: "" })%>
   <body>
     <%- include('../partials/header.ejs')%>
-    <ul>
+    <ul class="list-group">
       <% for( let i = 0; i < listado.length; i++ ) { %>
       <li>
-        <a href="/proyectos/<%= listado[i].id %>"><%= listado[i].name %></a>
+        <a
+          href="/proyectos/<%= listado[i].id %>"
+          class="list-group-item list-group-item-action"
+          ><%= listado[i].name %></a
+        >
       </li>
       <% } %>
     </ul>
+
     <br />
     <br />
+
     <form action="/proyectos/register" method="GET">
       <div class="col-12">
         <button type="submit" class="btn btn-primary">
           Cargar nuevo proyecto
         </button>
       </div>
-    </form>
-    <br />
-    <br />
-    <h2>Buscador de Proyectos:</h2>
-    <form action="/proyectos/search" method="GET">
-      <input type="text" name="search" />
-      <input type="submit" value="Enviar" />
     </form>
   </body>
 </html>

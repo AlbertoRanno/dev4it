@@ -63,18 +63,5 @@
   ],
   "avatar": "/images/avatars/1668619176234_img.png",
   "id": 5
- },
- {
-  "name": "Producto Prueba 1",
-  "email": "alberdft@hotmail.com",
-  "rol": "asf",
-  "password": "$2a$10$8y0pdSwGRdC0HgNE1wUMJOQuNeQsCHFaIANIugvvqdHkCxVaGLIOS",
-  "seniority": "asfa",
-  "proyects": [
-   "DevOps interno",
-   "Exp. de producto"
-  ],
-  "avatar": "/images/avatars/1668628976123_img.jpg",
-  "id": 6
  }
 ]

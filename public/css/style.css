@@ -1,4 +1,3 @@
-
 .variables {
   --color-variable: purple;
 }
@@ -29,4 +28,9 @@
 /*Avatar*/
 .avatar {
   max-width: 100px;
+}
+
+/* Buscadores de la navBar */
+.navForm {
+  margin-right: 10px;
 }

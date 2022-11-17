@@ -30,7 +30,7 @@ const controller = {
 
     for (let i = 0; i < datos.length; i++) {
       if (datos[i].name.toLocaleLowerCase().includes(loQueBuscoElUsuario)) {
-        results.push(datos[i].name);
+        results.push(datos[i]);
       }
     }
 

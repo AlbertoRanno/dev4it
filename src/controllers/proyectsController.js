@@ -43,11 +43,11 @@ const controller = {
           .toLocaleLowerCase()
           .includes(loQueBuscoElUsuario.toLocaleLowerCase())
       ) {
-        results.push(datos[i].name);
+        results.push(datos[i]);
       }
     }
 
-    res.render("./staff/search", { loQueBuscoElUsuario, results });
+    res.render("./proyects/search", { loQueBuscoElUsuario, results });
   },
   register: (req, res) => {
     res.render("./proyects/register.ejs", { personal: datosPersonal, estados });

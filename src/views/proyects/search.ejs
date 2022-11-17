@@ -4,12 +4,12 @@
 
 <body>
   <%- include('../partials/header.ejs')%>
-  <h2>Usuarios que coinciden con: <%= loQueBuscoElUsuario %> </h2>
+  <h2>Proyectos que coinciden con: <%= loQueBuscoElUsuario %> </h2>
 
   <ul class="list-group">
     <% for (let i=0; i<results.length; i++){ %>
     <li>
-      <a href="/personal/detail/<%= results[i].id %>"
+      <a href="/proyectos/detail/<%= results[i].id %>"
         class="list-group-item list-group-item-action"><%= results[i].name %>
       </a>
     </li>
