@@ -6,14 +6,14 @@
   <form action="/personal/update/:id?_method=PUT" method="POST">
       <label for="name">
         Nombre:
-        <input type="text" name="name" value=<%=personalToEdit.name%> />
+        <input type="text" name="name" value="<%=personalToEdit.name%>" />
       </label>
       <br />
-      <label for="rol"> Rol: <input type="text" name="rol" value=<%= personalToEdit.rol %> /> </label>
+      <label for="rol"> Rol: <input type="text" name="rol" value="<%= personalToEdit.rol %>" /> </label>
       <br />
       <label for="seniority">
         Seniority:
-        <input type="text" name="seniority" value="<%= personalToEdit.seniority %> " />
+        <input type="text" name="seniority" value="<%= personalToEdit.seniority %>" />
       </label>
       <br />
       <input type="submit" value="Actualizar"/> 

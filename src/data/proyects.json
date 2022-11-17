@@ -1,12 +1,31 @@
 [
-  {
-    "id": "1",
-    "name": "DevOps interno",
-    "fechaDeinicio": "pendiente"
-  },
-  {
-    "id": "2",
-    "name": "Exp. de producto",
-    "fechaDeinicio": "01/11/2021"
-  }
+ {
+  "name": "DevOps interno",
+  "description": "Mejor adminitracion de recursos de la empresa",
+  "manager": "Hernán Mercado",
+  "condition": "En espera de respuesta",
+  "dateStart": "2022-11-10",
+  "dateEnd": "2022-11-24",
+  "involved": [
+   "Garavaglia María Victoria",
+   "Díaz Lucas",
+   "Alberto Daniel Ranno"
+  ],
+  "link": "http://localhost:3000/",
+  "id": 1
+ },
+ {
+  "name": "Exp. de producto",
+  "description": "Descripción breve del proyecto en cuestión.",
+  "manager": "Ariel Edgardo",
+  "condition": "Pausado por CDT",
+  "dateStart": "2022-08-18",
+  "dateEnd": "2022-12-10",
+  "involved": [
+   "Garavaglia María Victoria",
+   "Díaz Lucas"
+  ],
+  "link": "http://localhost:3000/",
+  "id": 2
+ }
 ]

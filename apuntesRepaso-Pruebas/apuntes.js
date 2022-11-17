@@ -860,3 +860,12 @@ const cookies = require("cookie-parser");
 app.use(cookies()); //este si se ejecuta
 /* idem, es otro objeto literal */
 
+// 17-11-22 *************
+/* Pause cookies, retome CRUD sobre proyectos - con sus vistas - controladores - validaciones
+
+OBS! IMP! Recordar que en los value de los EJS , aunque los complete con <%= %>, hay que ponerles las comillas!! sino, solo toma la primer palabra de los strings!
+value= " <%= ... %> "
+
+Obs, recordad los condicionales ternarios:
+<%= locals.oldData && oldData.condition === estados[i] ? "selected" : " " ; %>
+*/

@@ -29,8 +29,8 @@ const controller = {
         .status(404)
         .send(`No se encontro ningun proyecto con el id ${id}`);
     }
-
-    res.send(proyect);
+    
+    res.render("./proyects/detail", { proyect });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search;
@@ -55,7 +55,22 @@ const controller = {
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    if (resultValidation.errors.length > 0) {
+    let proyectInDB = proyectsModel.filtrarPorCampoValor("name", req.body.name);
+
+    if (proyectInDB.length >= 1) {
+      res.render("./proyects/register", {
+        errors: { name: { msg: "Este proyecto ya fue ingresado" } },
+        oldData: req.body,
+        estados,
+        personal: datosPersonal,
+      });
+    } else if (resultValidation.isEmpty()) {
+      console.log(req.body);
+
+      let newProyectId = proyectsModel.save(req.body);
+
+      res.redirect("/proyectos/detail/" + newProyectId);
+    } else {
       res.render("./proyects/register", {
         personal: datosPersonal,
         estados,
@@ -63,9 +78,12 @@ const controller = {
         oldData: req.body,
       });
     }
-    //mapped() returns: an object where the keys are the field names, and the values are the validation errors
-    res.send("store pendiente");
-    ////res.redirect("/proyectos");
+  },
+  delete: (req, res) => {
+    let id = req.params.id;
+    proyectsModel.destroy(id);
+
+    res.redirect("/proyectos");
   },
 };
 
