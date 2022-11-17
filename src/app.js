@@ -6,10 +6,11 @@ const session = require("express-session");
 const userLogged = require("./middlewares/userLogged")
 const cookies = require("cookie-parser")
 
-//view engine setup
+/*****************  view engine setup  ***************/
 app.set("view engine", "ejs");
 app.set("views", "./src/views");
 
+/*****************  middlewares  ***************/
 app.use(express.static("./public"));
 
 app.use(
@@ -32,13 +33,11 @@ app.use(express.json());
 app.use(methodOverride("_method"));
 
 
-
-// Routers
+/*****************  Routers  ***************/
 const routerMain = require("./routes/main.js");
 const routerPersonas = require("./routes/personal.js");
 const routerProyectos = require("./routes/proyectos.js");
 
-/*****************  Routing  ***************/
 app.use("/personal", routerPersonas);
 app.use("/proyectos", routerProyectos);
 app.use("/", routerMain);

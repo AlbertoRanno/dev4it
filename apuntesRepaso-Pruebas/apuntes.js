@@ -853,7 +853,7 @@ function userLogged(req, res, next) {
 module.exports = userLogged;
 
 /* https://developer.mozilla.org/es/docs/Web/HTTP/Cookies
-RECORDAR: session se guarda del lado del servidor, y cookies del lado del cliente (por navegador. Lo que guardo en Firefox, no estara disponible en chrome)
+RECORDAR: session se guarda del lado del servidor, y cookies del lado del cliente (por servidor y por navegador. Lo que guardo en Firefox, no estara disponible en chrome)
 npm i cookie-parser
 idem, es un middleware a nivel app: */
 const cookies = require("cookie-parser");
@@ -868,4 +868,58 @@ value= " <%= ... %> "
 
 Obs, recordad los condicionales ternarios:
 <%= locals.oldData && oldData.condition === estados[i] ? "selected" : " " ; %>
+
+retomo cookies:
+
+seteo de a una sola cookie, por eso singular "cookie" - y res porque la guardo en el cliente
+if (req.body.rememberUser) { //si vino la casilla tildada, seteo una nueva cookie:
+          res.cookie("userEmail", req.body.email, {maxAge: (1000 * 60 * 60 * 24 * 30)})
+        }
+Al entrar al controlador donde puse eso, me crea la cookie userEmail en el navegador (la puedo ver por el mismo)
+
+si quisiera ver las cookies, las traigo todas, por eso plural "cookies"
+login: (req, res) => {
+    console.log(req.cookies); 
+    res.render("./staff/login");
+  },
+
+Reutilizo el middleware userLogged:
+
+const JsonModel = require("../models/jsonModel");
+const usersModel = new JsonModel("users"); // lo traigo para buscar el usuario de la cookie
+
+// ************ NavBar - Logout - RememberUser - Middleware a nivel app  ************
+
+function userLoggedMiddleware(req, res, next) {
+  //si tengo a alguien en session muestro una parte de la barra de navegación
+  //let isLogged = false; // invento esta variable para determinar cuando muestro y cuando no
+  res.locals.isLogged = false;
+  //IMP! la paso a variable local, para que se puedan compartir entre las vistas, indistintamente del controlador (1)
+
+  // si tengo a alguien en una cookie, quiero buscar a esa persona y loguearlo
+  let emailInCookie = req.cookies.userEmail;
+  //console.log(emailInCookie);
+  let usersFromCookie = usersModel.filtrarPorCampoValor("email", emailInCookie); // Recordar que devuelve un ARRAY!!!
+  let userFromCookie = usersFromCookie[0];
+  //console.log(userFromCookie);
+  // Por lo tanto, si encuentro a alguien, lo paso a session! (2)
+  if (userFromCookie) {
+    req.session.userLogged = userFromCookie
+  }
+
+  // (1) Por lo que en el header, puedo hacer un condicional sobre lo que muestro, basado en este booleano
+  // y, si tengo alguien en session (2), es porque tengo a alguien logueado, 
+  if (req.session.userLogged) {
+    // la session se crea una vez que entro al Login, por lo que pregunto si hay alguien logueado
+    res.locals.isLogged = true;
+    //Por lo que si tengo a alguien logueado se mostrará Mi cuenta y Logout, caso contrario, login y register
+    res.locals.userLogged = req.session.userLogged;
+    //Arriba estoy pasando lo que tengo en session a las variables locales (de nuevo, para tenerlas disponible en todas las vistas)
+  }
+
+  next();
+}
+
+module.exports = userLoggedMiddleware;
+
 */

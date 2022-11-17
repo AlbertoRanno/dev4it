@@ -40,7 +40,6 @@ const controller = {
     });
   },
   register: (req, res) => {
-    res.cookie("testing", "Hola!", {maxAge: 1000 * 30})
     res.render("./staff/register", {
       datosProyectos,
     });
@@ -63,7 +62,7 @@ const controller = {
       });
     } else if (resultValidation.isEmpty()) {
       (req.body.password = bcryptjs.hashSync(req.body.password, 10)),
-        (req.body.avatar = "/images/avatars/" + req.file.filename);
+      (req.body.avatar = "/images/avatars/" + req.file.filename);
       delete req.body.repeatPassword;
 
       //bcryptjs.compareSync("contraseña", hash)
@@ -99,7 +98,12 @@ const controller = {
         //si email y password OK, guardo al usuario en session. Pero antes, por seguridad, elimino el Password
         delete userToLogin.password;
         req.session.userLogged = userToLogin;
-        console.log(req.session);
+        //console.log(req.session);
+
+        if (req.body.rememberUser) { //si vino la casilla tildada, seteo una nueva cookie, guardando asi el email en el cliente
+          res.cookie("userEmail", req.body.email, {maxAge: (1000 * 60 * 60 * 24)})
+        }
+
         res.redirect("./profile/" + userToLogin.id);
       } else {
         res.render("./staff/login", {
@@ -116,8 +120,9 @@ const controller = {
     res.render("./staff/profile", { user: req.session.userLogged });
   },
   logout: (req, res) => {
+    res.clearCookie("userEmail")
     req.session.destroy();
-    res.redirect("/");
+    return res.redirect("/");
   },
   edit: (req, res) => {
     let id = req.params.id;
