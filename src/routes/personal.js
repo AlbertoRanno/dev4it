@@ -9,7 +9,7 @@ const auth = require("../middlewares/auth");
 routerPersonas.get("/register", personalController.register);
 
 routerPersonas.post(
-  "/register", guest,
+  "/register",
   uploadFile.single("avatar"),
   validations,
   personalController.store

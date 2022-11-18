@@ -34,3 +34,10 @@
 .navForm {
   margin-right: 10px;
 }
+
+/* Botonera de formularios de edición */
+.buttonPanel {
+  display: flex;
+  justify-content: center;
+  justify-content: space-around;
+}

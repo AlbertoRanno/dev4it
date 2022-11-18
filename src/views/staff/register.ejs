@@ -101,23 +101,33 @@
 
               <div class="col-md-6 mt-3">
                 <div class="form-group">
-                  <label for="proyects" class="form-check-label"><b>Proyectos involucrado:</b></label>
+                  <label for="proyects" class="form-check-label"
+                    ><b>Proyectos involucrado:</b></label
+                  >
                   <% for (let i = 0; i < datosProyectos.length; i++) { %>
-                 <div>
-                  <input
-                    type="checkbox"
-                    name="proyects"
-                    id="proyects"
-                    class="form-check-input"
-                    value="<%= datosProyectos[i].name  %>"
-                  /><%= datosProyectos[i].name %> <% } %>
-               </div>
+                  <div>
+                    <a
+                      href="/proyectos/detail/<%= datosProyectos[i].id %>"
+                      class="list-group-item list-group-item-action"
+                    >
+                      <input
+                        type="checkbox"
+                        name="proyects"
+                        id="proyects"
+                        class="form-check-input"
+                        value="<%= datosProyectos[i].name  %>"
+                      /><%= datosProyectos[i].name %> <% } %></a
+                    >
+                  </div>
                 </div>
               </div>
             </div>
             <br />
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary">Registrarse</button>
+            <div class="buttonPanel">
+                <a href="/personal" class="btn btn-primary">Volver</a>
+                <button type="submit" class="btn btn-success">
+                  Registrarse
+                </button>
             </div>
           </form>
         </div>

@@ -20,11 +20,18 @@
     </li>
   </ul>
   <hr>
-  <form action="/personal/delete/<%= persona.id %>?_method=DELETE" method="POST">
-    <button type="submit">Eliminar</button>
+ <div class="buttonPanel">
+  <form action="/personal" method="GET">
+    <button type="submit" class="btn btn-primary">Volver</button>
   </form>
+
   <form action="/personal/edit/<%= persona.id %>" method="GET">
-    <button type="submit">Modificar</button>
+    <button type="submit" class="btn btn-warning">Modificar</button>
   </form>
+
+    <form action="/personal/delete/<%= persona.id %>?_method=DELETE" method="POST">
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+  </form>
+</div>
 </body>
 </html>

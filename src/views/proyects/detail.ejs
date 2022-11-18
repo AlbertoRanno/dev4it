@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('../partials/head.ejs', {title: proyect.name })%>
+  <%- include('../partials/head.ejs', {title: proyect.name })%>
 
-<body>
-  <%- include('../partials/header.ejs')%>
+  <body>
+    <%- include('../partials/header.ejs')%>
 
-  <ul class="list-group">
-    <li class="list-group-item"><%= proyect.name%></li>
-    <li class="list-group-item"><%= proyect.description %></li>
-    <li class="list-group-item"><%= proyect.manager %></li>
-    <li class="list-group-item"><%= proyect.condition %></li>
-    <li class="list-group-item"><%= proyect.dateStart %></li>
-    <li class="list-group-item"><%= proyect.dateEnd %></li>
-    <li class="list-group-item"><%= proyect.link %></li>
-    <li class="list-group-item">
-      <ol>
-        <% for( let i = 0; i < proyect.involved.length; i++ ) { %>
-        <li><%= proyect.involved[i] %></li>
-        <% } %>        
-      </ol>     
+    <ul class="list-group">
+      <li class="list-group-item"><%= proyect.name%></li>
+      <li class="list-group-item"><%= proyect.description %></li>
+      <li class="list-group-item"><%= proyect.manager %></li>
+      <li class="list-group-item"><%= proyect.condition %></li>
+      <li class="list-group-item"><%= proyect.dateStart %></li>
+      <li class="list-group-item"><%= proyect.dateEnd %></li>
+      <li class="list-group-item"><%= proyect.link %></li>
+      <li class="list-group-item">
+        <ol>
+          <% for( let i = 0; i < proyect.involved.length; i++ ) { %>
+          <li><%= proyect.involved[i] %></li>
+          <% } %>
+        </ol>
       </li>
-  </ul>
+    </ul>
 
-  <form action="/proyectos/delete/<%= proyect.id %>?_method=DELETE" method="POST">
-    <button type="submit">Eliminar</button>
-  </form>
-  <form action="/personal" method="GET">
-    <button type="submit">Modificar</button>
-  </form>
-</body>
+    <div class="buttonPanel">
+      <form action="/proyectos" method="GET">
+        <button type="submit" class="btn btn-primary">Volver</button>
+      </form>
+
+      <form action="/proyectos/edit/<%= proyect.id %>" method="GET">
+        <button type="submit" class="btn btn-warning">Modificar</button>
+      </form>
+
+      <form
+        action="/proyectos/delete/<%= proyect.id %>?_method=DELETE"
+        method="POST"
+      >
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+      </form>
+    </div>
+  </body>
 </html>

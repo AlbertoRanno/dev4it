@@ -96,7 +96,7 @@
             <% for (let i=0; i<personal.length; i++) { %>
             <% if(personal[i].rol != "Gestor de proyectos"){ %>
             <label for="involved" class="form-check-label">
-              <input type="checkbox" class="form-check-input" name="involved" value="<%= personal[i].name %>"/>
+              <input type="checkbox" class="form-check-input" name="involved" value="<%= personal[i].name %>" />
               <%= personal[i].name %> <br> <%= personal[i].rol %> - <%= personal[i].seniority %>
             </label>
             <br>
@@ -114,11 +114,13 @@
         </div>
       </div>
 
-      <div>
-        <button type="submit" class="btn btn-primary">
+      <div class="buttonPanel">
+        <a href="/proyectos" class="btn btn-primary">Volver</a>
+        <button type="submit" class="btn btn-success">
           Guardar Proyecto
         </button>
       </div>
+
     </form>
   </div>
 </body>
