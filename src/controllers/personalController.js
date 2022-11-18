@@ -65,7 +65,6 @@ const controller = {
         (req.body.avatar = "/images/avatars/" + req.file.filename);
       delete req.body.repeatPassword;
 
-      //bcryptjs.compareSync("contraseña", hash)
       console.log(req.body);
 
       let updatedUserId = personalModel.save(req.body);
@@ -136,9 +135,38 @@ const controller = {
     });
   },
   update: (req, res) => {
-    personalModel.update(req.body);
-    console.log(req.body);
-    res.redirect("/personal");
+    const resultValidation = validationResult(req);
+    let userToModify = personalModel.buscar(req.params.id);
+
+    console.log(typeof userToModify.proyects);
+
+    if (resultValidation.isEmpty()) {
+      req.body.id = userToModify.id;
+      req.body.password = bcryptjs.hashSync(req.body.password, 10);
+      delete req.body.repeatPassword;
+      if (!req.file) {
+        console.log(
+          "No se editó la imagen. Traigo la que tenía en base de datos"
+        );
+        req.body.avatar = userToModify.avatar;
+      } else {
+        console.log("Se editó la imagen. Subo la nueva.");
+        req.body.avatar = "/images/avatars/" + req.file.filename;
+      }
+
+      console.log(req.body);
+
+      personalModel.update(req.body);
+
+      res.redirect("/personal/detail/" + req.params.id);
+    } else {
+      res.render("./staff/edit", {
+        errors: resultValidation.mapped(),
+        oldData: req.body,
+        datosProyectos,
+        personalToEdit: userToModify,
+      });
+    }
   },
   delete: (req, res) => {
     let id = req.params.id;

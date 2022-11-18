@@ -923,3 +923,7 @@ function userLoggedMiddleware(req, res, next) {
 module.exports = userLoggedMiddleware;
 
 */
+
+// 18-11-22 *************
+/*
+Organización de pendientes - CSS en gral, botoneras de flujo, vistas de EDIT */

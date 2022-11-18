@@ -13,25 +13,31 @@
     <li class="list-group-item"><%= persona.email %></li>
     <li class="list-group-item">
       <ol>
+        <% if (typeof persona.proyects == "string") { %>
+        <li><%= persona.proyects %> </li>
+        <% } else if (!persona.proyects){ %>
+        <li> Sin proyectos asignados </li>
+        <% } else { %>
         <% for (let i=0; i<persona.proyects.length ; i++) { %>
-        <li><%= persona.proyects[i] %></li>
-        <% } %>
+        <li>"<%= persona.proyects[i] %>"</li>
+        <% }} %>
       </ol>
     </li>
   </ul>
   <hr>
- <div class="buttonPanel">
-  <form action="/personal" method="GET">
-    <button type="submit" class="btn btn-primary">Volver</button>
-  </form>
+  <div class="buttonPanel">
+    <form action="/personal" method="GET">
+      <button type="submit" class="btn btn-primary">Volver</button>
+    </form>
 
-  <form action="/personal/edit/<%= persona.id %>" method="GET">
-    <button type="submit" class="btn btn-warning">Modificar</button>
-  </form>
+    <form action="/personal/edit/<%= persona.id %>" method="GET">
+      <button type="submit" class="btn btn-warning">Modificar</button>
+    </form>
 
     <form action="/personal/delete/<%= persona.id %>?_method=DELETE" method="POST">
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-  </form>
-</div>
+      <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
+  </div>
 </body>
+
 </html>
