@@ -69,7 +69,7 @@ const controller = {
 
       let updatedUserId = personalModel.save(req.body);
 
-      res.redirect("/personal/" + updatedUserId);
+      res.redirect("/personal/detail/" + updatedUserId);
     } else {
       res.render("./staff/register", {
         errors: resultValidation.mapped(),

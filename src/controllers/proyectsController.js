@@ -79,6 +79,23 @@ const controller = {
       });
     }
   },
+  edit: (req, res) => {
+    let id = req.params.id;
+    let proyectToEdit = proyectsModel.buscar(id);
+  console.log(proyectToEdit.involved[1]);
+  console.log(datosPersonal[1].name);
+
+
+    res.render("./proyects/edit", {
+      proyectToEdit,
+      personal: datosPersonal,
+      estados,
+    });
+    
+  },
+  update: (req, res) => {
+
+  },
   delete: (req, res) => {
     let id = req.params.id;
     proyectsModel.destroy(id);

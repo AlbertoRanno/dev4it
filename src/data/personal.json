@@ -1,19 +1,19 @@
 [
  {
-  "name": "Alberto Da",
-  "email": "albo@hotmail.com",
-  "rol": "Magic ",
+  "name": "Hernán Mercado",
+  "email": "mail@hotmail.com",
+  "rol": "Gestor de proyectos",
   "password": "$2a$10$Xfd9WuGqZyqgMOkyHuB2YehtpKg2zIDvucidoBUIMmEaocHTzfFdy",
-  "seniority": "S",
+  "seniority": "Sr.",
   "proyects": "DevOps interno",
   "id": 1,
-  "avatar": "/images/avatars/1668806090285_img.jpg"
+  "avatar": "/images/avatars/avatarDef.png"
  },
  {
   "name": "Ariel Edgardo",
   "email": "email2@gmail.com",
   "rol": "Gestor de proyectos",
-  "password": "",
+  "password": "$2a$10$Xfd9WuGqZyqgMOkyHuB2YehtpKg2zIDvucidoBUIMmEaocHTzfFdy",
   "seniority": "Sr.",
   "repeatPassword": "",
   "proyects": [
@@ -21,7 +21,7 @@
    "Exp. de producto"
   ],
   "id": 2,
-  "avatar": "/images/avatars/1668618312588_img.png"
+  "avatar": "/images/avatars/avatarDef.png"
  },
  {
   "name": "Garavaglia María Victoria",
@@ -33,7 +33,7 @@
    "DevOps interno",
    "Exp. de producto"
   ],
-  "avatar": "/images/avatars/1668618312588_img.png",
+  "avatar": "/images/avatars/avatarDef.png",
   "id": 3
  },
  {
@@ -46,20 +46,17 @@
    "DevOps interno",
    "Exp. de producto"
   ],
-  "avatar": "/images/avatars/1668618312588_img.png",
+  "avatar": "/images/avatars/avatarDef.png",
   "id": 4
  },
  {
-  "name": "Alberto Daniel Ranno",
-  "email": "albert@hotmail.com",
-  "rol": "Magic Dev",
-  "password": "$2a$10$uLtPpvXS64Po0euX1QcrE.4Guu1pmbuXnjyuyJtjix3u1nse7bVCa",
-  "seniority": "Jr.",
-  "proyects": [
-   "DevOps interno",
-   "Exp. de producto"
-  ],
-  "avatar": "/images/avatars/1668619176234_img.png",
-  "id": 5
+   "name": "Alberto Daniel Ranno",
+   "email": "albert@hotmail.com",
+   "rol": "Magic Dev",
+   "password": "$2a$10$JHw7PrZU4quf2aMhmolYrOiUmKLtGR815kdDB9N5jjCeKgsiTi3Za",
+   "seniority": "Jr.",
+   "proyects": ["DevOps interno", "Exp. de producto"],
+   "id": 5,
+   "avatar": "/images/avatars/avatarDef.png"
  }
 ]

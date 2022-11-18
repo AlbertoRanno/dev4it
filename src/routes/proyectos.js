@@ -11,6 +11,10 @@ routerProyectos.use("/search", proyectsController.search);
 
 routerProyectos.get("/detail/:id", proyectsController.detail);
 
+routerProyectos.get("/edit/:id", proyectsController.edit);
+
+routerProyectos.patch("/update/:id", proyectsController.update);
+
 routerProyectos.delete("/delete/:id", proyectsController.delete)
 
 routerProyectos.get("/", proyectsController.list);
