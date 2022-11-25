@@ -3,15 +3,22 @@ const personalModel = new JsonModel("personal");
 const proyectsModel = new JsonModel("proyects");
 const { validationResult } = require("express-validator");
 const bcryptjs = require("bcryptjs");
-// const Persona = require("../models/Persona")
+const Persona = require("../models/Persona"); //PersonalModel
 
 let datos = personalModel.readJsonFile();
 let datosProyectos = proyectsModel.readJsonFile();
 
 const controller = {
   list: (req, res) => {
-    res.render("./staff/personal", {
-      listado: datos,
+    Persona.find({}, (error, personas) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error mostrando las personas",
+        });
+      }
+      res.render("./staff/personal", {
+        listado: personas,
+      });
     });
   },
   detail: (req, res) => {
@@ -48,6 +55,8 @@ const controller = {
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
+    //A MODIFICAR DESDE BD!!
+
     //Verifico que no haya sido cargado previamente:
     let userInDB = personalModel.filtrarPorCampoValor("email", req.body.email);
 
@@ -62,15 +71,30 @@ const controller = {
         datosProyectos,
       });
     } else if (resultValidation.isEmpty()) {
-      (req.body.password = bcryptjs.hashSync(req.body.password, 10)),
-        (req.body.avatar = "/images/avatars/" + req.file.filename);
+      
+      const personal = new Persona({
+        name: req.body.name,
+        email: req.body.email,
+        rol: req.body.rol,
+        password: bcryptjs.hashSync(req.body.password, 10),
+        seniority: req.body.seniority,
+        avatar: "/images/avatars/" + req.file.filename,
+      });
       delete req.body.repeatPassword;
 
-      console.log(req.body);
+      personal.save((error) => {
+        if (error) {
+          return res.status(500).json({
+            message: "Error mostrando las personas",
+          });
+        }
+      });
+      res.redirect("/personal");
+      //res.redirect("/personal/detail/" + resultado.id);
 
-      let updatedUserId = personalModel.save(req.body);
+      // let updatedUserId = personalModel.save(req.body);
 
-      res.redirect("/personal/detail/" + updatedUserId);
+      // res.redirect("/personal/detail/" + updatedUserId);
     } else {
       res.render("./staff/register", {
         errors: resultValidation.mapped(),

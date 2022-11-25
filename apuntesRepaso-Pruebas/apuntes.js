@@ -986,11 +986,14 @@ Voy a New Connection - pego la dirección, y pongo conectar
 Para conectar Node.Js con MongoDB, se usa Mongoose 
 (es un ODM - Object Document Mapped)
 npm install mongoose
-en app o sus correspondientes modulos*/
+en app o sus correspondientes modulos (conexion en db.js en data - Schema y Modelo en Persona.js en models - Mostrar/Crear/Etc en los correspondientes controladores)*/
 const mongoose = require("mongoose"); //vincula la app con la BD
 const url = "mongodb://localhost/dev4it"; //la dirección de la BD - La que me pide Compass en New Connection
+/*dentro de esta url:
+-mongodb - para que sepa que es una base de este tipo
+-localhost - servidor local
+-/nombreDeLaBaseDeDatos
 
-/*
 1º Defino conexiones:
 -si es a una sola BD - mongoose.connect
 -si es a más de una BD - mongoose.createConnection.
@@ -1034,6 +1037,8 @@ const personalSchema = mongoose.Schema({
 
 //convención, arrancar con Mayúscula, y aclarar que es un modelo
 const PersonalModel = mongoose.model("persona", personalSchema);
+//OJO - Esto crea la Collección "personaS" - le agrega la "S" - aún desconozco el por qué...
+//Si pusiera ("personas", personalSchema), No le vuelve a gregar otra S.. así que supongo que lo hace porque las colecciones se llaman siempre en Plural?
 
 //Mostrar
 const mostrar = async () => {
@@ -1056,4 +1061,12 @@ const crear = async () => {
   console.log(resultado);
 }
 crear()
+
+// 25-11-22 *************
+/* Días de quilombos, le pude dedicar poco...
+Hoy corrección de Labels - Edit de proyectos (falta update) - Repaso - Separación en módulos de MongoDB - Comenzando con el CRUD sobre la BD
+
+OBS! Sin el: */
+const db = require("./data/db");
+/* Sin eso, aunque no se use directamente db, no se conecta a la BD */
 

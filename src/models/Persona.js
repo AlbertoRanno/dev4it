@@ -10,6 +10,6 @@ const personaSchema = mongoose.Schema({
   avatar: String,
 });
 
-const PersonalModel = mongoose.model("persona", personaSchema);
+const PersonalModel = mongoose.model("personas", personaSchema);
 
 module.exports = PersonalModel
