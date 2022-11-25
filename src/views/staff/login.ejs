@@ -7,7 +7,7 @@
       <form action="/personal/login" method="post" class="row g-3 mt-3">
         <div class="col-6">
           <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control <%= locals.errors &&
+          <input type="email" id="email" class="form-control <%= locals.errors &&
           errors.email ? "is-invalid" : null %>" id="email" name="email"
           placeholder="Ingresa tu mail" /> <% if (locals.errors &&
           errors.email) { %>
@@ -28,6 +28,7 @@
           <div class="form-check">
             <label for="rememberUser" class="form-check-label">Recordar mi usuario</label>
             <input
+              id="rememberUser"
               type="checkbox"
               class="form-check-input"
               name="rememberUser"

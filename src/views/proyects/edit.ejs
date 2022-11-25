@@ -40,7 +40,7 @@
           Gestor:
         </label>
         <div class="col-3">
-          <select class="form-control" name="manager">
+          <select class="form-control" id="manager" name="manager">
             <% for (let i=0; i<personal.length ; i++) { %>
             <% if(personal[i].rol == "Gestor de proyectos"){ %>
             <option value="<%= personal[i].name %>" 
@@ -55,7 +55,7 @@
           Estado:
         </label>
         <div class="col-3">
-          <select class="form-control" name="condition">
+          <select class="form-control" id="condition" name="condition">
             <% for (let i=0; i<estados.length ; i++) { %>
             <option value="<%= estados[i] %>"
               <%= proyectToEdit.condition == estados[i] ? "selected" : " " ; %>>
@@ -70,7 +70,7 @@
           Fecha de inicio:
         </label>
         <div class="col-2">
-          <input type="date" class="form-control" name="dateStart" />
+          <input type="date" id="dateStart" class="form-control" name="dateStart" />
         </div>
       </div>
 
@@ -79,26 +79,26 @@
           Fecha fin:
         </label>
         <div class="col-2">
-          <input type="date" class="form-control" name="dateEnd" />
+          <input type="date" id="dateEnd" class="form-control" name="dateEnd" />
         </div>
       </div>
 
       <div class="row mb-3">
-        <label for="involved" class="col-2 col-form-label">
+        <label class="col-2 col-form-label">
           Personal Asignado:
         </label>
         <div class="col-10">
           <div class="form-check">
-            <% for (let i=0; i<personal.length; i++) { %>
-            <% if(personal[i].rol != "Gestor de proyectos"){ %>
-            <label for="involved" class="form-check-label">
-              <input type="checkbox" class="form-check-input" name="involved" value="<%= personal[i].name %>" 
-              <%= personal[i].rol != "Gestor de proyectos" && proyectToEdit.involved[i] == personal[i].name ? "checked" : null%> 
+            <% for (let i=0; i< toAssign.length; i++) { %>
+        
+            <label for="<%= "involved"[i] %>"  class="form-check-label">
+              <input type="checkbox" class="form-check-input" id="<%= "involved"[i] %>" name="involved" value="<%= toAssign[i].name %>" 
+              <%= toAssign[i].name == proyectToEdit.involved[i] ? "checked" : null%> 
               />
-              <%= personal[i].name %> <br> <%= personal[i].rol %> - <%= personal[i].seniority %>
+              <%= toAssign[i].name %> <br> <%= toAssign[i].rol %> - <%= toAssign[i].seniority %>
             </label>
             <br>
-            <% } }%>
+            <% } %>
           </div>
         </div>
       </div>

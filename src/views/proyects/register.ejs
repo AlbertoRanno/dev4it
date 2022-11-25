@@ -74,7 +74,7 @@
           Fecha de inicio:
         </label>
         <div class="col-2">
-          <input type="date" class="form-control" name="dateStart" />
+          <input type="date" class="form-control" id="dateStart" name="dateStart" />
         </div>
       </div>
 
@@ -83,20 +83,20 @@
           Fecha fin:
         </label>
         <div class="col-2">
-          <input type="date" class="form-control" name="dateEnd" />
+          <input type="date" class="form-control" id="dateEnd" name="dateEnd" />
         </div>
       </div>
 
       <div class="row mb-3">
-        <label for="involved" class="col-2 col-form-label">
+        <label class="col-2 col-form-label">
           Personal Asignado:
         </label>
         <div class="col-10">
           <div class="form-check">
             <% for (let i=0; i<personal.length; i++) { %>
             <% if(personal[i].rol != "Gestor de proyectos"){ %>
-            <label for="involved" class="form-check-label">
-              <input type="checkbox" class="form-check-input" name="involved" value="<%= personal[i].name %>" />
+            <label for="<%= "involved"[i] %>" class="form-check-label">
+              <input type="checkbox" class="form-check-input" id="<%= "involved"[i] %>" name="involved" value="<%= personal[i].name %>" />
               <%= personal[i].name %> <br> <%= personal[i].rol %> - <%= personal[i].seniority %>
             </label>
             <br>

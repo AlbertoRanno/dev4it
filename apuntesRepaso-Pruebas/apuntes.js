@@ -3,7 +3,7 @@
 // npm init - package.json - dependencias/modulos
 // npm install express - requerirlo - guardar su ejecución en una constante "app"
 // Express me permite manejar las peticiones de los diferentes verbos HTTP, en diferentes caminos URL (rutas)
-// BD: creo datos como un objeto con propiedades clave-valor, y lo exporto - lo requiero en app.js - Mas adelante reemplazare por JSON
+// BD: creo datos como un objeto con propiedades clave-valor, y lo exporto - lo requiero en app.js - Mas adelante reemplazare por JSON con el JsonModel - Luego adaptaré a MongoDB
 
 const PUERTO = process.env.PORT || 3000;
 // cuando suba la pagina, el puerto lo asignara el entorno, por eso la primer opcion
@@ -184,8 +184,11 @@ res.json(datos);
       <button type="submit">Enviar</button>
     </form>
 
+ID PARA LOS FORs DE LAS LABELS
+NAME PARA QUE VIAJEN LOS DATOS EN ESAS PROPS
+
 -Label hace que al hacer click en el texto al lado del checkbox, este se seleccione, lo cual es mas comodo para el usuario
--For="" la vincula al input con el id correspondiente
+-For="" la vincula al input con el id correspondiente!! si, el id! (no, el name)
 -name hace referencia al grupo (todos los que tengan el mismo name) de ellos, solo uno podra quedar seleccionado
 name es el nombre de la prop con la que viajara la info en el body !!!
 -Casillas de Verificacion, a igual name, mismo grupo, pero varias simultaneas a diferencia de radio
@@ -264,6 +267,7 @@ app.set("views", "./src/nombreCarpeta");
 /* M-V-C - las vistas se comunican con los controladores, y toman la informacion que estos reciben de los modelos*/
 /* Acordarse de setear en app.js la carpeta con contenido publico*/
 app.use(express.static("./public"));
+
 //En el sistema de ruteo de app, fijarse que las rutas mas especificas vayan primero, finalizando en la raiz "/"
 
 /* Archivo de ruta basico:
@@ -301,7 +305,7 @@ Un form por Get, para que me traiga la vista con los resultados:
   <input type="text" name="search" />  // (*search*)
   <input type="submit" value="Enviar" />
 </form>
-Por estar bien configurado el form, cuando presione en Enviar, me dirijira a la siguiente URL:
+Por estar bien configurado (no, por viajar por GET) el form, cuando presione en Enviar, me dirijira a la siguiente URL:
 http://localhost:3000/personal/search?search=a
 donde el ..al/search?.. es porque ahi configure que fuera el form
 y el ?search=a es porque (*search*) lo llame con NAME (no con ID)... y "a" es lo que puse en el input para que se busque.
@@ -344,6 +348,7 @@ routerProyectos.get("/", proyectsController.list);
 
 Si /search, estuviera luego de /:id ... no podrìa acceder, dado que buscaria primero que la palabra "search", fuera un id.. y por como lo configure, diria que no se encuentra dicho id */
 
+//IMPORTANTE:
 // En app.js , para capturar todo lo que venga de un Form, en forma de un Obj. Lit: (*sigue*)
 app.use(express.urlencoded({ extended: false }));
 //y que, a su vez, me permita convertir dicha data a un formato JSON, si asi lo quiero:
@@ -706,7 +711,7 @@ const { validationResult } = require("express-validator")
     
     Hasta ahora, del modelo M-V-C, tengo las vistas y controladores, pero falta el modelo.
     Aun no toque base de datos de lleno por tratarse de Documentales (solo vi relacionales - MySQL)
-    por lo que voy a usar el JsonModel que tiene las funciones basicas del CRUD:
+    por lo que voy a usar el JsonModel que tiene las funciones basicas del CRUD: (Más adelante adopto MongoDB)
 
   Guardar al usuario en la DB
   Buscar al usuario a loguear (por su email)
@@ -742,7 +747,7 @@ const { validationResult } = require("express-validator")
       (req.body.password = bcryptjs.hashSync(req.body.password, 10)),
         (req.body.avatar = "/images/avatars/" + req.file.filename);
 
-      //bcryptjs.compareSync("contraseña", hash)
+      //bcryptjs.compareSync("contraseña", hash) esta la usaré para chequear en el Login
       console.log(req.body);
 
       /* guardo en la BD, y obtengo el nuevo ID, el cual uso para enviar al detalle de usuario */
@@ -883,7 +888,7 @@ login: (req, res) => {
     res.render("./staff/login");
   },
 
-Reutilizo el middleware userLogged:
+Reutilizo el middleware userLogged: (ya que el usuario puede estar en sesion por loguearse, o por haber dejado recordado el usuario con la cookie)
 
 const JsonModel = require("../models/jsonModel");
 const usersModel = new JsonModel("users"); // lo traigo para buscar el usuario de la cookie
@@ -927,3 +932,128 @@ module.exports = userLoggedMiddleware;
 // 18-11-22 *************
 /*
 Organización de pendientes - CSS en gral, botoneras de flujo, vistas de EDIT */
+
+// 24-11-22 *************
+/*Mongo DB 
+BD NoSQL - significa No relacional (es decir, que no se guardan en tablas relacionales, pero SI PUEDEN GUARDAR RELACIONES ENTRE DATOS - Las relaciones pueden estar incluso anidadas en una única escritura)
+Su versión community - es una versión masiva gratuita
+Base de datos de documentos (Mayor productividad y escalabilidad) Cada registro, es un documento, que no es más que una estructura de pares Clave-Valor, que pueden contener diferentes tipos: strings - booleans - numbers... Los cuales son similares a objetos JSON. y las valores de los campos pueden tener otros documentos, arrays, o arrays de documentos.Ej:
+{
+  name: "sue",
+  age: 26,
+  status: "A",
+  groups: ["news", "sports"]
+}
+Los objetos anidados, permiten omitir los JOINS de SQL, lo que hace las consultas más sencillas.
+Mongo almacena los documentos en colecciones, que son el equivalente a las Tablas
+
+MongoDB es el servidor, que de por sí viene con una consola.
+MongoDB Compass, es la interfaz grafica de esa consola, es decir, es más fácil manejar las conexiones por Compass, que solo tipear comandos en la consola.
+https://www.mongodb.com/try/download/community
+Descargo de ahí, y destildo la opción de que se instale como un servicio. Si se instalara como tal, estaría funcionando desde que arranca el windows, y no es necesario. (aunque si lo instalo como servicio, también después se podría revertir)
+Por lo cual, al entrar a Compass, en nueva conexión, mongo estará apagado. Entro en:
+C:\Program Files\MongoDB\Server\6.0\bin y tendré 1 ejecutable:
+mongod.exe - es el servidor de la BD - doble click , lo abro
+Pero se cierra porque necesita que cree un directorio previo:
+C:\data\db (creo una carpeta en la raiz, y la otra dentro)
+Acá almacenará la info de las colecciones
+Ahora sí ejecuto mongod.exe, y veré un:
+Listening on","attr":{"address":"127.0.0.1"}} que es la dirección de IP de la propia PC
+"Waiting for connections","attr":{"port":27017,"ssl":"off"}}
+Al ver esto sé que MongoDB está funcionando. Puedo minimizar la ventana, pero tiene que estar corriendo.
+En compass, ya viene la URL local por defecto: mongodb://localhost:27017 , le doy a conectar
+Y vienen 3 colecciones por defecto: admin / config / local
+
+Propiedades del sistema - Variables de entorno - Path - Editar - Nuevo y agregar:
+C:\Program Files\MongoDB\Server\6.0\bin
+Así podré ejecutar el servidor de Mongo, desde cualquier parte de la ventana de comandos
+
+//BD online:
+https://cloud.mongodb.com/v2/637f8dbca8f9c471f53ed62e#clusters/edit?filter=starter&fromPathSelector=true
+Username: Halgren
+Password: 0AA1tjxDGwtuyb7y
+Connect from: My Local Environment - IP Access List: 190.49.22.181/32  - 
+Connect to Cluster0 
+Copy the connection string, then open MongoDB Compass:
+mongodb+srv://Halgren:<password>@cluster0.2sd9dcs.mongodb.net/test
+reemplazo el password:
+mongodb+srv://Halgren:0AA1tjxDGwtuyb7y@cluster0.2sd9dcs.mongodb.net/test
+
+Y hay diferentes programas para conectarse con Mongo:
+ROBOT 3T: https://studio3t.com/download-studio3t-free (Viejo - preferible usar Compass)
+Voy a New Connection - pego la dirección, y pongo conectar
+
+Para conectar Node.Js con MongoDB, se usa Mongoose 
+(es un ODM - Object Document Mapped)
+npm install mongoose
+en app o sus correspondientes modulos*/
+const mongoose = require("mongoose"); //vincula la app con la BD
+const url = "mongodb://localhost/dev4it"; //la dirección de la BD - La que me pide Compass en New Connection
+
+/*
+1º Defino conexiones:
+-si es a una sola BD - mongoose.connect
+-si es a más de una BD - mongoose.createConnection.
+
+Ambas, connect y createConnection toman: mongodb:// URI, or the parameters host, database, port, options.*/
+
+//conecto con la BD - los parámetros comentados en versiones viejas son necesarios para evitar todos los avisos de Deprecated
+mongoose
+  .connect(url
+    /*
+    ,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+    }
+  */)
+  .then(() => console.log("Conectado a Mongoose"))
+  .catch((e) => console.log("El error de conexión es " + e));
+
+/* Para crear el Modelo de datos que va a seguir mi BD (M-v-c), necesito un Schema. Ej.
+
+const Comment = new Schema({
+  name: { type: String, default: 'hahaha' },
+  age: { type: Number, min: 18, index: true },
+  bio: { type: String, match: /[a-z]/ },
+  date: { type: Date, default: Date.now },
+  buff: Buffer
+}); */
+
+//convención, arrancar con minúscula, y decir que es un Schema
+const personalSchema = mongoose.Schema({
+  name: String,
+  email: String,
+  rol: String,
+  password: String,
+  proyects: Array,
+  seniority: String,
+  avatar: String,
+});
+
+//convención, arrancar con Mayúscula, y aclarar que es un modelo
+const PersonalModel = mongoose.model("persona", personalSchema);
+
+//Mostrar
+const mostrar = async () => {
+  const personal = await PersonalModel.find({ name: "Hernán Mercado" }); //find() para todos
+  console.log(personal);
+}
+mostrar();
+
+//Crear
+const crear = async () => {
+  const personal = new PersonalModel({
+    name: "Mario",
+    email: "Mario",
+    rol: "Mario",
+    password: "Mario",
+    seniority: "Mario",
+    avatar: "Mario",
+  });
+  const resultado = await personal.save()
+  console.log(resultado);
+}
+crear()
+

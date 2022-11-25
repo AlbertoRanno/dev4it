@@ -29,7 +29,7 @@ const controller = {
         .status(404)
         .send(`No se encontro ningun proyecto con el id ${id}`);
     }
-    
+
     res.render("./proyects/detail", { proyect });
   },
   search: (req, res) => {
@@ -82,20 +82,24 @@ const controller = {
   edit: (req, res) => {
     let id = req.params.id;
     let proyectToEdit = proyectsModel.buscar(id);
-  console.log(proyectToEdit.involved[1]);
-  console.log(datosPersonal[1].name);
+    let toAssign = [];
+    for (let i = 0; i < datosPersonal.length; i++) {
+      if (datosPersonal[i].rol != "Gestor de proyectos") {
+        toAssign.push(datosPersonal[i]);
+      }
+    }
 
+    console.log(proyectToEdit.involved);
+    console.log(toAssign);
 
     res.render("./proyects/edit", {
       proyectToEdit,
       personal: datosPersonal,
       estados,
+      toAssign,
     });
-    
   },
-  update: (req, res) => {
-
-  },
+  update: (req, res) => {},
   delete: (req, res) => {
     let id = req.params.id;
     proyectsModel.destroy(id);

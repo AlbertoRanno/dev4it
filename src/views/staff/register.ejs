@@ -18,7 +18,7 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="name"><b>Nombre completo:</b></label>
-                  <input type="text" name="name" class="form-control <%=
+                  <input type="text" id="name" name="name" class="form-control <%=
                   locals.errors && errors.name ? "is-invalid" : null %>"
                   value="<%= locals.oldData ? oldData.name : null %>" /><% if
                   (locals.errors && errors.name) { %>
@@ -30,7 +30,7 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="email"><b>Correo electrónico:</b></label>
-                  <input type="text" name="email" class="form-control <%=
+                  <input type="text" id="email" name="email" class="form-control <%=
                   locals.errors && errors.email ? "is-invalid" : null %>"
                   value="<%= locals.oldData ? oldData.email : null %>" /> <%
                   if(locals.errors && errors.email) { %>
@@ -42,7 +42,7 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="rol"><b>Rol:</b></label>
-                  <input type="text" name="rol" class="form-control <%=
+                  <input type="text" id="rol" name="rol" class="form-control <%=
                   locals.errors && errors.rol ? "is-invalid" : null %>"
                   value="<%= locals.oldData ? oldData.rol : null %>" /> <% if
                   (locals.errors && errors.name) { %>
@@ -54,7 +54,7 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="password"><b>Contraseña:</b></label>
-                  <input type="password" name="password" class="form-control <%=
+                  <input type="password" id="password" name="password" class="form-control <%=
                   locals.errors && errors.password ? "is-invalid" : null %>"/>
                   <% if (locals.errors && errors.password) { %>
                   <div class="text-danger"><%= errors.password.msg %></div>
@@ -65,7 +65,7 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="seniority"><b>Seniority:</b></label>
-                  <input type="text" name="seniority" class="form-control <%=
+                  <input type="text" id="seniority" name="seniority" class="form-control <%=
                   locals.errors && errors.seniority ? "is-invalid" : null %>"
                   value="<%= locals.oldData ? oldData.seniority : null %>" /> <%
                   if (locals.errors && errors.name) { %>
@@ -77,7 +77,7 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="repeatPassword"><b>Repetir Contraseña:</b></label>
-                  <input type="password" name="repeatPassword"
+                  <input type="password" id="repeatPassword" name="repeatPassword"
                   class="form-control <%= locals.errors && errors.repeatPassword
                   ? "is-invalid" : null %>"/> <% if (locals.errors &&
                   errors.repeatPassword) { %>
@@ -91,7 +91,7 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="avatar"><b>Imagen de Perfil:</b></label>
-                  <input type="file" name="avatar" class="form-control <%=
+                  <input type="file" id="avatar" name="avatar" class="form-control <%=
                   locals.errors && errors.avatar ? "is-invalid" : null %>" /> <%
                   if (locals.errors && errors.avatar) { %>
                   <div class="text-danger"><%= errors.avatar.msg %></div>
@@ -101,7 +101,7 @@
 
               <div class="col-md-6 mt-3">
                 <div class="form-group">
-                  <label for="proyects" class="form-check-label"
+                  <label class="form-check-label"
                     ><b>Proyectos involucrado:</b></label
                   >
                   <% for (let i = 0; i < datosProyectos.length; i++) { %>
@@ -113,7 +113,6 @@
                       <input
                         type="checkbox"
                         name="proyects"
-                        id="proyects"
                         class="form-check-input"
                         value="<%= datosProyectos[i].name  %>"
                       /><%= datosProyectos[i].name %> <% } %></a

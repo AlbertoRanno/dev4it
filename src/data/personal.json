@@ -58,5 +58,14 @@
    "proyects": ["DevOps interno", "Exp. de producto"],
    "id": 5,
    "avatar": "/images/avatars/avatarDef.png"
+ }, {
+   "name": "Daniel Ranno",
+   "email": "albert@hotmail.com",
+   "rol": "Magic Dev",
+   "password": "$2a$10$JHw7PrZU4quf2aMhmolYrOiUmKLtGR815kdDB9N5jjCeKgsiTi3Za",
+   "seniority": "Jr.",
+   "proyects": ["DevOps interno", "Exp. de producto"],
+   "id": 6,
+   "avatar": "/images/avatars/avatarDef.png"
  }
 ]

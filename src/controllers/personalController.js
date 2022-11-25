@@ -3,6 +3,7 @@ const personalModel = new JsonModel("personal");
 const proyectsModel = new JsonModel("proyects");
 const { validationResult } = require("express-validator");
 const bcryptjs = require("bcryptjs");
+// const Persona = require("../models/Persona")
 
 let datos = personalModel.readJsonFile();
 let datosProyectos = proyectsModel.readJsonFile();
