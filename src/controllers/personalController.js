@@ -1,9 +1,7 @@
 const JsonModel = require("../models/jsonModel");
 const personalModel = new JsonModel("personal");
 const proyectsModel = new JsonModel("proyects");
-const {
-  validationResult
-} = require("express-validator");
+const { validationResult } = require("express-validator");
 const bcryptjs = require("bcryptjs");
 const Persona = require("../models/Persona"); //PersonalModel
 
@@ -24,17 +22,20 @@ const controller = {
     });
   },
   detail: (req, res) => {
-    let persona = Persona.findById({id:req.params.id});
-    console.log(req.params);
-    console.log(persona);
-
-    if (!persona) {
-      return res.status(404).send(`No se encontro a nadie con el id`);
-    }
-
-    res.render("./staff/detail", {
-      persona
+    let id = req.params.id;
+    Persona.findById(id, (error, persona) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error",
+        });
+      } else {
+        console.log(persona);
+        res.render("./staff/detail", {
+          persona,
+        });
+      }
     });
+    console.log(req.params);
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search.toLocaleLowerCase();
@@ -60,8 +61,9 @@ const controller = {
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    Persona.find({
-        email: req.body.email
+    Persona.find(
+      {
+        email: req.body.email,
       },
       (error, userInDB) => {
         if (error) {
@@ -113,8 +115,6 @@ const controller = {
         }
       }
     );
-
-
   },
   login: (req, res) => {
     res.render("./staff/login");
@@ -149,8 +149,8 @@ const controller = {
         res.render("./staff/login", {
           errors: {
             email: {
-              msg: "Credenciales inválidas"
-            }
+              msg: "Credenciales inválidas",
+            },
           },
         });
       }
@@ -158,15 +158,15 @@ const controller = {
       res.render("./staff/login", {
         errors: {
           email: {
-            msg: "Usuario no encontrado en la base de datos"
-          }
+            msg: "Usuario no encontrado en la base de datos",
+          },
         },
       });
     }
   },
   profile: (req, res) => {
     res.render("./staff/profile", {
-      user: req.session.userLogged
+      user: req.session.userLogged,
     });
   },
   logout: (req, res) => {
@@ -219,17 +219,16 @@ const controller = {
   delete: (req, res) => {
     // let id = req.params.id;
     // personalModel.destroy(id);
-    Persona.findByIdAndDelete((req.body._id),
-      (error) => {
-        if (error) {
-          return res.status(500).json({
-            message: "Error elimando al usuario",
-          })
-        } else {
-          console.log("Usuario eliminado correctamente");
-          res.redirect("/personal")
-        }
-      })
+    Persona.findByIdAndDelete(req.body._id, (error) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error elimando al usuario",
+        });
+      } else {
+        console.log("Usuario eliminado correctamente");
+        res.redirect("/personal");
+      }
+    });
   },
 };
 
