@@ -8,7 +8,7 @@ const personaSchema = mongoose.Schema({
   proyects: Array,
   seniority: String,
   avatar: String,
-});
+}, {versionKey: false}); // Para que no cree el __v:0 en la BD
 
 const PersonalModel = mongoose.model("personas", personaSchema);
 

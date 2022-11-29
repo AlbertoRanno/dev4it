@@ -1,7 +1,9 @@
 const JsonModel = require("../models/jsonModel");
 const personalModel = new JsonModel("personal");
 const proyectsModel = new JsonModel("proyects");
-const { validationResult } = require("express-validator");
+const {
+  validationResult
+} = require("express-validator");
 const bcryptjs = require("bcryptjs");
 const Persona = require("../models/Persona"); //PersonalModel
 
@@ -22,14 +24,17 @@ const controller = {
     });
   },
   detail: (req, res) => {
-    let id = req.params.id;
-    let persona = personalModel.buscar(id);
+    let persona = Persona.findById({id:req.params.id});
+    console.log(req.params);
+    console.log(persona);
 
     if (!persona) {
-      return res.status(404).send(`No se encontro a nadie con el id ${id}`);
+      return res.status(404).send(`No se encontro a nadie con el id`);
     }
 
-    res.render("./staff/detail", { persona });
+    res.render("./staff/detail", {
+      persona
+    });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search.toLocaleLowerCase();
@@ -55,53 +60,61 @@ const controller = {
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    //A MODIFICAR DESDE BD!!
-
-    //Verifico que no haya sido cargado previamente:
-    let userInDB = personalModel.filtrarPorCampoValor("email", req.body.email);
-
-    if (userInDB.length >= 1) {
-      res.render("./staff/register", {
-        errors: {
-          email: {
-            msg: "Ya existe un usuario registrado con este email",
-          },
-        },
-        oldData: req.body,
-        datosProyectos,
-      });
-    } else if (resultValidation.isEmpty()) {
-      
-      const personal = new Persona({
-        name: req.body.name,
-        email: req.body.email,
-        rol: req.body.rol,
-        password: bcryptjs.hashSync(req.body.password, 10),
-        seniority: req.body.seniority,
-        avatar: "/images/avatars/" + req.file.filename,
-      });
-      delete req.body.repeatPassword;
-
-      personal.save((error) => {
+    Persona.find({
+        email: req.body.email
+      },
+      (error, userInDB) => {
         if (error) {
           return res.status(500).json({
-            message: "Error mostrando las personas",
+            message: "Error buscando las personas",
           });
         }
-      });
-      res.redirect("/personal");
-      //res.redirect("/personal/detail/" + resultado.id);
+        console.log(userInDB);
+        if (userInDB.length >= 1) {
+          res.render("./staff/register", {
+            errors: {
+              email: {
+                msg: "Ya existe un usuario registrado con este email",
+              },
+            },
+            oldData: req.body,
+            datosProyectos,
+          });
+        } else if (resultValidation.isEmpty()) {
+          const personal = new Persona({
+            name: req.body.name,
+            email: req.body.email,
+            rol: req.body.rol,
+            password: bcryptjs.hashSync(req.body.password, 10),
+            seniority: req.body.seniority,
+            avatar: "/images/avatars/" + req.file.filename,
+          });
+          delete req.body.repeatPassword;
 
-      // let updatedUserId = personalModel.save(req.body);
+          personal.save((error) => {
+            if (error) {
+              return res.status(500).json({
+                message: "Error mostrando las personas",
+              });
+            }
+          });
+          res.redirect("/personal");
+          //res.redirect("/personal/detail/" + resultado.id);
 
-      // res.redirect("/personal/detail/" + updatedUserId);
-    } else {
-      res.render("./staff/register", {
-        errors: resultValidation.mapped(),
-        oldData: req.body,
-        datosProyectos,
-      });
-    }
+          // let updatedUserId = personalModel.save(req.body);
+
+          // res.redirect("/personal/detail/" + updatedUserId);
+        } else {
+          res.render("./staff/register", {
+            errors: resultValidation.mapped(),
+            oldData: req.body,
+            datosProyectos,
+          });
+        }
+      }
+    );
+
+
   },
   login: (req, res) => {
     res.render("./staff/login");
@@ -134,17 +147,27 @@ const controller = {
         res.redirect("./profile/" + userToLogin.id);
       } else {
         res.render("./staff/login", {
-          errors: { email: { msg: "Credenciales inválidas" } },
+          errors: {
+            email: {
+              msg: "Credenciales inválidas"
+            }
+          },
         });
       }
     } else {
       res.render("./staff/login", {
-        errors: { email: { msg: "Usuario no encontrado en la base de datos" } },
+        errors: {
+          email: {
+            msg: "Usuario no encontrado en la base de datos"
+          }
+        },
       });
     }
   },
   profile: (req, res) => {
-    res.render("./staff/profile", { user: req.session.userLogged });
+    res.render("./staff/profile", {
+      user: req.session.userLogged
+    });
   },
   logout: (req, res) => {
     res.clearCookie("userEmail");
@@ -152,8 +175,8 @@ const controller = {
     return res.redirect("/");
   },
   edit: (req, res) => {
-    let id = req.params.id;
-    let personalToEdit = personalModel.buscar(id);
+    let _id = req.params.id;
+    let personalToEdit = personalModel.buscar(_id);
     res.render("./staff/edit", {
       personalToEdit,
       datosProyectos,
@@ -194,10 +217,19 @@ const controller = {
     }
   },
   delete: (req, res) => {
-    let id = req.params.id;
-    personalModel.destroy(id);
-
-    res.redirect("/personal");
+    // let id = req.params.id;
+    // personalModel.destroy(id);
+    Persona.findByIdAndDelete((req.body._id),
+      (error) => {
+        if (error) {
+          return res.status(500).json({
+            message: "Error elimando al usuario",
+          })
+        } else {
+          console.log("Usuario eliminado correctamente");
+          res.redirect("/personal")
+        }
+      })
   },
 };
 

@@ -157,6 +157,7 @@ res.json(datos);
 //<a href="https://translate.google.com.ar/" target="_blank" rel="nooper noreferrer">tablero React</a> Para que el enlace abra otra pestaña (sin irse de la actual) y por motivos de seguridad (para prevenir un ataque donde la pestaña de origen se reemplaza, para que le usuario deje sus datos, lo cual es una brecha de seguridad)
 
 /*Enlaces a otros lugares de la misma pagina - en lugar de una ruta, le paso un id
+
 <a href="#prueba">Prueba</a>
 <h4 id="prueba">Prueba</h4>*/
 
@@ -1035,6 +1036,7 @@ const personalSchema = mongoose.Schema({
   avatar: String,
 });
 
+
 //convención, arrancar con Mayúscula, y aclarar que es un modelo
 const PersonalModel = mongoose.model("persona", personalSchema);
 //OJO - Esto crea la Collección "personaS" - le agrega la "S" - aún desconozco el por qué...
@@ -1066,7 +1068,10 @@ crear()
 /* Días de quilombos, le pude dedicar poco...
 Hoy corrección de Labels - Edit de proyectos (falta update) - Repaso - Separación en módulos de MongoDB - Comenzando con el CRUD sobre la BD
 
-OBS! Sin el: */
+OBS! Sin esto: */
 const db = require("./data/db");
 /* Sin eso, aunque no se use directamente db, no se conecta a la BD */
 
+
+// 29-11-22 *************
+/*  */
