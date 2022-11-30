@@ -1,10 +1,7 @@
-*El update (que actualice, solo modifiqué la vista del Edit)
+*El update tiene cruzado los datos con los proyectos, hacer crud de proyectos y volver a la persistencia de proyectos en el update
 
 *Vistas:
 - Not Found
-
-*Observaciones:
-- Tremenda contra de usar un simple JSON como BD, es que no hay vínculos, por ej. los proyectos de las personas no se actualizan
 
 *Dudas puntuales:
 - sigue siendo necesario methodOverride?? los navegadores aun no consideran put/delete/.. ? .. ya murió "e"..

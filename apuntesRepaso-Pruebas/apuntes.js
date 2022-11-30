@@ -1003,7 +1003,8 @@ Ambas, connect y createConnection toman: mongodb:// URI, or the parameters host,
 
 //conecto con la BD - los parámetros comentados en versiones viejas son necesarios para evitar todos los avisos de Deprecated
 mongoose
-  .connect(url
+  .connect(
+    url
     /*
     ,{
     useNewUrlParser: true,
@@ -1011,7 +1012,8 @@ mongoose
     useFindAndModify: false,
     useCreateIndex: true
     }
-  */)
+  */
+  )
   .then(() => console.log("Conectado a Mongoose"))
   .catch((e) => console.log("El error de conexión es " + e));
 
@@ -1036,7 +1038,6 @@ const personalSchema = mongoose.Schema({
   avatar: String,
 });
 
-
 //convención, arrancar con Mayúscula, y aclarar que es un modelo
 const PersonalModel = mongoose.model("persona", personalSchema);
 //OJO - Esto crea la Collección "personaS" - le agrega la "S" - aún desconozco el por qué...
@@ -1046,7 +1047,7 @@ const PersonalModel = mongoose.model("persona", personalSchema);
 const mostrar = async () => {
   const personal = await PersonalModel.find({ name: "Hernán Mercado" }); //find() para todos
   console.log(personal);
-}
+};
 mostrar();
 
 //Crear
@@ -1059,10 +1060,10 @@ const crear = async () => {
     seniority: "Mario",
     avatar: "Mario",
   });
-  const resultado = await personal.save()
+  const resultado = await personal.save();
   console.log(resultado);
-}
-crear()
+};
+crear();
 
 // 25-11-22 *************
 /* Días de quilombos, le pude dedicar poco...
@@ -1072,6 +1073,15 @@ OBS! Sin esto: */
 const db = require("./data/db");
 /* Sin eso, aunque no se use directamente db, no se conecta a la BD */
 
-
 // 29-11-22 *************
-/*  */
+/*Entendí en parte como traer en base al ID de MongoDB, y logré acceder a Detalle de usuario */
+
+// 30-11-22 *************
+/* 
+De usuarios: el search, edit, update, delete (todo gracias a lo del id que me tenía bloqueado)
+
+OJO con find vs findONE
+Si find, encuentra uno, lo deja como un elemento dentro de un array, en cambio findOne, brinda directamente el objeto
+
+Observacion vieja para recordar:
+- Tremenda contra de usar un simple JSON como BD, es que no hay vínculos, por ej. los proyectos de las personas no se actualizan */

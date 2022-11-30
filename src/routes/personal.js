@@ -2,7 +2,7 @@ const express = require("express");
 const routerPersonas = express.Router();
 const personalController = require("../controllers/personalController.js");
 const uploadFile = require("../middlewares/multer");
-const validations = require("../middlewares/validationsPersReg");
+const validations = require("../middlewares/validationsPersUpd");
 const guest = require("../middlewares/guest");
 const auth = require("../middlewares/auth");
 
