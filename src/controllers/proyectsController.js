@@ -2,6 +2,8 @@ const JsonModel = require("../models/jsonModel");
 const personalModel = new JsonModel("personal");
 const proyectsModel = new JsonModel("proyects");
 const { validationResult } = require("express-validator");
+const Proyecto = require("../models/Proyecto");
+const Persona = require("../models/Persona");
 
 let datos = proyectsModel.readJsonFile();
 let datosPersonal = personalModel.readJsonFile();
@@ -18,39 +20,63 @@ let estados = [
 
 const controller = {
   list: (req, res) => {
-    res.render("./proyects/proyects", { listado: datos });
+    Proyecto.find({}, (error, proyectos) => {
+      if (error) {
+        return res
+          .status(500)
+          .json({ message: "Error buscando los proyectos" });
+      } else {
+        res.render("./proyects/proyects", { listado: proyectos });
+      }
+    });
   },
   detail: (req, res) => {
-    const id = req.params.id;
-    const proyect = proyectsModel.buscar(id);
-
-    if (!proyect) {
-      return res
-        .status(404)
-        .send(`No se encontro ningun proyecto con el id ${id}`);
-    }
-
-    res.render("./proyects/detail", { proyect });
+    let id = req.params.id;
+    Proyecto.findById(id, (error, proyect) => {
+      if (error) {
+        res
+          .status(500)
+          .json({ message: `Error buscando al proyecto con id: ${id}` });
+      } else {
+        res.render("./proyects/detail", { proyect });
+      }
+    });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search;
 
     const results = [];
 
-    for (let i = 0; i < datos.length; i++) {
-      if (
-        datos[i].name
-          .toLocaleLowerCase()
-          .includes(loQueBuscoElUsuario.toLocaleLowerCase())
-      ) {
-        results.push(datos[i]);
-      }
-    }
+    Proyecto.find({}, (error, proyectos) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error buscando el proyecto solicitado",
+        });
+      } else {
+        for (let i = 0; i < proyectos.length; i++) {
+          if (
+            proyectos[i].name
+              .toLocaleLowerCase()
+              .includes(loQueBuscoElUsuario.toLocaleLowerCase())
+          ) {
+            results.push(proyectos[i]);
+          }
+        }
 
-    res.render("./proyects/search", { loQueBuscoElUsuario, results });
+        res.render("./proyects/search", { loQueBuscoElUsuario, results });
+      }
+    });
   },
   register: (req, res) => {
-    res.render("./proyects/register.ejs", { personal: datosPersonal, estados });
+    Persona.find({}, (error, personas) => {
+      if (error) {
+        return res
+          .status(500)
+          .json({ message: "Error accediendo a los datos del personal" });
+      } else {
+        res.render("./proyects/register.ejs", { personal: personas, estados });
+      }
+    });
   },
   store: (req, res) => {
     const resultValidation = validationResult(req);

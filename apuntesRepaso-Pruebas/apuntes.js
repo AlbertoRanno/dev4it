@@ -1078,7 +1078,7 @@ const db = require("./data/db");
 
 // 30-11-22 *************
 /* 
-De usuarios: el search, edit, update, delete (todo gracias a lo del id que me tenía bloqueado)
+De usuarios: el search, edit, update, delete, login (todo gracias a lo del id que me tenía bloqueado)
 
 OJO con find vs findONE
 Si find, encuentra uno, lo deja como un elemento dentro de un array, en cambio findOne, brinda directamente el objeto

@@ -12,7 +12,11 @@
       <li class="list-group-item"><%= proyect.condition %></li>
       <li class="list-group-item"><%= proyect.dateStart %></li>
       <li class="list-group-item"><%= proyect.dateEnd %></li>
-      <li class="list-group-item"><%= proyect.link %></li>
+      <li class="list-group-item">
+        <a href="<%= proyect.link %>" target="_blank" rel="nooper noreferrer"
+          ><%= proyect.link %></a
+        >
+      </li>
       <li class="list-group-item">
         <ol>
           <% for( let i = 0; i < proyect.involved.length; i++ ) { %>
