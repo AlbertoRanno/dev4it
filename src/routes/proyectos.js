@@ -1,11 +1,12 @@
 const express = require("express");
 const routerProyectos = express.Router();
 const proyectsController = require("../controllers/proyectsController.js");
-const validations = require("../middlewares/validationsProyReg")
+const validationsReg = require("../middlewares/validationsProyReg")
+const validationsUpd = require("../middlewares/validationsProyUpd");
 
 routerProyectos.get("/register", proyectsController.register);
 
-routerProyectos.post("/register", validations, proyectsController.store);
+routerProyectos.post("/register", validationsReg, proyectsController.store);
 
 routerProyectos.use("/search", proyectsController.search);
 
@@ -13,7 +14,7 @@ routerProyectos.get("/detail/:id", proyectsController.detail);
 
 routerProyectos.get("/edit/:id", proyectsController.edit);
 
-routerProyectos.patch("/update/:id", proyectsController.update);
+routerProyectos.patch("/update/:id", validationsUpd, proyectsController.update);
 
 routerProyectos.delete("/delete/:id", proyectsController.delete)
 

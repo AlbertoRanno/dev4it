@@ -2,7 +2,8 @@ const express = require("express");
 const routerPersonas = express.Router();
 const personalController = require("../controllers/personalController.js");
 const uploadFile = require("../middlewares/multer");
-const validations = require("../middlewares/validationsPersUpd");
+const validationsUpd = require("../middlewares/validationsPersUpd");
+const validationsReg = require("../middlewares/validationsPersReg");
 const guest = require("../middlewares/guest");
 const auth = require("../middlewares/auth");
 
@@ -11,7 +12,7 @@ routerPersonas.get("/register", personalController.register);
 routerPersonas.post(
   "/register",
   uploadFile.single("avatar"),
-  validations,
+  validationsReg,
   personalController.store
 );
 
@@ -28,7 +29,7 @@ routerPersonas.get("/edit/:id", personalController.edit);
 routerPersonas.patch(
   "/update/:id",
   uploadFile.single("avatar"),
-  validations,
+  validationsUpd,
   personalController.update
 );
 

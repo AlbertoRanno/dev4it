@@ -1,12 +1,23 @@
-const JsonModel = require("../models/jsonModel");
-const personalModel = new JsonModel("personal");
-const proyectsModel = new JsonModel("proyects");
-const { validationResult } = require("express-validator");
+const {
+  validationResult
+} = require("express-validator");
 const Proyecto = require("../models/Proyecto");
 const Persona = require("../models/Persona");
 
-let datos = proyectsModel.readJsonFile();
-let datosPersonal = personalModel.readJsonFile();
+let datosPersonal = [];
+
+Persona.find({}, (error, personas) => {
+  if (error) {
+    return res.status(500).json({
+      message: "Error buscando al personal"
+    });
+  } else {
+    for (let i = 0; i < personas.length; i++) {
+      datosPersonal.push(personas[i]);
+    }
+  }
+});
+
 let estados = [
   "Activo",
   "Finalizado",
@@ -24,9 +35,13 @@ const controller = {
       if (error) {
         return res
           .status(500)
-          .json({ message: "Error buscando los proyectos" });
+          .json({
+            message: "Error buscando los proyectos"
+          });
       } else {
-        res.render("./proyects/proyects", { listado: proyectos });
+        res.render("./proyects/proyects", {
+          listado: proyectos
+        });
       }
     });
   },
@@ -36,9 +51,13 @@ const controller = {
       if (error) {
         res
           .status(500)
-          .json({ message: `Error buscando al proyecto con id: ${id}` });
+          .json({
+            message: `Error buscando al proyecto con id: ${id}`
+          });
       } else {
-        res.render("./proyects/detail", { proyect });
+        res.render("./proyects/detail", {
+          proyect
+        });
       }
     });
   },
@@ -56,81 +75,181 @@ const controller = {
         for (let i = 0; i < proyectos.length; i++) {
           if (
             proyectos[i].name
-              .toLocaleLowerCase()
-              .includes(loQueBuscoElUsuario.toLocaleLowerCase())
+            .toLocaleLowerCase()
+            .includes(loQueBuscoElUsuario.toLocaleLowerCase())
           ) {
             results.push(proyectos[i]);
           }
         }
 
-        res.render("./proyects/search", { loQueBuscoElUsuario, results });
+        res.render("./proyects/search", {
+          loQueBuscoElUsuario,
+          results
+        });
       }
     });
   },
   register: (req, res) => {
-    Persona.find({}, (error, personas) => {
-      if (error) {
-        return res
-          .status(500)
-          .json({ message: "Error accediendo a los datos del personal" });
-      } else {
-        res.render("./proyects/register.ejs", { personal: personas, estados });
-      }
+    res.render("./proyects/register.ejs", {
+      personal: datosPersonal,
+      estados
     });
   },
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    let proyectInDB = proyectsModel.filtrarPorCampoValor("name", req.body.name);
+    Proyecto.find({
+      name: req.body.name
+    }, (error, proyectInDB) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error buscando el proyecto"
+        });
+      } else {
+        console.log(proyectInDB);
+        if (proyectInDB.length >= 1) {
+          res.render("./proyects/register", {
+            errors: {
+              name: {
+                msg: "Este proyecto ya fue ingresado"
+              }
+            },
+            oldData: req.body,
+            estados,
+            personal: datosPersonal,
+          });
+        } else if (resultValidation.isEmpty()) {
+          const proyect = new Proyecto({
+            name: req.body.name,
+            description: req.body.description,
+            manager: req.body.manager,
+            condition: req.body.condition,
+            dateStart: req.body.dateStart,
+            dateEnd: req.body.dateEnd,
+            involved: req.body.involved,
+            link: req.body.link,
+          });
 
-    if (proyectInDB.length >= 1) {
-      res.render("./proyects/register", {
-        errors: { name: { msg: "Este proyecto ya fue ingresado" } },
-        oldData: req.body,
-        estados,
-        personal: datosPersonal,
-      });
-    } else if (resultValidation.isEmpty()) {
-      console.log(req.body);
+          proyect.save((error) => {
+            if (error) {
+              return res.status(500).json({
+                message: "Error guardando en DB"
+              });
+            }
+          });
 
-      let newProyectId = proyectsModel.save(req.body);
-
-      res.redirect("/proyectos/detail/" + newProyectId);
-    } else {
-      res.render("./proyects/register", {
-        personal: datosPersonal,
-        estados,
-        errors: resultValidation.mapped(),
-        oldData: req.body,
-      });
-    }
+          res.redirect("/proyectos");
+        } else {
+          res.render("./proyects/register", {
+            personal: datosPersonal,
+            estados,
+            errors: resultValidation.mapped(),
+            oldData: req.body,
+          });
+        }
+      }
+    });
   },
   edit: (req, res) => {
     let id = req.params.id;
-    let proyectToEdit = proyectsModel.buscar(id);
-    let toAssign = [];
-    for (let i = 0; i < datosPersonal.length; i++) {
-      if (datosPersonal[i].rol != "Gestor de proyectos") {
-        toAssign.push(datosPersonal[i]);
+    Proyecto.findById(id, (error, proyectToEdit) => {
+      if (error) {
+        return res
+          .status(500)
+          .json({
+            message: `Error localizando el proyecto con id: ${id}`
+          });
+      } else {
+        let toAssign = [];
+        for (let i = 0; i < datosPersonal.length; i++) {
+          if (datosPersonal[i].rol != "Gestor de proyectos") {
+            toAssign.push(datosPersonal[i]);
+          }
+        }
+
+        console.log(proyectToEdit.involved);
+        console.log(toAssign);
+
+        res.render("./proyects/edit", {
+          proyectToEdit,
+          personal: datosPersonal,
+          estados,
+          toAssign,
+        });
       }
-    }
-
-    console.log(proyectToEdit.involved);
-    console.log(toAssign);
-
-    res.render("./proyects/edit", {
-      proyectToEdit,
-      personal: datosPersonal,
-      estados,
-      toAssign,
     });
   },
-  update: (req, res) => {},
+  update: (req, res) => {
+    const resultValidation = validationResult(req);
+    let id = req.params.id;
+
+    Proyecto.findById(id, (error, proyectToEdit) => {
+      if (error) {
+        return res
+          .status(500)
+          .json({
+            message: `Error buscando el proyecto con id: ${id}`
+          });
+      } else {
+        if (resultValidation.isEmpty()) {
+          let name = req.body.name;
+          let description = req.body.description;
+          let manager = req.body.manager;
+          let condition = req.body.condition;
+          let dateStart = req.body.dateStart;
+          let dateEnd = req.body.dateEnd;
+          let involved = req.body.involved;
+          let link = req.body.link;
+
+          Proyecto.findByIdAndUpdate(
+            id, {
+              name,
+              description,
+              manager,
+              condition,
+              dateStart,
+              dateEnd,
+              involved,
+              link,
+            },
+            (error, proyect) => {
+              if (error) {
+                return res
+                  .status(500)
+                  .json({
+                    message: "Error guardando en DB"
+                  });
+              } else {
+                console.log(proyect);
+                res.redirect("/proyectos");
+              }
+            }
+          );
+        } else {
+          res.render("./proyects/edit", {
+            proyectToEdit,
+            personal: datosPersonal,
+            estados,
+            oldData: req.body,
+          });
+        }
+      }
+    });
+  },
   delete: (req, res) => {
     let id = req.params.id;
-    proyectsModel.destroy(id);
-
-    res.redirect("/proyectos");
+    Proyecto.findByIdAndDelete(id, (error) => {
+      if (error) {
+        return res
+          .status(500)
+          .json({
+            message: "Error eliminando el proyecto"
+          });
+      } else {
+        console.log("Proyecto eliminado correctamente");
+        res.redirect("/proyectos");
+      }
+    });
   },
 };
 

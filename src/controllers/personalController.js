@@ -1,10 +1,19 @@
-const JsonModel = require("../models/jsonModel");
-const proyectsModel = new JsonModel("proyects");
 const { validationResult } = require("express-validator");
 const bcryptjs = require("bcryptjs");
 const Persona = require("../models/Persona");
+const Proyecto = require("../models/Proyecto");
 
-let datosProyectos = proyectsModel.readJsonFile();
+let datosProyectos = [];
+
+Proyecto.find({}, (error, proyectos) => {
+  if (error) {
+    return res.status(500).json({ message: "Error buscando los proyectos" });
+  } else {
+    for (let i = 0; i < proyectos.length; i++) {
+      datosProyectos.push(proyectos[i]);
+    }
+  }
+});
 
 const controller = {
   list: (req, res) => {
@@ -102,16 +111,11 @@ const controller = {
           personal.save((error) => {
             if (error) {
               return res.status(500).json({
-                message: "Error mostrando las personas",
+                message: "Error guardando en DB",
               });
             }
           });
           res.redirect("/personal");
-          //res.redirect("/personal/detail/" + resultado.id);
-
-          // let updatedUserId = personalModel.save(req.body);
-
-          // res.redirect("/personal/detail/" + updatedUserId);
         } else {
           res.render("./staff/register", {
             errors: resultValidation.mapped(),
