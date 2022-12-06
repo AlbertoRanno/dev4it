@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
-
+const mongoose = require("mongoose");
 let datosPersonal = [];
 
 Persona.find({}, (error, personas) => {
@@ -117,6 +117,7 @@ const controller = {
             });
           } else if (resultValidation.isEmpty()) {
             const proyect = new Proyecto({
+              _id: new mongoose.Types.ObjectId(),
               name: req.body.name,
               description: req.body.description,
               manager: req.body.manager,

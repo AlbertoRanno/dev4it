@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const personaSchema = Schema(
   {
-    //_id: { type: Schema.Types.ObjectId },
+    _id: { type: Schema.Types.ObjectId },
     name: { type: String },
     email: { type: String },
     rol: { type: String },

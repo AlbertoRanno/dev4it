@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const bcryptjs = require("bcryptjs");
 const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
+const mongoose = require("mongoose");
 
 let datosProyectos = [];
 
@@ -100,6 +101,7 @@ const controller = {
           });
         } else if (resultValidation.isEmpty()) {
           const personal = new Persona({
+            _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             email: req.body.email,
             rol: req.body.rol,
@@ -109,6 +111,19 @@ const controller = {
             avatar: "/images/avatars/" + req.file.filename,
           });
           delete req.body.repeatPassword;
+
+          let proyectosInvolucrados = req.body.proyects;
+          for (let i = 0; i < proyectosInvolucrados.length; i++) {
+            Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
+              if (error) {
+                return res.status(500).json({
+                  message: "Error mostrando el proyecto",
+                });
+              }
+              proyecto.involved = proyecto.involved.concat(personal._id);
+              proyecto.save();
+            });
+          }
 
           personal.save((error) => {
             if (error) {

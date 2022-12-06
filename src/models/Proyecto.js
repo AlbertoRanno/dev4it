@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const proyectoSchema = Schema(
   {
-   //_id: { type: Schema.Types.ObjectId },
+   _id: { type: Schema.Types.ObjectId },
     name: { type: String, required: true },
     description: { type: String },
     manager: { type: String },
