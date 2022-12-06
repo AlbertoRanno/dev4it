@@ -204,7 +204,7 @@ name es el nombre de la prop con la que viajara la info en el body !!!
 // * { } - selector universal
 // selectores { }
 // .nombre { } - class=""
-//  #nombre { } - id=""
+// #nombre { } - id=""
 
 //font-family: 'Franklin Gothic Medium' va entre comillas porque son vs palabras, sino no hace falta
 /* En inspeccionar - Elementos - Calculados - por lo bajo figuran las fuentes renderizadas
@@ -1040,8 +1040,7 @@ const personalSchema = mongoose.Schema({
 
 //convención, arrancar con Mayúscula, y aclarar que es un modelo
 const PersonalModel = mongoose.model("persona", personalSchema);
-//OJO - Esto crea la Collección "personaS" - le agrega la "S" - aún desconozco el por qué...
-//Si pusiera ("personas", personalSchema), No le vuelve a gregar otra S.. así que supongo que lo hace porque las colecciones se llaman siempre en Plural?
+//"persona" es el nombre en singular de la colección para la cual sirve el modelo
 
 //Mostrar
 const mostrar = async () => {
@@ -1066,7 +1065,7 @@ const crear = async () => {
 crear();
 
 // 25-11-22 *************
-/* Días de quilombos, le pude dedicar poco...
+/* Días de quilombos, que siguen.. le vengo dedicando poco...
 Hoy corrección de Labels - Edit de proyectos (falta update) - Repaso - Separación en módulos de MongoDB - Comenzando con el CRUD sobre la BD
 
 OBS! Sin esto: */
@@ -1085,3 +1084,42 @@ Si find, encuentra uno, lo deja como un elemento dentro de un array, en cambio f
 
 Observacion vieja para recordar:
 - Tremenda contra de usar un simple JSON como BD, es que no hay vínculos, por ej. los proyectos de las personas no se actualizan */
+
+// 01-12-22 *************
+/*
+const proyectoSchema = mongoose.Schema(
+  {
+    name: String,
+    description: String,
+    manager: String,
+    condition: String,
+    dateStart: { type: Date, default: Date.now },
+    dateEnd: Date,
+    involved: Array,
+    link: String,
+  },
+  { versionKey: false }
+); // Para que no cree el __v:0 en la BD
+ */
+
+/* Así se exporta cuando es más de una variable:
+const Proyecto = mongoose.model("Proyecto", proyectoSchema);
+const Persona = mongoose.model("Persona", personaSchema);
+module.exports = { Proyecto, Persona };
+
+Así se importa:
+const { Persona, Proyecto } = require("../models/Persona");
+
+Hay otras formas para ECMAScript 6, pero hay que habilitarlas primero, las de arriba son las clásicas
+*/
+
+
+// 06-12-22 *************
+/*
+Corregido POR FIN el error que no permitía grabar usuariuos y proyectos:
+If you have declared _id field explicitly in schema, you must initialize it explicitly
+If you have not declared it in schema, MongoDB will declare and initialize it.
+What you can't do, is to have it in the schema but not initialize it. It will throw an error
+
+Lo mejor, es no ponerlo en ningún lado, y dejar que Mongo lo cree automáticamente
+ */

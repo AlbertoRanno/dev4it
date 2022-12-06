@@ -1,15 +1,13 @@
-const {
-  validationResult
-} = require("express-validator");
-const Proyecto = require("../models/Proyecto");
+const { validationResult } = require("express-validator");
 const Persona = require("../models/Persona");
+const Proyecto = require("../models/Proyecto");
 
 let datosPersonal = [];
 
 Persona.find({}, (error, personas) => {
   if (error) {
     return res.status(500).json({
-      message: "Error buscando al personal"
+      message: "Error buscando al personal",
     });
   } else {
     for (let i = 0; i < personas.length; i++) {
@@ -33,14 +31,12 @@ const controller = {
   list: (req, res) => {
     Proyecto.find({}, (error, proyectos) => {
       if (error) {
-        return res
-          .status(500)
-          .json({
-            message: "Error buscando los proyectos"
-          });
+        return res.status(500).json({
+          message: "Error buscando los proyectos",
+        });
       } else {
         res.render("./proyects/proyects", {
-          listado: proyectos
+          listado: proyectos,
         });
       }
     });
@@ -49,17 +45,16 @@ const controller = {
     let id = req.params.id;
     Proyecto.findById(id, (error, proyect) => {
       if (error) {
-        res
-          .status(500)
-          .json({
-            message: `Error buscando al proyecto con id: ${id}`
-          });
+        res.status(500).json({
+          message: `Error buscando al proyecto con id: ${id}`,
+        });
       } else {
         res.render("./proyects/detail", {
-          proyect
+          proyect,
         });
       }
-    });
+    })
+    //.populate("involved");
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search;
@@ -75,8 +70,8 @@ const controller = {
         for (let i = 0; i < proyectos.length; i++) {
           if (
             proyectos[i].name
-            .toLocaleLowerCase()
-            .includes(loQueBuscoElUsuario.toLocaleLowerCase())
+              .toLocaleLowerCase()
+              .includes(loQueBuscoElUsuario.toLocaleLowerCase())
           ) {
             results.push(proyectos[i]);
           }
@@ -84,7 +79,7 @@ const controller = {
 
         res.render("./proyects/search", {
           loQueBuscoElUsuario,
-          results
+          results,
         });
       }
     });
@@ -92,73 +87,74 @@ const controller = {
   register: (req, res) => {
     res.render("./proyects/register.ejs", {
       personal: datosPersonal,
-      estados
+      estados,
     });
   },
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    Proyecto.find({
-      name: req.body.name
-    }, (error, proyectInDB) => {
-      if (error) {
-        return res.status(500).json({
-          message: "Error buscando el proyecto"
-        });
-      } else {
-        console.log(proyectInDB);
-        if (proyectInDB.length >= 1) {
-          res.render("./proyects/register", {
-            errors: {
-              name: {
-                msg: "Este proyecto ya fue ingresado"
-              }
-            },
-            oldData: req.body,
-            estados,
-            personal: datosPersonal,
+    Proyecto.find(
+      {
+        name: req.body.name,
+      },
+      (error, proyectInDB) => {
+        if (error) {
+          return res.status(500).json({
+            message: "Error buscando el proyecto",
           });
-        } else if (resultValidation.isEmpty()) {
-          const proyect = new Proyecto({
-            name: req.body.name,
-            description: req.body.description,
-            manager: req.body.manager,
-            condition: req.body.condition,
-            dateStart: req.body.dateStart,
-            dateEnd: req.body.dateEnd,
-            involved: req.body.involved,
-            link: req.body.link,
-          });
-
-          proyect.save((error) => {
-            if (error) {
-              return res.status(500).json({
-                message: "Error guardando en DB"
-              });
-            }
-          });
-
-          res.redirect("/proyectos");
         } else {
-          res.render("./proyects/register", {
-            personal: datosPersonal,
-            estados,
-            errors: resultValidation.mapped(),
-            oldData: req.body,
-          });
+          console.log(proyectInDB);
+          if (proyectInDB.length >= 1) {
+            res.render("./proyects/register", {
+              errors: {
+                name: {
+                  msg: "Este proyecto ya fue ingresado",
+                },
+              },
+              oldData: req.body,
+              estados,
+              personal: datosPersonal,
+            });
+          } else if (resultValidation.isEmpty()) {
+            const proyect = new Proyecto({
+              name: req.body.name,
+              description: req.body.description,
+              manager: req.body.manager,
+              condition: req.body.condition,
+              dateStart: req.body.dateStart,
+              dateEnd: req.body.dateEnd,
+              involved: req.body.involved,
+              link: req.body.link,
+            });
+
+            proyect.save((error) => {
+              if (error) {
+                return res.status(500).json({
+                  message: "Error guardando en DB",
+                });
+              }
+            });
+
+            res.redirect("/proyectos");
+          } else {
+            res.render("./proyects/register", {
+              personal: datosPersonal,
+              estados,
+              errors: resultValidation.mapped(),
+              oldData: req.body,
+            });
+          }
         }
       }
-    });
+    );
   },
   edit: (req, res) => {
     let id = req.params.id;
     Proyecto.findById(id, (error, proyectToEdit) => {
       if (error) {
-        return res
-          .status(500)
-          .json({
-            message: `Error localizando el proyecto con id: ${id}`
-          });
+        return res.status(500).json({
+          message: `Error localizando el proyecto con id: ${id}`,
+        });
       } else {
         let toAssign = [];
         for (let i = 0; i < datosPersonal.length; i++) {
@@ -185,11 +181,9 @@ const controller = {
 
     Proyecto.findById(id, (error, proyectToEdit) => {
       if (error) {
-        return res
-          .status(500)
-          .json({
-            message: `Error buscando el proyecto con id: ${id}`
-          });
+        return res.status(500).json({
+          message: `Error buscando el proyecto con id: ${id}`,
+        });
       } else {
         if (resultValidation.isEmpty()) {
           let name = req.body.name;
@@ -202,7 +196,8 @@ const controller = {
           let link = req.body.link;
 
           Proyecto.findByIdAndUpdate(
-            id, {
+            id,
+            {
               name,
               description,
               manager,
@@ -214,11 +209,9 @@ const controller = {
             },
             (error, proyect) => {
               if (error) {
-                return res
-                  .status(500)
-                  .json({
-                    message: "Error guardando en DB"
-                  });
+                return res.status(500).json({
+                  message: "Error guardando en DB",
+                });
               } else {
                 console.log(proyect);
                 res.redirect("/proyectos");
@@ -240,11 +233,9 @@ const controller = {
     let id = req.params.id;
     Proyecto.findByIdAndDelete(id, (error) => {
       if (error) {
-        return res
-          .status(500)
-          .json({
-            message: "Error eliminando el proyecto"
-          });
+        return res.status(500).json({
+          message: "Error eliminando el proyecto",
+        });
       } else {
         console.log("Proyecto eliminado correctamente");
         res.redirect("/proyectos");

@@ -7,21 +7,6 @@ const userLogged = require("./middlewares/userLogged");
 const cookies = require("cookie-parser");
 const db = require("./data/db");
 
-//Crear
-const crear = async () => {
-  const personal = new PersonalModel({
-    name: "Mario",
-    email: "Mario",
-    rol: "Mario",
-    password: "Mario",
-    seniority: "Mario",
-    avatar: "Mario",
-  });
-  const resultado = await personal.save()
-  console.log(resultado);
-}
-//crear()
-
 /*****************  view engine setup  ***************/
 app.set("view engine", "ejs");
 app.set("views", "./src/views");

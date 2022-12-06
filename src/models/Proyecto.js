@@ -1,19 +1,21 @@
 const mongoose = require("mongoose")
+const { Schema } = mongoose;
 
-const proyectoSchema = mongoose.Schema(
+const proyectoSchema = Schema(
   {
-    name: String,
-    description: String,
-    manager: String,
-    condition: String,
+   //_id: { type: Schema.Types.ObjectId },
+    name: { type: String, required: true },
+    description: { type: String },
+    manager: { type: String },
+    condition: { type: String },
     dateStart: { type: Date, default: Date.now },
-    dateEnd: Date,
-    involved: Array,
-    link: String,
+    dateEnd: { type: Date },
+    involved: [{ type: Schema.Types.ObjectId, ref: "Persona" }],
+    link: { type: String },
   },
   { versionKey: false }
-); // Para que no cree el __v:0 en la BD
+);
 
-const ProyectoModel = mongoose.model("proyecto", proyectoSchema);
+const Proyecto = mongoose.model("proyecto", proyectoSchema);
 
-module.exports = ProyectoModel
+module.exports = Proyecto

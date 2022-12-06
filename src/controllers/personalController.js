@@ -30,17 +30,20 @@ const controller = {
   },
   detail: (req, res) => {
     let id = req.params.id;
-    Persona.findById(id, (error, persona) => {
-      if (error) {
-        return res.status(500).json({
-          message: `Error buscando a la persona con el id: ${id}`,
-        });
-      } else {
-        res.render("./staff/detail", {
-          persona,
-        });
-      }
-    });
+    Persona.findById(id)
+      //.populate("Proyecto")
+      .exec((error, persona) => {
+        if (error) {
+          return res.status(500).json({
+            message: `Error buscando a la persona con el id: ${id}`,
+          });
+        } else {
+          //console.log(persona);
+          res.render("./staff/detail", {
+            persona,
+          });
+        }
+      });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search.toLocaleLowerCase();
@@ -75,7 +78,7 @@ const controller = {
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    Persona.find(
+    Persona.findOne(
       {
         email: req.body.email,
       },
@@ -85,8 +88,7 @@ const controller = {
             message: "Error buscando las personas",
           });
         }
-        console.log(userInDB);
-        if (userInDB.length >= 1) {
+        if (userInDB) {
           res.render("./staff/register", {
             errors: {
               email: {

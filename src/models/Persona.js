@@ -1,15 +1,19 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-const personaSchema = mongoose.Schema({
-  name: String,
-  email: String,
-  rol: String,
-  password: String,
-  proyects: Array,
-  seniority: String,
-  avatar: String,
-}, {versionKey: false}); // Para que no cree el __v:0 en la BD
+const personaSchema = Schema(
+  {
+    //_id: { type: Schema.Types.ObjectId },
+    name: { type: String },
+    email: { type: String },
+    rol: { type: String },
+    password: { type: String },
+    proyects: [{ type: Schema.Types.ObjectId, ref: "Proyecto" }],
+    seniority: { type: String },
+    avatar: { type: String },
+  },
+  { versionKey: false }
+);
 
-const PersonalModel = mongoose.model("personas", personaSchema);
-
-module.exports = PersonalModel
+const Persona = mongoose.model("persona", personaSchema);
+module.exports = Persona;
