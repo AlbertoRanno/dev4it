@@ -53,8 +53,7 @@ const controller = {
           proyect,
         });
       }
-    })
-    //.populate("involved");
+    }).populate({ path: "involved", strictPopulate: false });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search;
@@ -103,7 +102,6 @@ const controller = {
             message: "Error buscando el proyecto",
           });
         } else {
-          console.log(proyectInDB);
           if (proyectInDB.length >= 1) {
             res.render("./proyects/register", {
               errors: {
@@ -127,6 +125,21 @@ const controller = {
               involved: req.body.involved,
               link: req.body.link,
             });
+
+            let personalInvolucrado = req.body.involved;
+            if (personalInvolucrado) {
+              for (let i = 0; i < personalInvolucrado.length; i++) {
+                Persona.findById(personalInvolucrado[i], (error, persona) => {
+                  if (error) {
+                    return res
+                      .status(500)
+                      .json({ message: "Error buscando al personal" });
+                  }
+                  persona.proyects = persona.proyects.concat(proyect._id);
+                  persona.save();
+                });
+              }
+            }
 
             proyect.save((error) => {
               if (error) {

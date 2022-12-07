@@ -13,13 +13,11 @@
     <li class="list-group-item"><%= persona.email %></li>
     <li class="list-group-item">
       <ol>
-        <% if (typeof persona.proyects == "string") { %>
-        <li><%= persona.proyects %> </li>
-        <% } else if (!persona.proyects){ %>
+        <% if ( persona.proyects.length <1) { %>
         <li> Sin proyectos asignados </li>
         <% } else { %>
         <% for (let i=0; i<persona.proyects.length ; i++) { %>
-        <li>"<%= persona.proyects[i] %>"</li>
+        <li>"<%= persona.proyects[i].name %>"</li>
         <% }} %>
       </ol>
     </li>

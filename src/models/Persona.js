@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 const { Schema } = mongoose;
 
-const personaSchema = Schema(
+const PersonaSchema = new mongoose.Schema(
   {
     _id: { type: Schema.Types.ObjectId },
     name: { type: String },
@@ -15,5 +15,5 @@ const personaSchema = Schema(
   { versionKey: false }
 );
 
-const Persona = mongoose.model("persona", personaSchema);
+const Persona = mongoose.model("Persona", PersonaSchema);
 module.exports = Persona;

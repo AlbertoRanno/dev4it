@@ -3,6 +3,7 @@ const bcryptjs = require("bcryptjs");
 const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
+const { response } = require("express");
 
 let datosProyectos = [];
 
@@ -17,6 +18,12 @@ Proyecto.find({}, (error, proyectos) => {
 });
 
 const controller = {
+  prueba: async (req, res) => {
+    const personas = await Persona.find({}).populate(
+      { path: "proyects", strictPopulate: false },
+    );
+    res.json(personas)
+  } ,
   list: (req, res) => {
     Persona.find({}, (error, personas) => {
       if (error) {
@@ -31,20 +38,32 @@ const controller = {
   },
   detail: (req, res) => {
     let id = req.params.id;
-    Persona.findById(id)
-      //.populate("Proyecto")
-      .exec((error, persona) => {
-        if (error) {
-          return res.status(500).json({
-            message: `Error buscando a la persona con el id: ${id}`,
-          });
-        } else {
-          //console.log(persona);
-          res.render("./staff/detail", {
-            persona,
-          });
-        }
-      });
+    Persona.findById(id, (error, persona) => {
+      if (error) {
+        return res.status(500).json({
+          message: `Error buscando a la persona con el id: ${id}`,
+        });
+      } else {
+        // let proyectosInvolucrados = [];
+
+        // for (let i = 0; i < persona.proyects.length; i++) {
+        //   Proyecto.findById(persona.proyects[i], (error, proyecto) => {
+        //     if (error) {
+        //       return res.status(500).json({
+        //         message: "Error buscando los proyectos",
+        //       });
+        //     }
+        //     proyectosInvolucrados.push(proyecto);
+        //     console.log(proyectosInvolucrados);
+        //   });
+        // }
+
+        res.render("./staff/detail", {
+          persona,
+          // proyectosInvolucrados,
+        });
+      }
+    }).populate({ path: "proyects", strictPopulate: false });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search.toLocaleLowerCase();
@@ -79,7 +98,7 @@ const controller = {
   store: (req, res) => {
     const resultValidation = validationResult(req);
 
-    Persona.findOne(
+    Persona.find(
       {
         email: req.body.email,
       },
@@ -89,7 +108,7 @@ const controller = {
             message: "Error buscando las personas",
           });
         }
-        if (userInDB) {
+        if (userInDB.length>=1) {
           res.render("./staff/register", {
             errors: {
               email: {
@@ -110,19 +129,20 @@ const controller = {
             seniority: req.body.seniority,
             avatar: "/images/avatars/" + req.file.filename,
           });
-          delete req.body.repeatPassword;
 
           let proyectosInvolucrados = req.body.proyects;
-          for (let i = 0; i < proyectosInvolucrados.length; i++) {
-            Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
-              if (error) {
-                return res.status(500).json({
-                  message: "Error mostrando el proyecto",
-                });
-              }
-              proyecto.involved = proyecto.involved.concat(personal._id);
-              proyecto.save();
-            });
+          if (proyectosInvolucrados) {
+            for (let i = 0; i < proyectosInvolucrados.length; i++) {
+              Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
+                if (error) {
+                  return res.status(500).json({
+                    message: "Error buscando los proyectos",
+                  });
+                }
+                proyecto.involved = proyecto.involved.concat(personal._id);
+                proyecto.save();
+              });
+            }
           }
 
           personal.save((error) => {

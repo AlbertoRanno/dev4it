@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose;
 
-const proyectoSchema = Schema(
+const ProyectoSchema = new mongoose.Schema(
   {
    _id: { type: Schema.Types.ObjectId },
     name: { type: String, required: true },
@@ -16,6 +16,7 @@ const proyectoSchema = Schema(
   { versionKey: false }
 );
 
-const Proyecto = mongoose.model("proyecto", proyectoSchema);
+
+const Proyecto = mongoose.model("Proyecto", ProyectoSchema)
 
 module.exports = Proyecto

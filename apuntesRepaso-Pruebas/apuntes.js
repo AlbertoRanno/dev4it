@@ -1113,7 +1113,6 @@ const { Persona, Proyecto } = require("../models/Persona");
 Hay otras formas para ECMAScript 6, pero hay que habilitarlas primero, las de arriba son las clásicas
 */
 
-
 // 06-12-22 *************
 /*
 Corregido POR FIN el error que no permitía grabar usuariuos y proyectos:
@@ -1123,3 +1122,160 @@ What you can't do, is to have it in the schema but not initialize it. It will th
 
 Lo mejor, es no ponerlo en ningún lado, y dejar que Mongo lo cree automáticamente
  */
+
+// 07-12-22 *************
+/* Para las relaciones muchos a muchos en MongoDB hay que ver:
+
+1- la relación entre los esquemas/modelos: */
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+const personaSchema = Schema(
+  {
+    _id: { type: Schema.Types.ObjectId },
+    name: { type: String },
+    email: { type: String },
+    rol: { type: String },
+    password: { type: String },
+    proyects: [{ type: Schema.Types.ObjectId, ref: "Proyecto" }],
+    seniority: { type: String },
+    avatar: { type: String },
+  },
+  { versionKey: false }
+);
+
+const Persona = mongoose.model("persona", personaSchema);
+module.exports = Persona;
+
+//const mongoose = require("mongoose");
+//const { Schema } = mongoose;
+
+const proyectoSchema = Schema(
+  {
+    _id: { type: Schema.Types.ObjectId },
+    name: { type: String, required: true },
+    description: { type: String },
+    manager: { type: String },
+    condition: { type: String },
+    dateStart: { type: Date, default: Date.now },
+    dateEnd: { type: Date },
+    involved: [{ type: Schema.Types.ObjectId, ref: "Persona" }],
+    link: { type: String },
+  },
+  { versionKey: false }
+);
+
+const Proyecto = mongoose.model("proyecto", proyectoSchema);
+
+module.exports = Proyecto;
+
+/* 2- Aclarar el ID tanto en el esquema, como en el controlador... (o en ninguno de los 2 lados /pero no 1 y 1)
+Acá los declaré en ambos lados, porque después necesité el ID para la relación */
+
+store: (req, res) => {
+  const resultValidation = validationResult(req);
+
+  Persona.findOne(
+    {
+      email: req.body.email,
+    },
+    (error, userInDB) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error buscando las personas",
+        });
+      }
+      if (userInDB) {
+        res.render("./staff/register", {
+          errors: {
+            email: {
+              msg: "Ya existe un usuario registrado con este email",
+            },
+          },
+          oldData: req.body,
+          datosProyectos,
+        });
+      } else if (resultValidation.isEmpty()) {
+        const personal = new Persona({
+          _id: new mongoose.Types.ObjectId(),
+          name: req.body.name,
+          email: req.body.email,
+          rol: req.body.rol,
+          password: bcryptjs.hashSync(req.body.password, 10),
+          proyects: req.body.proyects,
+          seniority: req.body.seniority,
+          avatar: "/images/avatars/" + req.file.filename,
+        });
+
+        //en este caso estoy creando un objeto a grabar.. y no directamente grabando todo lo que viene en el body, por eso no hace falta el delete req.body.repeatPassword
+
+        //3- capturo el array de objetos relacionados, encuentro cada uno por su ID, cambio la propiedad, y lo guardo:
+        let proyectosInvolucrados = req.body.proyects;
+        for (let i = 0; i < proyectosInvolucrados.length; i++) {
+          Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
+            if (error) {
+              return res.status(500).json({
+                message: "Error buscando los proyectos",
+              });
+            }
+            /*The concat() method is used to merge two or more arrays. This method does not change the existing arrays, but instead returns a new array*/
+            proyecto.involved = proyecto.involved.concat(personal._id);
+            proyecto.save();
+          });
+        }
+
+        //4- Luego de haber guardado el cambio en la colección relacionada, guardo el cambio en la colección principal
+
+        personal.save((error) => {
+          if (error) {
+            return res.status(500).json({
+              message: "Error guardando en DB",
+            });
+          }
+        });
+        res.redirect("/personal");
+      } else {
+        res.render("./staff/register", {
+          errors: resultValidation.mapped(),
+          oldData: req.body,
+          datosProyectos,
+        });
+      }
+    }
+  );
+};
+
+/*5- Es importante tener las mismas consideraciones en ambos controladores: 
+   (fragemento del store de proyects: )
+... primera parte del controlador... :
+   */
+let personalInvolucrado = req.body.involved;
+for (let i = 0; i < personalInvolucrado.length; i++) {
+  Persona.findById(personalInvolucrado[i], (error, persona) => {
+    if (error) {
+      return res.status(500).json({ message: "Error buscando al personal" });
+    }
+    persona.proyects = persona.proyects.concat(proyect._id);
+    persona.save();
+  });
+}
+// ... sigue guardando la colección principal, en este caso, proyect
+
+// POR FIN! ERRORES ENCONTRADOS:
+
+const Persona = mongoose.model("Persona", PersonaSchema); 
+/* el ("Persona",... es el nombre del modelo y TAMBIÉN VA EN MAYÚSCULA
+Fácil= Todos los nombres dentro de los modelos, que comiencen con Mayúscula y listo */
+
+Proyecto.findById(id, (error, proyect) => {
+  if (error) {
+    res.status(500).json({
+      message: `Error buscando al proyecto con id: ${id}`,
+    });
+  } else {
+    res.render("./proyects/detail", {
+      proyect,
+    });
+  }
+}).populate({ path: "involved", strictPopulate: false });
+/* en el path, va el Nombre de la propiedad de la colección que quiero ampliar */
