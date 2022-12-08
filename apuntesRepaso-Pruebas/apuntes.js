@@ -1279,3 +1279,12 @@ Proyecto.findById(id, (error, proyect) => {
   }
 }).populate({ path: "involved", strictPopulate: false });
 /* en el path, va el Nombre de la propiedad de la colección que quiero ampliar */
+
+// 08-12-22 *************
+/* Corregido Store para ningun vinculo, 1, o mas // css register (checkbox y labels) 
+Resulta que cuando seleccionaba un solo proyecto (o, en el caso del register de proyectos, una sola persona),
+por default, lo guarda como string suelto, y no como un array de un solo string...
+Entonces hubo que hacerle un condicional if( typeof ... == "string"){...}
+Y al hacer esto, también hubo que cambiar el condicional de cuando venían varios vínculos... lo curioso acá,
+es que el typeof, NO era un array... sino un OBJECT!
+*/

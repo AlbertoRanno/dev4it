@@ -45,23 +45,8 @@ const controller = {
           message: `Error buscando a la persona con el id: ${id}`,
         });
       } else {
-        // let proyectosInvolucrados = [];
-
-        // for (let i = 0; i < persona.proyects.length; i++) {
-        //   Proyecto.findById(persona.proyects[i], (error, proyecto) => {
-        //     if (error) {
-        //       return res.status(500).json({
-        //         message: "Error buscando los proyectos",
-        //       });
-        //     }
-        //     proyectosInvolucrados.push(proyecto);
-        //     console.log(proyectosInvolucrados);
-        //   });
-        // }
-
         res.render("./staff/detail", {
           persona,
-          // proyectosInvolucrados,
         });
       }
     }).populate({ path: "proyects", strictPopulate: false });
@@ -132,7 +117,6 @@ const controller = {
           });
 
           if (typeof req.body.proyects == "string") {
-            console.log("Un solo proyecto");
             let proyectosInvolucrados = [];
             proyectosInvolucrados.push(req.body.proyects);
             Proyecto.findById(proyectosInvolucrados, (error, proyecto) => {
@@ -280,15 +264,66 @@ const controller = {
           let proyects = req.body.proyects;
           let seniority = req.body.seniority;
           let avatar = req.body.avatar;
+          delete req.body.repeatPassword;
 
-          if (!req.file) {
-            console.log(
-              "No se editó la imagen. Traigo la que tenía en base de datos"
-            );
-            req.body.avatar = userToModify.avatar;
-          } else {
-            console.log("Se editó la imagen. Subo la nueva.");
-            req.body.avatar = "/images/avatars/" + req.file.filename;
+          //Busco todos los proyectos en los que el usuario esté involucrado:
+          // Para el caso que tenga un solo involucrado:
+          // Proyecto.findOneAndUpdate(
+          //   { involved: id },
+          //   { involved: [] },
+          //   (error, data) => {
+          //     if (error) {
+          //       console.log(error);
+          //     } else {
+          //       console.log(data);
+          //     }
+          //   }
+          // );
+
+          // Home.update(
+          //   { "users.name": "johnk" }, //query, you can also query for email
+          //   { $set: { "users.$.name": "JohnKirster" } },
+          //   { multi: true } //for multiple documents
+          // );
+
+          Proyecto.updateMany({involved:id},{$set:{"involved": []}}, {multi: true}, (error, data) => {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log(data);
+              }})
+
+          //Grabo su vínculo, acorde si está involucrado en uno solo (me llega string), más de 1 (me llega object), o ninguno (no hago ninguna relación con los proyectos):
+
+          console.log(typeof proyects);
+          if (typeof proyects == "string") {
+            let proyectosInvolucrados = [];
+            proyectosInvolucrados.push(req.body.proyects);
+            Proyecto.findById(proyectosInvolucrados, (error, proyecto) => {
+              if (error) {
+                return res.status(500).json({
+                  message: "Error buscando el proyecto",
+                });
+              }
+              proyecto.involved = proyecto.involved.concat(id);
+              proyecto.save();
+            });
+          }
+
+          if (typeof proyects == "object") {
+            console.log("Varios proyectos");
+            let proyectosInvolucrados = req.body.proyects;
+            for (let i = 0; i < proyectosInvolucrados.length; i++) {
+              Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
+                if (error) {
+                  return res.status(500).json({
+                    message: "Error buscando los proyectos",
+                  });
+                }
+                proyecto.involved = proyecto.involved.concat(id);
+                proyecto.save();
+              });
+            }
           }
 
           Persona.findByIdAndUpdate(
@@ -308,7 +343,7 @@ const controller = {
                   message: `Error actualizando al usuario con id: ${id}`,
                 });
               } else {
-                console.log(persona);
+                //console.log(persona);
                 res.redirect("/personal/detail/" + id);
               }
             }
