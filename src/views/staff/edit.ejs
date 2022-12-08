@@ -95,18 +95,14 @@
             <div class="col-md-6 mt-3">
               <div class="form-group">
                 <label class="form-check-label"><b>Proyectos involucrado:</b></label>
-
                 <% for(let i=0; i<datosProyectos.length; i++){ %>
-                <div>
-                  <a href="/proyectos/detail/<%= datosProyectos[i].id %>"
-                    class="list-group-item list-group-item-action">
-                    <input type="checkbox" name="proyects" class="form-check-input"
-                      value="<%= datosProyectos[i].name %>" <%=  typeof personalToEdit.proyects == "string" ? 
-                      personalToEdit.proyects[i] == datosProyectos[i].name ? "checked" : ""  : 
-                      personalToEdit.proyects[i] == datosProyectos[i].name ? "checked" : "" %> />
-                    <%= datosProyectos[i].name %>
-                    <% } %></a>
-                </div>
+                <a href="/proyectos/detail/<%= datosProyectos[i].id %>" class="list-group-item list-group-item-action">
+                  <input type="checkbox" name="proyects" class="form-check-input" value="<%= datosProyectos[i]._id %>"
+                    <% for (let j = 0; j < personalToEdit.proyects.length; j++) { %>
+                    <%= personalToEdit.proyects[j] == datosProyectos[i].id ? "checked" : null %> <% } %> />
+                  <%= datosProyectos[i].name %>
+                </a>
+                <% } %>
               </div>
             </div>
           </div>

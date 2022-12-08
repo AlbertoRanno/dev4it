@@ -126,8 +126,24 @@ const controller = {
               link: req.body.link,
             });
 
-            let personalInvolucrado = req.body.involved;
-            if (personalInvolucrado) {
+            if (typeof req.body.involved == "string") {
+              console.log("Un solo usuario");
+              let personalInvolucrado = [];
+              personalInvolucrado.push(req.body.involved);
+              Persona.findById(req.body.involved, (error, persona) => {
+                if (error) {
+                  return res
+                    .status(500)
+                    .json({ message: "Error buscando al usuario" });
+                }
+                persona.proyects = persona.proyects.concat(proyect._id);
+                persona.save();
+              });
+            }
+
+            console.log(typeof req.body.involved);
+            if (typeof req.body.involved == "object") {
+              let personalInvolucrado = req.body.involved;
               for (let i = 0; i < personalInvolucrado.length; i++) {
                 Persona.findById(personalInvolucrado[i], (error, persona) => {
                   if (error) {
@@ -176,9 +192,8 @@ const controller = {
             toAssign.push(datosPersonal[i]);
           }
         }
-
-        console.log(proyectToEdit.involved);
-        console.log(toAssign);
+        console.log(proyectToEdit.involved[0]);
+        console.log(toAssign[0]._id);
 
         res.render("./proyects/edit", {
           proyectToEdit,

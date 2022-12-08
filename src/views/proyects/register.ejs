@@ -95,8 +95,8 @@
           <div class="form-check">
             <% for (let i=0; i<personal.length; i++) { %>
             <% if(personal[i].rol != "Gestor de proyectos"){ %>
-            <label for="<%= "involved"[i] %>" class="form-check-label">
-              <input type="checkbox" class="form-check-input" id="<%= "involved"[i] %>" name="involved" value="<%= personal[i]._id %>" />
+            <label for="<%= "involved" + [i] %>" class="form-check-label">
+              <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" name="involved" value="<%= personal[i]._id %>" />
               <%= personal[i].name %> <br> <%= personal[i].rol %> - <%= personal[i].seniority %>
             </label>
             <br>

@@ -19,11 +19,12 @@ Proyecto.find({}, (error, proyectos) => {
 
 const controller = {
   prueba: async (req, res) => {
-    const personas = await Persona.find({}).populate(
-      { path: "proyects", strictPopulate: false },
-    );
-    res.json(personas)
-  } ,
+    const personas = await Persona.find({}).populate({
+      path: "proyects",
+      strictPopulate: false,
+    });
+    res.json(personas);
+  },
   list: (req, res) => {
     Persona.find({}, (error, personas) => {
       if (error) {
@@ -108,7 +109,7 @@ const controller = {
             message: "Error buscando las personas",
           });
         }
-        if (userInDB.length>=1) {
+        if (userInDB.length >= 1) {
           res.render("./staff/register", {
             errors: {
               email: {
@@ -130,8 +131,25 @@ const controller = {
             avatar: "/images/avatars/" + req.file.filename,
           });
 
-          let proyectosInvolucrados = req.body.proyects;
-          if (proyectosInvolucrados) {
+          if (typeof req.body.proyects == "string") {
+            console.log("Un solo proyecto");
+            let proyectosInvolucrados = [];
+            proyectosInvolucrados.push(req.body.proyects);
+            Proyecto.findById(proyectosInvolucrados, (error, proyecto) => {
+              if (error) {
+                return res.status(500).json({
+                  message: "Error buscando el proyecto",
+                });
+              }
+              proyecto.involved = proyecto.involved.concat(personal._id);
+              proyecto.save();
+            });
+          }
+
+          //console.log(typeof req.body.proyects);
+          if (typeof req.body.proyects == "object") {
+            console.log("Varios proyectos");
+            let proyectosInvolucrados = req.body.proyects;
             for (let i = 0; i < proyectosInvolucrados.length; i++) {
               Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
                 if (error) {
@@ -237,9 +255,6 @@ const controller = {
           message: `Error localizando a la persona con el id: ${id}`,
         });
       } else {
-        /* VOLVER LUEGO DEL CRUD DE PROYECTOS *************************************** */
-        console.log(personalToEdit);
-        console.log(datosProyectos);
         res.render("./staff/edit", {
           personalToEdit,
           datosProyectos,

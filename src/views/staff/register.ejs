@@ -18,8 +18,8 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="name"><b>Nombre completo:</b></label>
-                  <input type="text" id="name" name="name" class="form-control <%=
-                  locals.errors && errors.name ? "is-invalid" : null %>"
+                  <input type="text" id="name" name="name" class="form-control
+                  <%= locals.errors && errors.name ? "is-invalid" : null %>"
                   value="<%= locals.oldData ? oldData.name : null %>" /><% if
                   (locals.errors && errors.name) { %>
                   <div class="text-danger"><%= errors.name.msg %></div>
@@ -30,8 +30,8 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="email"><b>Correo electrónico:</b></label>
-                  <input type="text" id="email" name="email" class="form-control <%=
-                  locals.errors && errors.email ? "is-invalid" : null %>"
+                  <input type="text" id="email" name="email" class="form-control
+                  <%= locals.errors && errors.email ? "is-invalid" : null %>"
                   value="<%= locals.oldData ? oldData.email : null %>" /> <%
                   if(locals.errors && errors.email) { %>
                   <div class="text-danger"><%= errors.email.msg %></div>
@@ -54,9 +54,10 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="password"><b>Contraseña:</b></label>
-                  <input type="password" id="password" name="password" class="form-control <%=
-                  locals.errors && errors.password ? "is-invalid" : null %>"/>
-                  <% if (locals.errors && errors.password) { %>
+                  <input type="password" id="password" name="password"
+                  class="form-control <%= locals.errors && errors.password ?
+                  "is-invalid" : null %>"/> <% if (locals.errors &&
+                  errors.password) { %>
                   <div class="text-danger"><%= errors.password.msg %></div>
                   <% } %>
                 </div>
@@ -65,10 +66,11 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="seniority"><b>Seniority:</b></label>
-                  <input type="text" id="seniority" name="seniority" class="form-control <%=
-                  locals.errors && errors.seniority ? "is-invalid" : null %>"
-                  value="<%= locals.oldData ? oldData.seniority : null %>" /> <%
-                  if (locals.errors && errors.name) { %>
+                  <input type="text" id="seniority" name="seniority"
+                  class="form-control <%= locals.errors && errors.seniority ?
+                  "is-invalid" : null %>" value="<%= locals.oldData ?
+                  oldData.seniority : null %>" /> <% if (locals.errors &&
+                  errors.name) { %>
                   <div class="text-danger"><%= errors.seniority.msg %></div>
                   <% } %>
                 </div>
@@ -77,10 +79,10 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="repeatPassword"><b>Repetir Contraseña:</b></label>
-                  <input type="password" id="repeatPassword" name="repeatPassword"
-                  class="form-control <%= locals.errors && errors.repeatPassword
-                  ? "is-invalid" : null %>"/> <% if (locals.errors &&
-                  errors.repeatPassword) { %>
+                  <input type="password" id="repeatPassword"
+                  name="repeatPassword" class="form-control <%= locals.errors &&
+                  errors.repeatPassword ? "is-invalid" : null %>"/> <% if
+                  (locals.errors && errors.repeatPassword) { %>
                   <div class="text-danger">
                     <%= errors.repeatPassword.msg %>
                   </div>
@@ -91,9 +93,10 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="avatar"><b>Imagen de Perfil:</b></label>
-                  <input type="file" id="avatar" name="avatar" class="form-control <%=
-                  locals.errors && errors.avatar ? "is-invalid" : null %>" /> <%
-                  if (locals.errors && errors.avatar) { %>
+                  <input type="file" id="avatar" name="avatar"
+                  class="form-control <%= locals.errors && errors.avatar ?
+                  "is-invalid" : null %>" /> <% if (locals.errors &&
+                  errors.avatar) { %>
                   <div class="text-danger"><%= errors.avatar.msg %></div>
                   <% } %>
                 </div>
@@ -105,29 +108,30 @@
                     ><b>Proyectos involucrado:</b></label
                   >
                   <% for (let i = 0; i < datosProyectos.length; i++) { %>
-                  <div>
-                    <a
-                      href="/proyectos/detail/<%= datosProyectos[i].id %>"
-                      class="list-group-item list-group-item-action"
-                      target="_blank" rel="nooper noreferrer"
-                    >
-                      <input
-                        type="checkbox"
-                        name="proyects"
-                        class="form-check-input"
-                        value="<%= datosProyectos[i]._id  %>"
-                      /><%= datosProyectos[i].name %> <% } %></a
-                    >
-                  </div>
+
+                  <a
+                    href="/proyectos/detail/<%= datosProyectos[i].id %>"
+                    class="list-group-item list-group-item-action"
+                    target="_blank"
+                    rel="nooper noreferrer"
+                  >
+                    <input
+                      type="checkbox"
+                      name="proyects"
+                      class="form-check-input"
+                      value="<%= datosProyectos[i]._id  %>"
+                    />
+                    <%= datosProyectos[i].name %>
+                  </a>
+
+                  <% } %>
                 </div>
               </div>
             </div>
             <br />
             <div class="buttonPanel">
-                <a href="/personal" class="btn btn-primary">Volver</a>
-                <button type="submit" class="btn btn-success">
-                  Registrarse
-                </button>
+              <a href="/personal" class="btn btn-primary">Volver</a>
+              <button type="submit" class="btn btn-success">Registrarse</button>
             </div>
           </form>
         </div>
