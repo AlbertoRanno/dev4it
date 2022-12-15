@@ -267,25 +267,7 @@ const controller = {
           delete req.body.repeatPassword;
 
           //Busco todos los proyectos en los que el usuario esté involucrado:
-          // Para el caso que tenga un solo involucrado:
-          // Proyecto.findOneAndUpdate(
-          //   { involved: id },
-          //   { involved: [] },
-          //   (error, data) => {
-          //     if (error) {
-          //       console.log(error);
-          //     } else {
-          //       console.log(data);
-          //     }
-          //   }
-          // );
-
-          // Home.update(
-          //   { "users.name": "johnk" }, //query, you can also query for email
-          //   { $set: { "users.$.name": "JohnKirster" } },
-          //   { multi: true } //for multiple documents
-          // );
-
+          /*
           Proyecto.updateMany({involved:id},{$set:{"involved": []}}, {multi: true}, (error, data) => {
               if (error) {
                 console.log(error);
@@ -293,9 +275,104 @@ const controller = {
                 console.log(data);
               }})
 
+              */
+
+          /* Con màs de un usuario:
+          -Borra a todos los usuarios involucrados por la actualizaciòn a []
+          -Agrega cada vez al mismo usuario en el proyecto que ya está. porque busca para modificar, al que tenga un solo usuario y 
+          No al array que lo tenga incluido... */
           //Grabo su vínculo, acorde si está involucrado en uno solo (me llega string), más de 1 (me llega object), o ninguno (no hago ninguna relación con los proyectos):
 
+          /* */
+
           console.log(typeof proyects);
+
+          switch (typeof proyects) {
+            case "undefined":
+              proyects = [];
+
+
+              Proyecto.find({}, (error, proyectos) => {
+                if (error) {
+                  return res.status(500).json({
+                    message: "Error buscando los proyectos",
+                  });
+                }
+
+                for (let i = 0; i < proyectos.length; i++) {
+                  let indiceArray = proyectos[i].involved.indexOf(id);
+                  if (indiceArray != -1) {
+                    proyectos[i].involved.splice(indiceArray, 1);
+                    proyectos[i].save();
+                  }
+                }
+              });
+              break;
+
+            case "string":
+              let proyectosInvolucrados = [];
+              proyectosInvolucrados.push(req.body.proyects);
+              Proyecto.findById(proyectosInvolucrados, (error, proyecto) => {
+                if (error) {
+                  return res.status(500).json({
+                    message: "Error buscando el proyecto",
+                  });
+                }
+                if (proyecto.involved != proyecto.involved) {
+                  console.log("no estaba asociado al proyecto ");
+                  proyecto.involved = proyecto.involved.concat(id);
+                }
+                proyecto.save();
+              });
+              break;
+            case "object":
+              let proyectsInvolucrados = req.body.proyects;
+              for (let i = 0; i < proyectsInvolucrados.length; i++) {
+                Proyecto.findById(
+                  proyectsInvolucrados[i],
+                  (error, proyecto) => {
+                    if (error) {
+                      return res.status(500).json({
+                        message: "Error buscando los proyectos",
+                      });
+                    }
+                    if (proyecto.involved.indexOf(id) === -1) {
+                      proyecto.involved = proyecto.involved.concat(id);
+                      proyecto.save();
+                    }
+                  }
+                );
+              }
+              break;
+
+            default:
+              res.status(500).json({
+                message: "Error - no coincide con los casos",
+              });
+              break;
+          }
+
+          /*
+          if (typeof proyects == "undefined") {
+            proyects = "Sin proyectos asignados";
+
+            Proyecto.find({}, (error, proyectos) => {
+              if (error) {
+                return res.status(500).json({
+                  message: "Error buscando los proyectos",
+                });
+              }
+
+              for (let i = 0; i < proyectos.length; i++) {
+                let indiceArray = proyectos[i].involved.indexOf(id);
+                if (indiceArray != -1) {
+                  proyectos[i].involved.splice(indiceArray, 1);
+                  proyectos[i].save();
+                }
+              }
+            });
+          }
+
           if (typeof proyects == "string") {
             let proyectosInvolucrados = [];
             proyectosInvolucrados.push(req.body.proyects);
@@ -305,13 +382,15 @@ const controller = {
                   message: "Error buscando el proyecto",
                 });
               }
-              proyecto.involved = proyecto.involved.concat(id);
+              if (proyecto.involved != proyecto.involved) {
+                console.log("no estaba asociado al proyecto ");
+                proyecto.involved = proyecto.involved.concat(id);
+              }
               proyecto.save();
             });
           }
 
           if (typeof proyects == "object") {
-            console.log("Varios proyectos");
             let proyectosInvolucrados = req.body.proyects;
             for (let i = 0; i < proyectosInvolucrados.length; i++) {
               Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
@@ -320,11 +399,14 @@ const controller = {
                     message: "Error buscando los proyectos",
                   });
                 }
-                proyecto.involved = proyecto.involved.concat(id);
-                proyecto.save();
+                if (proyecto.involved.indexOf(id) === -1) {
+                  proyecto.involved = proyecto.involved.concat(id);
+                  proyecto.save();
+                }
               });
             }
           }
+          */
 
           Persona.findByIdAndUpdate(
             id,
