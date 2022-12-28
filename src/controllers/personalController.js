@@ -116,9 +116,11 @@ const controller = {
             avatar: "/images/avatars/" + req.file.filename,
           });
 
+          //console.log(typeof req.body.proyects);
           if (typeof req.body.proyects == "string") {
             let proyectosInvolucrados = [];
             proyectosInvolucrados.push(req.body.proyects);
+
             Proyecto.findById(proyectosInvolucrados, (error, proyecto) => {
               if (error) {
                 return res.status(500).json({
@@ -266,31 +268,11 @@ const controller = {
           let avatar = req.body.avatar;
           delete req.body.repeatPassword;
 
-          //Busco todos los proyectos en los que el usuario esté involucrado:
-          /*
-          Proyecto.updateMany({involved:id},{$set:{"involved": []}}, {multi: true}, (error, data) => {
-              if (error) {
-                console.log(error);
-              } else {
-                console.log(data);
-              }})
-
-              */
-
-          /* Con màs de un usuario:
-          -Borra a todos los usuarios involucrados por la actualizaciòn a []
-          -Agrega cada vez al mismo usuario en el proyecto que ya está. porque busca para modificar, al que tenga un solo usuario y 
-          No al array que lo tenga incluido... */
-          //Grabo su vínculo, acorde si está involucrado en uno solo (me llega string), más de 1 (me llega object), o ninguno (no hago ninguna relación con los proyectos):
-
-          /* */
-
           console.log(typeof proyects);
 
           switch (typeof proyects) {
             case "undefined":
               proyects = [];
-
 
               Proyecto.find({}, (error, proyectos) => {
                 if (error) {
@@ -319,12 +301,12 @@ const controller = {
                   });
                 }
                 if (proyecto.involved != proyecto.involved) {
-                  console.log("no estaba asociado al proyecto ");
                   proyecto.involved = proyecto.involved.concat(id);
                 }
                 proyecto.save();
               });
               break;
+
             case "object":
               let proyectsInvolucrados = req.body.proyects;
               for (let i = 0; i < proyectsInvolucrados.length; i++) {
@@ -338,8 +320,22 @@ const controller = {
                     }
                     if (proyecto.involved.indexOf(id) === -1) {
                       proyecto.involved = proyecto.involved.concat(id);
-                      proyecto.save();
+                    } else {
+                      let resto = [];
+                      for (let j = 0; j < datosProyectos.length; j++) {
+                        if (datosProyectos[j] != proyectsInvolucrados[i]) {
+                          resto.push(datosProyectos[j]);
+                        }
+                      }
+                      console.log("Resto Pre corte " + resto);
+                      for (let k = 0; k < resto.length; k++) {
+                        let indiceArray = resto[i].involved.indexOf(id);
+                        resto[i].involved.splice(indiceArray, 1);
+                        //resto[i].save();
+                      }
+                      console.log("Resto Post corte " + resto);
                     }
+                    proyecto.save();
                   }
                 );
               }
@@ -347,66 +343,10 @@ const controller = {
 
             default:
               res.status(500).json({
-                message: "Error - no coincide con los casos",
+                message: `No coincide con los casos - ${error}`,
               });
               break;
           }
-
-          /*
-          if (typeof proyects == "undefined") {
-            proyects = "Sin proyectos asignados";
-
-            Proyecto.find({}, (error, proyectos) => {
-              if (error) {
-                return res.status(500).json({
-                  message: "Error buscando los proyectos",
-                });
-              }
-
-              for (let i = 0; i < proyectos.length; i++) {
-                let indiceArray = proyectos[i].involved.indexOf(id);
-                if (indiceArray != -1) {
-                  proyectos[i].involved.splice(indiceArray, 1);
-                  proyectos[i].save();
-                }
-              }
-            });
-          }
-
-          if (typeof proyects == "string") {
-            let proyectosInvolucrados = [];
-            proyectosInvolucrados.push(req.body.proyects);
-            Proyecto.findById(proyectosInvolucrados, (error, proyecto) => {
-              if (error) {
-                return res.status(500).json({
-                  message: "Error buscando el proyecto",
-                });
-              }
-              if (proyecto.involved != proyecto.involved) {
-                console.log("no estaba asociado al proyecto ");
-                proyecto.involved = proyecto.involved.concat(id);
-              }
-              proyecto.save();
-            });
-          }
-
-          if (typeof proyects == "object") {
-            let proyectosInvolucrados = req.body.proyects;
-            for (let i = 0; i < proyectosInvolucrados.length; i++) {
-              Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
-                if (error) {
-                  return res.status(500).json({
-                    message: "Error buscando los proyectos",
-                  });
-                }
-                if (proyecto.involved.indexOf(id) === -1) {
-                  proyecto.involved = proyecto.involved.concat(id);
-                  proyecto.save();
-                }
-              });
-            }
-          }
-          */
 
           Persona.findByIdAndUpdate(
             id,

@@ -1027,20 +1027,29 @@ const Comment = new Schema({
   buff: Buffer
 }); */
 
-//convención, arrancar con minúscula, y decir que es un Schema
-const personalSchema = mongoose.Schema({
-  name: String,
-  email: String,
-  rol: String,
-  password: String,
-  proyects: Array,
-  seniority: String,
-  avatar: String,
-});
+//Ojo a las mayúsculas que no me funcionaba... 
+//const mongoose = require("mongoose");
+//const { Schema } = mongoose;
+
+const PersonaSchema = new mongoose.Schema(
+  {
+    _id: { type: Schema.Types.ObjectId },
+    name: { type: String },
+    email: { type: String },
+    rol: { type: String },
+    password: { type: String },
+    proyects: [{ type: Schema.Types.ObjectId, ref: "Proyecto" }],
+    seniority: { type: String },
+    avatar: { type: String },
+  },
+  { versionKey: false }
+);
 
 //convención, arrancar con Mayúscula, y aclarar que es un modelo
-const PersonalModel = mongoose.model("persona", personalSchema);
-//"persona" es el nombre en singular de la colección para la cual sirve el modelo
+const Persona = mongoose.model("Persona", PersonaSchema);
+//"Persona" es el nombre en singular de la colección para la cual sirve el modelo
+module.exports = Persona;
+
 
 //Mostrar
 const mostrar = async () => {
@@ -1087,16 +1096,17 @@ Observacion vieja para recordar:
 
 // 01-12-22 *************
 /*
-const proyectoSchema = mongoose.Schema(
+const ProyectoSchema = new mongoose.Schema(
   {
-    name: String,
-    description: String,
-    manager: String,
-    condition: String,
+   _id: { type: Schema.Types.ObjectId },
+    name: { type: String, required: true },
+    description: { type: String },
+    manager: { type: String },
+    condition: { type: String },
     dateStart: { type: Date, default: Date.now },
-    dateEnd: Date,
-    involved: Array,
-    link: String,
+    dateEnd: { type: Date },
+    involved: [{ type: Schema.Types.ObjectId, ref: "Persona" }],
+    link: { type: String },
   },
   { versionKey: false }
 ); // Para que no cree el __v:0 en la BD
@@ -1121,16 +1131,28 @@ If you have not declared it in schema, MongoDB will declare and initialize it.
 What you can't do, is to have it in the schema but not initialize it. It will throw an error
 
 Lo mejor, es no ponerlo en ningún lado, y dejar que Mongo lo cree automáticamente
- */
+MMMM... no, luego lo necesité.. así que lo volví a aclarar en el Schema, pero también en el controlador:  */
+
+const personal = new Persona({
+            _id: new mongoose.Types.ObjectId(),
+            name: req.body.name,
+            email: req.body.email,
+            rol: req.body.rol,
+            password: bcryptjs.hashSync(req.body.password, 10),
+            proyects: req.body.proyects,
+            seniority: req.body.seniority,
+            avatar: "/images/avatars/" + req.file.filename,
+          });
+
 
 // 07-12-22 *************
 /* Para las relaciones muchos a muchos en MongoDB hay que ver:
 
 1- la relación entre los esquemas/modelos: */
-const mongoose = require("mongoose");
+/* const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const personaSchema = Schema(
+const PersonaSchema = new mongoose.Schema(
   {
     _id: { type: Schema.Types.ObjectId },
     name: { type: String },
@@ -1144,15 +1166,17 @@ const personaSchema = Schema(
   { versionKey: false }
 );
 
-const Persona = mongoose.model("persona", personaSchema);
+const Persona = mongoose.model("Persona", PersonaSchema);
 module.exports = Persona;
+*/
 
-//const mongoose = require("mongoose");
-//const { Schema } = mongoose;
+/*
+const mongoose = require("mongoose")
+const { Schema } = mongoose;
 
-const proyectoSchema = Schema(
+const ProyectoSchema = new mongoose.Schema(
   {
-    _id: { type: Schema.Types.ObjectId },
+   _id: { type: Schema.Types.ObjectId },
     name: { type: String, required: true },
     description: { type: String },
     manager: { type: String },
@@ -1165,9 +1189,9 @@ const proyectoSchema = Schema(
   { versionKey: false }
 );
 
-const Proyecto = mongoose.model("proyecto", proyectoSchema);
 
-module.exports = Proyecto;
+const Proyecto = mongoose.model("Proyecto", ProyectoSchema)
+*/
 
 /* 2- Aclarar el ID tanto en el esquema, como en el controlador... (o en ninguno de los 2 lados /pero no 1 y 1)
 Acá los declaré en ambos lados, porque después necesité el ID para la relación */
@@ -1263,7 +1287,7 @@ for (let i = 0; i < personalInvolucrado.length; i++) {
 
 // POR FIN! ERRORES ENCONTRADOS:
 
-const Persona = mongoose.model("Persona", PersonaSchema); 
+const Persona = mongoose.model("Persona", PersonaSchema);
 /* el ("Persona",... es el nombre del modelo y TAMBIÉN VA EN MAYÚSCULA
 Fácil= Todos los nombres dentro de los modelos, que comiencen con Mayúscula y listo */
 
@@ -1288,3 +1312,24 @@ Entonces hubo que hacerle un condicional if( typeof ... == "string"){...}
 Y al hacer esto, también hubo que cambiar el condicional de cuando venían varios vínculos... lo curioso acá,
 es que el typeof, NO era un array... sino un OBJECT!
 */
+
+// 15-12-22 *************
+/* Corrigiendo el Update con JS, porque no pude con las querys de Mongo.
+ Tuve que cambiar la sucesión de IF a un Switch, por el tema del break (en el caso de undefined, 
+redefinía proyects como un array o un string, por lo que entraba en esos ifs... 
+
+No supe corregir este tipo de consulta de Mongo:*/
+Proyecto.updateMany(
+  { involved: id },
+  { $set: { involved: [] } },
+  { multi: true },
+  (error, data) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(data);
+    }
+  }
+);
+
+
