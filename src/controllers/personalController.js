@@ -235,6 +235,7 @@ const controller = {
   },
   edit: (req, res) => {
     let id = req.params.id;
+    
     Persona.findById(id, (error, personalToEdit) => {
       if (error) {
         return res.status(500).json({

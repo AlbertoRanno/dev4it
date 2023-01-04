@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
+
 let datosPersonal = [];
 
 Persona.find({}, (error, personas) => {
@@ -130,6 +131,7 @@ const controller = {
               console.log("Un solo usuario");
               let personalInvolucrado = [];
               personalInvolucrado.push(req.body.involved);
+
               Persona.findById(req.body.involved, (error, persona) => {
                 if (error) {
                   return res
@@ -180,6 +182,7 @@ const controller = {
   },
   edit: (req, res) => {
     let id = req.params.id;
+
     Proyecto.findById(id, (error, proyectToEdit) => {
       if (error) {
         return res.status(500).json({
@@ -192,9 +195,6 @@ const controller = {
             toAssign.push(datosPersonal[i]);
           }
         }
-        console.log(proyectToEdit.involved[0]);
-        console.log(toAssign[0]._id);
-
         res.render("./proyects/edit", {
           proyectToEdit,
           personal: datosPersonal,
@@ -207,6 +207,23 @@ const controller = {
   update: (req, res) => {
     const resultValidation = validationResult(req);
     let id = req.params.id;
+
+    // Borro el proyecto de todos los usuarios, y luego guardo donde corresponda
+    Persona.find({}, (error, personas) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error buscando los personas",
+        });
+      }
+
+      for (let i = 0; i < personas.length; i++) {
+        let indiceArray = personas[i].proyects.indexOf(id);
+        if (indiceArray != -1) {
+          personas[i].proyects.splice(indiceArray, 1);
+          personas[i].save();
+        }
+      }
+    });
 
     Proyecto.findById(id, (error, proyectToEdit) => {
       if (error) {
@@ -223,6 +240,47 @@ const controller = {
           let dateEnd = req.body.dateEnd;
           let involved = req.body.involved;
           let link = req.body.link;
+
+          console.log(typeof involved);
+
+          switch (typeof involved) {
+            case "undefined":
+              involved = [];
+
+              break;
+
+            case "string":
+              Persona.findById(involved, (error, persona) => {
+                if (error) {
+                  return res.status(500).json({
+                    message: "Error buscando el proyecto",
+                  });
+                }
+                persona.proyects = persona.proyects.concat(id);
+                persona.save();
+              });
+              break;
+
+            case "object":
+              for (let i = 0; i < involved.length; i++) {
+                Persona.findById(involved[i], (error, persona) => {
+                  if (error) {
+                    return res.status(500).json({
+                      message: "Error buscando los personas",
+                    });
+                  }
+                  persona.proyects = persona.proyects.concat(id);
+                  persona.save();
+                });
+              }
+              break;
+
+            default:
+              res.status(500).json({
+                message: `No coincide con los casos - ${error}`,
+              });
+              break;
+          }
 
           Proyecto.findByIdAndUpdate(
             id,
@@ -242,7 +300,6 @@ const controller = {
                   message: "Error guardando en DB",
                 });
               } else {
-                console.log(proyect);
                 res.redirect("/proyectos");
               }
             }

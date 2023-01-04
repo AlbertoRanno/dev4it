@@ -95,11 +95,8 @@
               <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" name="involved" value="<%= toAssign[i]._id %>" 
 
               <% for( let j = 0; j < proyectToEdit.involved.length; j++ ) { %>
-              <%= proyectToEdit.involved[j] == toAssign[i]._id ? "checked" : null%> 
+              <%= proyectToEdit.involved[j] == toAssign[i].id ? "checked" : null%> 
               <% } %>
-              
-
-
 
               />
               <%= toAssign[i].name %> <br> <%= toAssign[i].rol %> - <%= toAssign[i].seniority %>
