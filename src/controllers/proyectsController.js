@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 let datosPersonal = [];
 
@@ -195,11 +196,25 @@ const controller = {
             toAssign.push(datosPersonal[i]);
           }
         }
+
+        let dateStart = moment(proyectToEdit.dateStart).format("YYYY-MM-DD");
+        console.log(dateStart);
+        let formattedDateStart = moment(dateStart).add(5, "days");
+        let formattedDateEnd = moment(proyectToEdit.dateEnd).format(
+          "YYYY-MM-DD"
+        );
+        console.log(proyectToEdit.dateStart);
+        console.log(formattedDateStart);
+        console.log(proyectToEdit.dateEnd);
+        console.log(formattedDateEnd);
+
         res.render("./proyects/edit", {
           proyectToEdit,
           personal: datosPersonal,
           estados,
           toAssign,
+          formattedDateStart,
+          formattedDateEnd,
         });
       }
     });

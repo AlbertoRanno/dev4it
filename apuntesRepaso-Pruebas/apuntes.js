@@ -1332,4 +1332,15 @@ No supe corregir este tipo de consulta de Mongo:*/
         }
       );
 
+// 4-1-23 *************
+/* FINALMENTE los UPDATE funcionando completos!
+El punto fue el cambio de lógica: primero borrar el ID en cuestión de Todos los documentos relaciones, 
+y después, acorde el caso, grabar el ID solo donde corresponda
+(PEGAR DIAGRAMA HECHO EN EXCEL QUE ME AYUDÓ A CORREGIR LA LÓGICA)
+*/
+
+// Moment - modulo instalable para cambiar los formatos de las fechas:
+const moment = require("moment"); 
+let formattedDateStart = moment(proyectToEdit.dateStart).format("YYYY-MM-DD");
+// donde proyectToEdit.dateStart es la fecha que levanto de MongoDB
 
