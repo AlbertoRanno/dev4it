@@ -252,23 +252,6 @@ const controller = {
     const resultValidation = validationResult(req);
     let id = req.params.id;
 
-    // lo borro de todos los proyectos, y luego guardo donde corresponda
-    Proyecto.find({}, (error, proyectos) => {
-      if (error) {
-        return res.status(500).json({
-          message: "Error buscando los proyectos",
-        });
-      }
-
-      for (let i = 0; i < proyectos.length; i++) {
-        let indiceArray = proyectos[i].involved.indexOf(id);
-        if (indiceArray != -1) {
-          proyectos[i].involved.splice(indiceArray, 1);
-          proyectos[i].save();
-        }
-      }
-    });
-
     Persona.findById(id, (error, userToModify) => {
       if (error) {
         return res.status(500).json({
@@ -291,23 +274,41 @@ const controller = {
             case "undefined":
               proyects = [];
 
+              Proyecto.find({}, (error, proyectos) => {
+                if (error) {
+                  return res.status(500).json({
+                    message: "Error buscando los proyectos",
+                  });
+                }
+
+                for (let i = 0; i < proyectos.length; i++) {
+                  let indiceArray = proyectos[i].involved.indexOf(id);
+                  if (indiceArray != -1) {
+                    proyectos[i].involved.splice(indiceArray, 1);
+                    proyectos[i].save();
+                  }
+                }
+              });
               break;
 
             case "string":
-              Proyecto.findById(proyects, (error, proyecto) => {
+              let proyectosInvolucrados = [];
+              proyectosInvolucrados.push(req.body.proyects);
+              Proyecto.findById(proyectosInvolucrados, (error, proyecto) => {
                 if (error) {
                   return res.status(500).json({
                     message: "Error buscando el proyecto",
                   });
                 }
-                proyecto.involved = proyecto.involved.concat(id);
+                if (proyecto.involved != proyecto.involved) {
+                  proyecto.involved = proyecto.involved.concat(id);
+                }
                 proyecto.save();
               });
               break;
 
             case "object":
               let proyectsInvolucrados = req.body.proyects;
-
               for (let i = 0; i < proyectsInvolucrados.length; i++) {
                 Proyecto.findById(
                   proyectsInvolucrados[i],
@@ -317,7 +318,23 @@ const controller = {
                         message: "Error buscando los proyectos",
                       });
                     }
-                    proyecto.involved = proyecto.involved.concat(id);
+                    if (proyecto.involved.indexOf(id) === -1) {
+                      proyecto.involved = proyecto.involved.concat(id);
+                    } else {
+                      let resto = [];
+                      for (let j = 0; j < datosProyectos.length; j++) {
+                        if (datosProyectos[j] != proyectsInvolucrados[i]) {
+                          resto.push(datosProyectos[j]);
+                        }
+                      }
+                      console.log("Resto Pre corte " + resto);
+                      for (let k = 0; k < resto.length; k++) {
+                        let indiceArray = resto[i].involved.indexOf(id);
+                        resto[i].involved.splice(indiceArray, 1);
+                        //resto[i].save();
+                      }
+                      console.log("Resto Post corte " + resto);
+                    }
                     proyecto.save();
                   }
                 );
@@ -348,6 +365,7 @@ const controller = {
                   message: `Error actualizando al usuario con id: ${id}`,
                 });
               } else {
+                //console.log(persona);
                 res.redirect("/personal/detail/" + id);
               }
             }

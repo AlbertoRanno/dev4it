@@ -97,7 +97,7 @@
                 <label class="form-check-label"><b>Proyectos involucrado:</b></label>
                 <% for(let i=0; i<datosProyectos.length; i++){ %>
 
-                <a href="/proyectos/detail/<%= datosProyectos[i].id %>" class="list-group-item list-group-item-action">
+                <a href="/proyectos/detail/<%= datosProyectos[i].id %>" target="_blank" class="list-group-item list-group-item-action">
 
                   <input type="checkbox" name="proyects" class="form-check-input" value="<%= datosProyectos[i]._id %>"
 

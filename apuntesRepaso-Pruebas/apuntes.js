@@ -306,7 +306,7 @@ Un form por Get, para que me traiga la vista con los resultados:
   <input type="text" name="search" />  // (*search*)
   <input type="submit" value="Enviar" />
 </form>
-Por estar bien configurado (no, por viajar por GET) el form, cuando presione en Enviar, me dirijira a la siguiente URL:
+Por viajar por GET, el form, cuando presione en Enviar, me dirijira a la siguiente URL:
 http://localhost:3000/personal/search?search=a
 donde el ..al/search?.. es porque ahi configure que fuera el form
 y el ?search=a es porque (*search*) lo llame con NAME (no con ID)... y "a" es lo que puse en el input para que se busque.
@@ -1319,17 +1319,17 @@ es que el typeof, NO era un array... sino un OBJECT!
 redefinía proyects como un array o un string, por lo que entraba en esos ifs... 
 
 No supe corregir este tipo de consulta de Mongo:*/
-Proyecto.updateMany(
-  { involved: id },
-  { $set: { involved: [] } },
-  { multi: true },
-  (error, data) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(data);
-    }
-  }
-);
+      Proyecto.updateMany(
+        {}, //filtro . Ejemplo { price: 300}
+        { $set: { involved: [] } }, //actualizacion a aplicar . Ejemplo { price: 200, descuento: 300 }
+        { multi: true }, // Opciones ... a chequear
+        (error, data) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(data);
+          }
+        }
+      );
 
 
