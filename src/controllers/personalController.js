@@ -286,6 +286,7 @@ const controller = {
           let proyects = req.body.proyects;
           let seniority = req.body.seniority;
           let avatar = req.body.avatar;
+          let active = req.body.active;
           delete req.body.repeatPassword;
 
           console.log(typeof proyects);
@@ -344,6 +345,7 @@ const controller = {
               proyects,
               seniority,
               avatar,
+              active,
             },
             (error, persona) => {
               if (error) {
