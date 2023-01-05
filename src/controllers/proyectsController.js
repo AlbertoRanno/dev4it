@@ -348,7 +348,7 @@ const controller = {
           message: "Error eliminando el proyecto",
         });
       } else {
-        console.log("Proyecto eliminado correctamente");
+        console.log("La eliminación definitiva ha sido exitosa");
         res.redirect("/proyectos");
       }
     });

@@ -32,14 +32,26 @@
       <button type="submit" class="btn btn-info">Modificar</button>
     </form>
 
-    <form action="/personal/softdelete/<%= persona.id %>" method="GET">
-        <button type="submit" class="btn btn-warning">Soft-Delete</button>
+    <% if (persona.active === true) { %>
+     <form action="/personal/softdelete/<%= persona.id %>" method="GET">
+        <button type="submit" class="btn btn-warning">Eliminar</button>
       </form>
+    <% } %>
+    
 
-    <form action="/personal/delete/<%= persona.id %>?_method=DELETE" method="POST">
-      <button type="submit" class="btn btn-danger">Eliminar</button>
+      <% if (persona.active === false) { %>
+        <form action="/personal/delete/<%= persona.id %>?_method=DELETE" method="POST">
+      <button type="submit" class="btn btn-danger" onclick="confirmation()">Eliminar definitivamente</button>
     </form>
+      <% } %>
+   
   </div>
 </body>
+<script>
+  function confirmation() {
+    var result = confirm("No quedará ningún registro... Estás seguro?")
+    if(result){console.log("La eliminación definitiva ha sido exitosa");}
+  }
+</script>
 
 </html>

@@ -20,9 +20,9 @@
       <li class="list-group-item">
         <ol>
           <% if ( proyect.involved.length <1) { %>
-        <li> Sin personal asignado </li>
-        <% } else { %>
-          <% for( let i = 0; i < proyect.involved.length; i++ ) { %>
+          <li>Sin personal asignado</li>
+          <% } else { %> <% for( let i = 0; i < proyect.involved.length; i++ ) {
+          %>
           <li><%= proyect.involved[i].name %></li>
           <% }} %>
         </ol>
@@ -38,16 +38,26 @@
         <button type="submit" class="btn btn-info">Modificar</button>
       </form>
 
+      <% if (proyect.active === true) { %>
       <form action="/proyectos/softdelete/<%= proyect.id %>" method="GET">
-        <button type="submit" class="btn btn-warning">Soft-Delete</button>
+        <button type="submit" class="btn btn-warning">Eliminar</button>
       </form>
-
+      <% } %> 
+      
+      <% if (proyect.active === false) { %>
       <form
         action="/proyectos/delete/<%= proyect.id %>?_method=DELETE"
         method="POST"
       >
-        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <button type="submit" class="btn btn-danger" onclick="confirmation()">Eliminar definitivamente</button>
       </form>
+      <% } %>
     </div>
-  </body>
+  </body>  
+<script>
+  function confirmation() {
+    var result = confirm("No quedará ningún registro... Estás seguro?")
+    if(result){console.log("La eliminación definitiva ha sido exitosa")}
+  }
+</script>
 </html>

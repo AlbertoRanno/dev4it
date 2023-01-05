@@ -32,7 +32,6 @@ const controller = {
           message: "Error mostrando las personas",
         });
       }
-      console.log(personas);
       res.render("./staff/personal", {
         listado: personas,
       });
@@ -388,7 +387,7 @@ const controller = {
           message: "Error elimando al usuario",
         });
       } else {
-        console.log("Usuario eliminado correctamente");
+        console.log("La eliminación definitiva ha sido exitosa");
         res.redirect("/personal");
       }
     });
