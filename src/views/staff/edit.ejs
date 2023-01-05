@@ -72,16 +72,25 @@
             </div>
 
             <div class="col-md-6 mt-3">
-              <div class="form-group">
-                <label for="seniority"><b>Seniority:</b></label>
-                <input type="text" id="seniority" name="seniority" class="form-control <%=
+                <div class="form-group">
+                  <label for="seniority"><b>Seniority:</b></label>
+                  
+                  <select name="seniority" id="seniority" class="form-control <%=
                   locals.errors && errors.seniority ? "is-invalid" : null %>"
-                  value="<%= personalToEdit.seniority %>" /> <%
-                  if (locals.errors && errors.name) { %>
-                <div class="text-danger"><%= errors.seniority.msg %></div>
-                <% } %>
-              </div>
-            </div>
+                  
+                  >
+                  <option value="sinAsignar" <%= locals.oldData && oldData.seniority === "sinAsignar" ? "selected" : " " ; %> >
+                    Elige uno:</option>
+                    <% for (let i = 0; i < seniority.length; i++) { %>
+                      <option value="<%= seniority[i] %>"
+                        <%= personalToEdit.rol == roles[i] ? "selected" : " " ; %>> <%= seniority[i] %> </option>
+                      
+                  <% } %>
+
+                    </select>
+
+                  </div>
+                </div>
 
             <div class="col-md-6 mt-3">
               <div class="form-group">

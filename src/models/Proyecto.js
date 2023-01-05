@@ -12,6 +12,7 @@ const ProyectoSchema = new mongoose.Schema(
     dateEnd: { type: Date }, //, min: Date.now
     involved: [{ type: Schema.Types.ObjectId, ref: "Persona" }],
     link: { type: String },
+    observations: { type: String },
     active: { type: Boolean },
   },
   { versionKey: false }

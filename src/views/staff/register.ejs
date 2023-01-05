@@ -75,15 +75,23 @@
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="seniority"><b>Seniority:</b></label>
-                  <input type="text" id="seniority" name="seniority"
-                  class="form-control <%= locals.errors && errors.seniority ?
-                  "is-invalid" : null %>" value="<%= locals.oldData ?
-                  oldData.seniority : null %>" /> <% if (locals.errors &&
-                  errors.name) { %>
-                  <div class="text-danger"><%= errors.seniority.msg %></div>
+                  
+                  <select name="seniority" id="seniority" class="form-control <%=
+                  locals.errors && errors.seniority ? "is-invalid" : null %>"
+                  
+                  >
+                  <option value="sinAsignar" <%= locals.oldData && oldData.seniority === "sinAsignar" ? "selected" : " " ; %> >
+                    Elige uno:</option>
+                    <% for (let i = 0; i < seniority.length; i++) { %>
+                      <option value="<%= seniority[i] %>"
+                        <%= locals.oldData && oldData.seniority === seniority[i] ? "selected" : " " ; %>> <%= seniority[i] %> </option>
+                      
                   <% } %>
+
+                    </select>
+
+                  </div>
                 </div>
-              </div>
 
               <div class="col-md-6 mt-3">
                 <div class="form-group">

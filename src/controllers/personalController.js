@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 
 let roles = ["Gestor de proyectos", "Web designer", "Diseñador UI/UX", "Frontend Developer", "Backend Developer", "Database Administrator", "Arquitecto Cloud", "QA", "otros"];
 
+let seniority = ["Trainee", "Junior", "Semisenior", "Senior"]
+
 let datosProyectos = [];
 
 Proyecto.find({}, (error, proyectos) => {
@@ -81,6 +83,7 @@ const controller = {
     res.render("./staff/register", {
       datosProyectos,
       roles,
+      seniority,
     });
   },
   store: (req, res) => {
@@ -106,6 +109,7 @@ const controller = {
             oldData: req.body,
             datosProyectos,
             roles,
+            seniority,
           });
         } else if (resultValidation.isEmpty()) {
           const personal = new Persona({
@@ -168,6 +172,7 @@ const controller = {
             oldData: req.body,
             datosProyectos,
             roles,
+            seniority,
           });
         }
       }
@@ -252,6 +257,7 @@ const controller = {
           personalToEdit,
           datosProyectos,
           roles,
+          seniority,
         });
       }
     });
@@ -369,6 +375,7 @@ const controller = {
             datosProyectos,
             personalToEdit: userToModify,
             roles,
+            seniority,
           });
         }
       }
