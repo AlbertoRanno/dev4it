@@ -326,6 +326,19 @@ const controller = {
       }
     });
   },
+  softdelete: (req, res) => {
+    let id = req.params.id;
+    Proyecto.findByIdAndUpdate(id, { active: false }, (error, proyecto) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error eliminando el proyecto",
+        });
+      } else {
+        console.log(`${proyecto.name} eliminado correctamente`);
+        res.redirect("/proyectos");
+      }
+    });
+  },
   delete: (req, res) => {
     let id = req.params.id;
     Proyecto.findByIdAndDelete(id, (error) => {

@@ -235,7 +235,7 @@ const controller = {
   },
   edit: (req, res) => {
     let id = req.params.id;
-    
+
     Persona.findById(id, (error, personalToEdit) => {
       if (error) {
         return res.status(500).json({
@@ -361,6 +361,19 @@ const controller = {
             personalToEdit: userToModify,
           });
         }
+      }
+    });
+  },
+  softdelete: (req, res) => {
+    let id = req.params.id;
+    Persona.findByIdAndUpdate(id, { active: false }, (error, persona) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error eliminando al usuario",
+        });
+      } else {
+        console.log(`${persona.name} eliminado correctamente`);
+        res.redirect("/personal");
       }
     });
   },

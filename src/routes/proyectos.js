@@ -14,6 +14,8 @@ routerProyectos.get("/detail/:id", proyectsController.detail);
 
 routerProyectos.get("/edit/:id", proyectsController.edit);
 
+routerProyectos.get("/softdelete/:id", proyectsController.softdelete);
+
 routerProyectos.patch("/update/:id", validationsUpd, proyectsController.update);
 
 routerProyectos.delete("/delete/:id", proyectsController.delete)

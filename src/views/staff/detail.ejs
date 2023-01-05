@@ -29,8 +29,12 @@
     </form>
 
     <form action="/personal/edit/<%= persona.id %>" method="GET">
-      <button type="submit" class="btn btn-warning">Modificar</button>
+      <button type="submit" class="btn btn-info">Modificar</button>
     </form>
+
+    <form action="/personal/softdelete/<%= persona.id %>" method="GET">
+        <button type="submit" class="btn btn-warning">Soft-Delete</button>
+      </form>
 
     <form action="/personal/delete/<%= persona.id %>?_method=DELETE" method="POST">
       <button type="submit" class="btn btn-danger">Eliminar</button>

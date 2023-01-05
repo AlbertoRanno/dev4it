@@ -35,7 +35,11 @@
       </form>
 
       <form action="/proyectos/edit/<%= proyect.id %>" method="GET">
-        <button type="submit" class="btn btn-warning">Modificar</button>
+        <button type="submit" class="btn btn-info">Modificar</button>
+      </form>
+
+      <form action="/proyectos/softdelete/<%= proyect.id %>" method="GET">
+        <button type="submit" class="btn btn-warning">Soft-Delete</button>
       </form>
 
       <form

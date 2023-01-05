@@ -37,6 +37,8 @@ routerPersonas.patch(
 
 routerPersonas.get("/profile/:id", auth, personalController.profile);
 
+routerPersonas.get("/softdelete/:id", personalController.softdelete);
+
 routerPersonas.delete("/delete/:id", personalController.delete);
 
 routerPersonas.get("/detail/:id", personalController.detail);

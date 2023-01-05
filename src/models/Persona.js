@@ -11,6 +11,7 @@ const PersonaSchema = new mongoose.Schema(
     proyects: [{ type: Schema.Types.ObjectId, ref: "Proyecto" }],
     seniority: { type: String },
     avatar: { type: String },
+    active: { type: Boolean},
   },
   { versionKey: false }
 );
