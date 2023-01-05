@@ -1348,3 +1348,18 @@ let formattedDateStart = moment(proyectToEdit.dateStart).format("YYYY-MM-DD");
 let formattedDateStart1 = moment(proyectToEdit.dateStart)
   .add(1, "days")
   .format("YYYY-MM-DD");
+
+body("dateStart").custom((value, { req }) => {
+  let fechaInicio = req.body.dateStart;
+  let fechaFinal = req.body.dateEnd;
+
+  if (moment(fechaInicio).isAfter(fechaFinal)) {
+    console.log("La fecha de finalización No puede ser menor a la de inicio");
+    throw new Error(
+      "La fecha de finalización No puede ser menor a la de inicio"
+    );
+  }
+  return true;
+});
+
+/* Día de muchas correciones pendientes.. persistencia de datos, validaciones, reemplazo por selects, agregar campos solicitados, etc... */

@@ -28,7 +28,7 @@
         </label>
         <div class="col-10">
           <textarea name="description" id="description" rows="4" class="form-control 
-          <%= locals.errors && errors.description ? "is-invalid" : null %>"></textarea>
+          <%= locals.errors && errors.description ? "is-invalid" : null %>"><% if(locals.oldData && oldData.description) { %><%= oldData.description %><% } %></textarea>
           <% if  (locals.errors && errors.description) { %>
           <div class="text-danger"><%= errors.description.msg %></div>
           <% } %>
@@ -76,6 +76,10 @@
         </label>
         <div class="col-2">
           <input type="date" class="form-control" id="dateStart" name="dateStart" />
+          <% if (locals.errors &&
+                  errors.dateStart) { %>
+                  <div class="text-danger"><%= errors.dateStart.msg %></div>
+                  <% } %>
         </div>
       </div>
 
