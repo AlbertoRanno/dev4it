@@ -126,6 +126,7 @@ const controller = {
               dateEnd: req.body.dateEnd,
               involved: req.body.involved,
               link: req.body.link,
+              observations: req.body.observations,
               active: true,
             });
 
@@ -252,6 +253,7 @@ const controller = {
           let dateEnd = req.body.dateEnd;
           let involved = req.body.involved;
           let link = req.body.link;
+          let observations = req.body.observations;
           let active = req.body.active;
 
           console.log(typeof involved);
@@ -306,6 +308,7 @@ const controller = {
               dateEnd,
               involved,
               link,
+              observations,
               active,
             },
             (error, proyect) => {

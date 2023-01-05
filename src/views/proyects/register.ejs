@@ -115,6 +115,19 @@
         </div>
       </div>
 
+      <div class="row mb-3">
+        <label for="observations" class="col-2 col-form-label">
+          Observaciones:
+        </label>
+        <div class="col-10">
+          <textarea name="observations" id="observations" rows="4" class="form-control 
+          <%= locals.errors && errors.observations ? "is-invalid" : null %>"></textarea>
+          <% if  (locals.errors && errors.observations) { %>
+          <div class="text-danger"><%= errors.observations.msg %></div>
+          <% } %>
+        </div>
+      </div>
+
       <div class="buttonPanel">
         <a href="/proyectos" class="btn btn-primary">Volver</a>
         <button type="submit" class="btn btn-success">
