@@ -197,16 +197,12 @@ const controller = {
           }
         }
 
-        let dateStart = moment(proyectToEdit.dateStart).format("YYYY-MM-DD");
-        console.log(dateStart);
-        let formattedDateStart = moment(dateStart).add(5, "days");
-        let formattedDateEnd = moment(proyectToEdit.dateEnd).format(
-          "YYYY-MM-DD"
-        );
-        console.log(proyectToEdit.dateStart);
-        console.log(formattedDateStart);
-        console.log(proyectToEdit.dateEnd);
-        console.log(formattedDateEnd);
+        let formattedDateStart = moment(proyectToEdit.dateStart)
+          .add(1, "days")
+          .format("YYYY-MM-DD");
+        let formattedDateEnd = moment(proyectToEdit.dateEnd)
+          .add(1, "days")
+          .format("YYYY-MM-DD");
 
         res.render("./proyects/edit", {
           proyectToEdit,

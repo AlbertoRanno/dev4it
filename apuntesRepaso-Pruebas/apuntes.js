@@ -1027,7 +1027,7 @@ const Comment = new Schema({
   buff: Buffer
 }); */
 
-//Ojo a las mayúsculas que no me funcionaba... 
+//Ojo a las mayúsculas que no me funcionaba...
 //const mongoose = require("mongoose");
 //const { Schema } = mongoose;
 
@@ -1049,7 +1049,6 @@ const PersonaSchema = new mongoose.Schema(
 const Persona = mongoose.model("Persona", PersonaSchema);
 //"Persona" es el nombre en singular de la colección para la cual sirve el modelo
 module.exports = Persona;
-
 
 //Mostrar
 const mostrar = async () => {
@@ -1134,16 +1133,15 @@ Lo mejor, es no ponerlo en ningún lado, y dejar que Mongo lo cree automáticame
 MMMM... no, luego lo necesité.. así que lo volví a aclarar en el Schema, pero también en el controlador:  */
 
 const personal = new Persona({
-            _id: new mongoose.Types.ObjectId(),
-            name: req.body.name,
-            email: req.body.email,
-            rol: req.body.rol,
-            password: bcryptjs.hashSync(req.body.password, 10),
-            proyects: req.body.proyects,
-            seniority: req.body.seniority,
-            avatar: "/images/avatars/" + req.file.filename,
-          });
-
+  _id: new mongoose.Types.ObjectId(),
+  name: req.body.name,
+  email: req.body.email,
+  rol: req.body.rol,
+  password: bcryptjs.hashSync(req.body.password, 10),
+  proyects: req.body.proyects,
+  seniority: req.body.seniority,
+  avatar: "/images/avatars/" + req.file.filename,
+});
 
 // 07-12-22 *************
 /* Para las relaciones muchos a muchos en MongoDB hay que ver:
@@ -1319,18 +1317,18 @@ es que el typeof, NO era un array... sino un OBJECT!
 redefinía proyects como un array o un string, por lo que entraba en esos ifs... 
 
 No supe corregir este tipo de consulta de Mongo:*/
-      Proyecto.updateMany(
-        {}, //filtro . Ejemplo { price: 300}
-        { $set: { involved: [] } }, //actualizacion a aplicar . Ejemplo { price: 200, descuento: 300 }
-        { multi: true }, // Opciones ... a chequear
-        (error, data) => {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(data);
-          }
-        }
-      );
+Proyecto.updateMany(
+  {}, //filtro . Ejemplo { price: 300}
+  { $set: { involved: [] } }, //actualizacion a aplicar . Ejemplo { price: 200, descuento: 300 }
+  { multi: true }, // Opciones ... a chequear
+  (error, data) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(data);
+    }
+  }
+);
 
 // 4-1-23 *************
 /* FINALMENTE los UPDATE funcionando completos!
@@ -1340,7 +1338,13 @@ y después, acorde el caso, grabar el ID solo donde corresponda
 */
 
 // Moment - modulo instalable para cambiar los formatos de las fechas:
-const moment = require("moment"); 
+const moment = require("moment");
 let formattedDateStart = moment(proyectToEdit.dateStart).format("YYYY-MM-DD");
 // donde proyectToEdit.dateStart es la fecha que levanto de MongoDB
 
+// 5-1-23 *************
+/* Retomo persistencia fecha, tengo que usar el "add", porque mongo me lo guarda con hora.. y a las
+00:00:00 Hs de un día, al levantarlo, me lo toma como el dìa anterior, por eso le sumo 1 día */
+let formattedDateStart1 = moment(proyectToEdit.dateStart)
+  .add(1, "days")
+  .format("YYYY-MM-DD");
