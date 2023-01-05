@@ -91,16 +91,17 @@
           <div class="form-check">
 
             <% for (let i=0; i< toAssign.length; i++) { %>        
-            <label for="<%= "involved" + [i] %>"  class="form-check-label">
+           
               <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" name="involved" value="<%= toAssign[i]._id %>" 
 
               <% for( let j = 0; j < proyectToEdit.involved.length; j++ ) { %>
               <%= proyectToEdit.involved[j] == toAssign[i].id ? "checked" : null%> 
-              <% } %>
+              <% } %>/>
 
-              />
-              <%= toAssign[i].name %> <br> <%= toAssign[i].rol %> - <%= toAssign[i].seniority %>
-            </label>
+            <label for="<%= "involved" + [i] %>"  class="form-check-label"><%= toAssign[i].name %> <br> <%= toAssign[i].rol %> - <%= toAssign[i].seniority %></label>
+
+             <a href="/personal/detail/<%= toAssign[i].id %>"><i class="fa-solid fa-arrows-to-eye"></i></a>
+
             <br>
             <% } %>
 
