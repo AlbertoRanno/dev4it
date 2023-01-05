@@ -3,7 +3,8 @@ const bcryptjs = require("bcryptjs");
 const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
-const { response } = require("express");
+
+let roles = ["Gestor de proyectos", "Web designer", "Diseñador UI/UX", "Frontend Developer", "Backend Developer", "Database Administrator", "Arquitecto Cloud", "QA", "otros"];
 
 let datosProyectos = [];
 
@@ -79,6 +80,7 @@ const controller = {
   register: (req, res) => {
     res.render("./staff/register", {
       datosProyectos,
+      roles,
     });
   },
   store: (req, res) => {
@@ -103,6 +105,7 @@ const controller = {
             },
             oldData: req.body,
             datosProyectos,
+            roles,
           });
         } else if (resultValidation.isEmpty()) {
           const personal = new Persona({
@@ -164,6 +167,7 @@ const controller = {
             errors: resultValidation.mapped(),
             oldData: req.body,
             datosProyectos,
+            roles,
           });
         }
       }
@@ -247,6 +251,7 @@ const controller = {
         res.render("./staff/edit", {
           personalToEdit,
           datosProyectos,
+          roles,
         });
       }
     });
@@ -363,6 +368,7 @@ const controller = {
             oldData: req.body,
             datosProyectos,
             personalToEdit: userToModify,
+            roles,
           });
         }
       }

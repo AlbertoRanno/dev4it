@@ -38,18 +38,27 @@
                   <% } %>
                 </div>
               </div>
-
+ 
               <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <label for="rol"><b>Rol:</b></label>
-                  <input type="text" id="rol" name="rol" class="form-control <%=
+                  
+                  <select name="rol" id="rol" class="form-control <%=
                   locals.errors && errors.rol ? "is-invalid" : null %>"
-                  value="<%= locals.oldData ? oldData.rol : null %>" /> <% if
-                  (locals.errors && errors.name) { %>
-                  <div class="text-danger"><%= errors.rol.msg %></div>
+                  
+                  >
+                  <option value="sinAsignar" <%= locals.oldData && oldData.rol === "sinAsignar" ? "selected" : " " ; %> >
+                    Elige uno:</option>
+                    <% for (let i = 0; i < roles.length; i++) { %>
+                      <option value="<%= roles[i] %>"
+                        <%= locals.oldData && oldData.roles === roles[i] ? "selected" : " " ; %>> <%= roles[i] %> </option>
+                      
                   <% } %>
+
+                    </select>
+
+                  </div>
                 </div>
-              </div>
 
               <div class="col-md-6 mt-3">
                 <div class="form-group">
