@@ -32,6 +32,7 @@ const controller = {
           message: "Error mostrando las personas",
         });
       }
+      console.log(personas);
       res.render("./staff/personal", {
         listado: personas,
       });
@@ -114,6 +115,8 @@ const controller = {
             proyects: req.body.proyects,
             seniority: req.body.seniority,
             avatar: "/images/avatars/" + req.file.filename,
+            active: true,
+            admin: false,
           });
 
           //console.log(typeof req.body.proyects);

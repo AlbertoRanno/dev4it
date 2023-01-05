@@ -126,6 +126,7 @@ const controller = {
               dateEnd: req.body.dateEnd,
               involved: req.body.involved,
               link: req.body.link,
+              active: true,
             });
 
             if (typeof req.body.involved == "string") {

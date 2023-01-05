@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const PersonaSchema = new mongoose.Schema(
@@ -11,7 +11,8 @@ const PersonaSchema = new mongoose.Schema(
     proyects: [{ type: Schema.Types.ObjectId, ref: "Proyecto" }],
     seniority: { type: String },
     avatar: { type: String },
-    active: { type: Boolean},
+    active: { type: Boolean },
+    admin: { type: Boolean },
   },
   { versionKey: false }
 );

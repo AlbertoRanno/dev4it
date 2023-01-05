@@ -4,9 +4,11 @@
   <body>
     <%- include('../partials/header.ejs')%>
     <main>
-      <ul class="list-group">
-        <!--active / disabled-->
-        <% for( let i = 0; i < listado.length; i++ ) { %>
+      <label for="active" class="labels-list"> Personal: </label>
+      <ul class="list-group" id="active">
+        <% for( let i = 0; i < listado.length; i++ ) { %> <%
+        if(listado[i].active === true){ %>
+
         <li>
           <a
             href="/personal/detail/<%= listado[i].id %>"
@@ -14,8 +16,30 @@
             ><%= listado[i].name %>
           </a>
         </li>
-        <% } %>
+
+        <% }} %>
       </ul>
+
+      <br />
+      <br />
+
+      <% if (locals.userLogged.admin) { %>
+      <label for="inactive" class="labels-list"> Personal Inactivo: </label>
+      <ul class="list-group" id="inactive">
+        <% for( let i = 0; i < listado.length; i++ ) { %> <%
+        if(listado[i].active === false){ %>
+
+        <li>
+          <a
+            href="/personal/detail/<%= listado[i].id %>"
+            class="list-group-item list-group-item-action"
+            ><%= listado[i].name %>
+          </a>
+        </li>
+
+        <% } %> <% } %>
+      </ul>
+      <% } %>
 
       <br />
       <br />
@@ -28,7 +52,6 @@
           <button type="submit" class="btn btn-success">Nuevo usuario</button>
         </form>
       </div>
-
     </main>
   </body>
 </html>
