@@ -4,7 +4,7 @@ const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
 
-let roles = ["Gestor de proyectos", "Web designer", "Diseñador UI/UX", "Frontend Developer", "Backend Developer", "Database Administrator", "Arquitecto Cloud", "QA", "otros"];
+let roles = ["Gestor de proyectos", "Administrador de soluciones", "Web designer", "Diseñador UI/UX", "Frontend Developer", "Backend Developer", "Database Administrator", "Arquitecto Cloud", "QA", "otros"];
 
 let seniority = ["Trainee", "Junior", "Semisenior", "Senior"]
 
