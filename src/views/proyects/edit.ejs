@@ -140,15 +140,15 @@
         </div>
       </div>
 
-       <% if (locals.userLogged.admin && proyectToEdit.active === false) { %>
        <div class="row mb-3">
-        <label for="active" class="col-2 col-check-label">Volver activo: </label>  
+        <label for="active" class="col-2 col-check-label">Activo: </label>  
 
           <input type="checkbox" id="active" class="form-check-input" name="active" value=true
-           />
+          <%= proyectToEdit.active === true ? "checked disabled" : null  %>
+          <%= proyectToEdit.active === false && !locals.userLogged.admin ? "disabled" : null %>/>
         
       </div>
-      <% } %>
+
 
       <div class="buttonPanel">
         <a href="/proyectos" class="btn btn-primary">Volver</a>

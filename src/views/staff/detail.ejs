@@ -7,11 +7,11 @@
   <img src="<%= persona.avatar %>" alt="<%= persona.name %>" class="img-thumbnail avatar" />
   <hr>
   <ul class="list-group">
-    <li class="list-group-item"><%=persona.name%></li>
-    <li class="list-group-item"><%= persona.rol %></li>
-    <li class="list-group-item"><%= persona.seniority %></li>
-    <li class="list-group-item"><%= persona.email %></li>
-    <li class="list-group-item">
+    <li class="list-group-item"><strong>Nombre: </strong><%=persona.name%></li>
+    <li class="list-group-item"><strong>Rol: </strong><%= persona.rol %></li>
+    <li class="list-group-item"><strong>Seniority: </strong><%= persona.seniority %></li>
+    <li class="list-group-item"><strong>Email: </strong><%= persona.email %></li>
+    <li class="list-group-item"><strong>Proyectos: </strong>
       <ul>
         <% if ( persona.proyects.length <1) { %>
         <li> Sin proyectos asignados </li>
@@ -34,7 +34,7 @@
 
     <% if (persona.active === true) { %>
      <form action="/personal/softdelete/<%= persona.id %>" method="GET">
-        <button type="submit" class="btn btn-warning">Eliminar</button>
+        <button type="submit" class="btn btn-warning">Eliminar (Pasar a Inactivos)</button>
       </form>
     <% } %>
     

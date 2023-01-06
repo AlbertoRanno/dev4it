@@ -187,7 +187,7 @@ const controller = {
         email: req.body.email,
       },
       (error, userToLogin) => {
-        console.log(userToLogin);
+        //console.log(userToLogin);
         if (error) {
           return res.status(500).json({
             message: "Error buscando al usuario que quiere ingresar",

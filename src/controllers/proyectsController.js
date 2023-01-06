@@ -162,6 +162,10 @@ const controller = {
               }
             }
 
+            if (moment(proyect.dateEnd).isAfter(moment())) {
+              proyect.condition = "Pausado";
+            }
+
             proyect.save((error) => {
               if (error) {
                 return res.status(500).json({
@@ -239,7 +243,6 @@ const controller = {
     });
 
     Proyecto.findById(id, (error, proyectToEdit) => {
-
       let formattedDateStart = moment(proyectToEdit.dateStart)
         .add(1, "days")
         .format("YYYY-MM-DD");
