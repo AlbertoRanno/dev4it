@@ -6,19 +6,19 @@
     <%- include('../partials/header.ejs')%>
 
     <ul class="list-group">
-      <li class="list-group-item"><%= proyect.name%></li>
-      <li class="list-group-item"><%= proyect.description %></li>
-      <li class="list-group-item"><%= proyect.manager %></li>
-      <li class="list-group-item"><%= proyect.condition %></li>
-      <li class="list-group-item"><%= proyect.dateStart %></li>
-      <li class="list-group-item"><%= proyect.dateEnd %></li>
-      <li class="list-group-item">
+      <li class="list-group-item"><strong>Proyecto: </strong><%= proyect.name%></li>
+      <li class="list-group-item"><strong>Descripción: </strong><%= proyect.description %></li>
+      <li class="list-group-item"><strong>Manager: </strong><%= proyect.manager %></li>
+      <li class="list-group-item"><strong>Estado: </strong><%= proyect.condition %></li>
+      <li class="list-group-item"><strong>Inicio: </strong><%= proyect.dateStart %></li>
+      <li class="list-group-item"><strong>Fin: </strong><%= proyect.dateEnd %></li>
+      <li class="list-group-item"><strong>URL: </strong>
         <a href="<%= proyect.link %>" target="_blank" rel="nooper noreferrer"
           ><%= proyect.link %></a
         >
       </li>
-      <li class="list-group-item"><%= proyect.observations %></li>
-      <li class="list-group-item">
+      <li class="list-group-item"><strong>Observaciones: </strong><%= proyect.observations %></li>
+      <li class="list-group-item"><strong>Involucrados: </strong>
         <ol>
           <% if ( proyect.involved.length <1) { %>
           <li>Sin personal asignado</li>

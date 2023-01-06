@@ -239,6 +239,21 @@ const controller = {
     });
 
     Proyecto.findById(id, (error, proyectToEdit) => {
+
+      let formattedDateStart = moment(proyectToEdit.dateStart)
+        .add(1, "days")
+        .format("YYYY-MM-DD");
+      let formattedDateEnd = moment(proyectToEdit.dateEnd)
+        .add(1, "days")
+        .format("YYYY-MM-DD");
+
+      let toAssign = [];
+      for (let i = 0; i < datosPersonal.length; i++) {
+        if (datosPersonal[i].rol != "Gestor de proyectos") {
+          toAssign.push(datosPersonal[i]);
+        }
+      }
+
       if (error) {
         return res.status(500).json({
           message: `Error buscando el proyecto con id: ${id}`,
@@ -326,7 +341,11 @@ const controller = {
             proyectToEdit,
             personal: datosPersonal,
             estados,
+            errors: resultValidation.mapped(),
             oldData: req.body,
+            formattedDateStart,
+            formattedDateEnd,
+            toAssign,
           });
         }
       }
