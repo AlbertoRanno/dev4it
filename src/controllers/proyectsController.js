@@ -162,7 +162,7 @@ const controller = {
               }
             }
 
-            if (moment(proyect.dateEnd).isAfter(moment())) {
+            if (proyect.dateEnd < new Date()) {
               proyect.condition = "Pausado";
             }
 

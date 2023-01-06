@@ -1363,3 +1363,14 @@ body("dateStart").custom((value, { req }) => {
 });
 
 /* Día de muchas correciones pendientes.. persistencia de datos, validaciones, reemplazo por selects, agregar campos solicitados, etc... */
+
+// 6-1-23 *************
+/* Avanzando, torpemente, con las últimas validaciones..
+Moment parece que entró en desuso hace rato... tratar de reemplazarla después
+
+"Si la fecha de fin del proyecto es mayor a la actual, cambiar el estado a Pausado"
+Si apunta a que cambie solo, sin ningún disparador... quizás un middleware a nivel app, que se ejecute, chequee y cambie...*/
+if (proyect.dateEnd < new Date()) {
+  proyect.condition = "Pausado";
+}
+/* Por ahora lo implenté al momento de que cualquier usuario guarde un nuevo proyecto. */

@@ -8,6 +8,14 @@ const validations = [
     .bail()
     .isLength({ min: 3 })
     .withMessage("Al menos 3 letras..."),
+  body("manager").custom((value, { req }) => {
+    if (req.body.manager == "sinAsignar") {
+      throw new Error(
+        "Al guardarlo quedará activo, por lo que es requisito que tenga un Manager asignado"
+      );
+    }
+    return true;
+  }),
   body("dateStart").custom((value, { req }) => {
     let fechaInicio = req.body.dateStart;
     let fechaFinal = req.body.dateEnd;

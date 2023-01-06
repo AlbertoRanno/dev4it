@@ -45,12 +45,17 @@
         </label>
         <div class="col-3">
           <select class="form-control" id="manager" name="manager">
-            <% for (let i=0; i<personal.length ; i++) { %>
+            <option value="sinAsignar" <%= locals.oldData && oldData.manager === "sinAsignar" ? "selected" : " " ; %>>
+              Sin asignar</option>
+            <% for (let i=0; i<personal.length ; i++) { %>              
             <% if(personal[i].rol == "Gestor de proyectos"){ %>
             <option value="<%= personal[i].name %>" 
               <%= proyectToEdit.manager == personal[i].name ? "selected" : null %>> <%= personal[i].name %> </option>
             <% }} %>
           </select>
+          <% if  (locals.errors && errors.manager) { %>
+          <div class="text-danger"><%= errors.manager.msg %></div>
+          <% } %>
         </div>
       </div>
 
