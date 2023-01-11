@@ -1374,3 +1374,131 @@ if (proyect.dateEnd < new Date()) {
   proyect.condition = "Pausado";
 }
 /* Por ahora lo implenté al momento de que cualquier usuario guarde un nuevo proyecto. */
+
+// 11-1-23 *************
+/* Quiero implementarle la parte de API (Application Programming Interface), para luego consumirla con el front-end creado 
+con REACT. VER DE QUE LOS ENDPOINTS APUNTEN A LOS DATOS REQUERIDOS DEL DETALLE DE PROYECTOS.
+
+ Me tengo que olvidar de las vistas de la app, y pensar que la info de mis sistema se envíe en formato json, a un endpoint (URL),
+para ser consumida por otra app, o Postman (en get, es simil buscar en el navegador, pero permite usar los otros verbos http), 
+u otro cliente, el cual no tiene que ser necesariamente del tipo navegador web.
+ Tener en cuenta que las rutas no cambian, solo cambiará la forma en que nuestro servidor responderá a las peticiones.
+ Surgen para compartir información entre apps, son las responsables que pueda dejar una peli empezada en Netflix y retomarla
+desde el celu.
+ Las hay públicas (info paises), semi-públicas (Twiter - puedo pagar por X cantidad de info) - privadas (Netflix)
+
+ API REST: 
+ REST son las siglas de Representational State Transfer
+ un sistema a través del cual un front-end se puede comunicar con un back-end de una manera mucho más organizada y funcional.
+ Siempre pensando en la optimización y la velocidad del sistema, com así tambiénb en la facilidad del uso del mismo.
+
+SISTEMA REST:
+  busca implementar un esquema o protocolo que le permita a todos los sistemas que se comunican con él entender en qué forma lo 
+ tienen que hacery bajo que estructura deberán enviar sus peticiones para que sean atendidas
+
+HTTP:
+  protocolo que permite que a través de internet, 2 entidades (cliente y servidor) standarizadas, puedan comunicarse y entenderse
+ mutuamente. Pero no habla de la forma en que lo hacen.. con la forma esta se fue tmb standarizando, y tomó la forma de 
+ arquitectura del servicio, donde la más conocida, es REST (ej. Whatsapp - FB - Google)
+
+Características REST:
+1- Separar la app en 2.. por un lado la interfaz de usuario, por otro, todo lo que la app provee como servicio que la interfaz
+consume. Esto permite que se agreguen nuevas funcionalidades a los servicios sin afectar la interfaz. (Uno podría mudar una parte
+a la nube, o amazon, y la otra parte seguiría corriendo).
+Arquitectura cliente-servidor
+
+Desde el lado del servidor, una arquitectura REST expone a los clientes una interfaz uniforme:
+-Todos los recursos del servidor tienen un nombre en forma de URL o hipervínculo
+-Toda la información se intercambia a través del prtotocolo HTTP
+A esas URL, les llamamos ENDPOINTS, es decir, el servidor expone a los clientes, un conjunto de endpoints para que este pueda 
+acceder. Al conjunto de endpoints, se lo denomina API.
+Un endpoint está ligado al recurso (json, pdf, imagen...) que solicitamos
+
+2- SIN ESTADO (STATELESS):
+REST propone que todas las interacciones entre cliente y servidor, deben ser tratadas como nuevas, y de forma independiente SIN
+guardar estado ( a diferencia de las sesiones de los usuarios). Por lo que para diferencia a un usuario logueado de otro que no,
+ debemos mandar la autenticación necesaria CADA VEZ. Lo que permite desarrollar apps más confiables, performantes y escalables.
+
+3- CACHEABLE:
+Debe soportar un sistema de cachés. En REST, el cacheo de datos es una herramienta muy importante que se implementa del lado del
+cliente (poniendo cachés de su lado, nos ahorramos realizar peticiones al servidor), con lo cual mejora la performance al 
+reducir la demanda al servidor.
+El cacheo de datos en REST, significa una memoria intermedia que almacena datos. 
+
+4- FORMATOS:
+Debe proveer una interfaz uniforme, para que la info se transfiera de forma estandarizada.
+
+Cuando el servidor envía una solicitud, esta transfiere una representación del estado del recurso requerido, a quien se lo haya
+solicitado. Dicha info se entrega por medio de HTTP, en uno de los siguientes formatos:
+JSON - RAW (datos sin formato)- XLT - texto sin formato (para HTML y CSS) - URL-encoded (datos codificados en forma de URL, lo que
+sería algo muy similar a un query string - ej: {} email%3Dcosmefulanito.fox%26passwird%3Dverysecret)
+Para enviar este info se debe agregar un encabezado en los headers:
+{} "Content-Type": "application/json"
+JSON {
+  "ID": 1,
+  "title": "..."
+}
+
+5- Tiene que ser un sistema por capas, invisible para el cliente.
+
+CONSTRUCCIÓN API REST:
+* Realizo un plano de lo que voy a hacer:
+1- identificar (siempre con sustantivos. Ej. Libros- canciones) los recursos que voy a compartir (consumir con React)
+2- crear los identificadores de recursos (URL o endpoints). Al conjunto se los llama colleciones.
+Obs! en toda API REST se sugiere que se pueda acceder al detalle de un recurso de una colección de forma sencilla como por ej:
+ /albumes/59
+donde 59 es lógicamente el ID /albumes/{id}
+Obs! a un recurso se puede acceder de varios lados, por ej: /artistas/2/albumes...  lo cual es una cuestión de diseño.
+3- pensar la estructura de lo que va devolver:
+ por lo gral en formato JSON, y contiene un link al mismo endpoint, info genérica y específica:
+Ej:
+{
+  "link": "http://domain.com/api/genres",
+  "total_items": 5,
+  "data1": [
+    {"id": 1, "name": "Rock", "link": "http://domain.com/api/genres/1"},
+    {"id": 2, "name": "Jazz", "link": "http://domain.com/api/genres/2"},
+    {"id": 3, "name": "Blues", "link": "http://domain.com/api/genres/3"},
+  ]
+}
+4- asociar a los métodos con los HTTP, por ejemplo:
+get /generos --- da info
+post /generos --- guarda info
+patch (parcial) - put / generos --- cambia info
+delete / generos --- elimina info
+ */
+  infoReact: (req, res) => {
+    Proyecto.find({}, (error, proyectos) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error buscando los proyectos",
+        });
+      } else {
+        res.json({ total: proyectos.length, data: proyectos });
+      }
+    }).populate({ path: "involved", strictPopulate: false });
+    
+  }
+
+  /* Nota: Cliente REST y Servidor REST */
+
+  /*POSTMAN - Es un cliente HTTP para probar servicios web, que permite testear, consumir y depurar API REST, monitorizarlas,
+   escribir pruebas automatizadas, documentarlas, mockearlas y simularlas */
+
+  /*CONSUMO de APIs Propias y de Terceros:
+   Al consumir una API de 3eros tendrá la certeza de cuando se envía una solicitud, pero no la certeza de cuando llegará la
+  respuesta, por lo que es un pedido asincrónico.
+   Para llevar a cabo este tipo de pedidos desde el backend, se usa un paquete de Node: node-fetch
+   
+   NODE FETCH (hace lo mismo que AXIOS)
+
+It is because of the node-fetch package. As recent versions of this package only support ESM, 
+you have to downgrade it to an older version node-fetch@2.6.1 or lower.
+
+npm i node-fetch@2.6.1
+
+This should solve the issue.
+   */
+  //const fetch = require("node-fetch")
+  /* */
+

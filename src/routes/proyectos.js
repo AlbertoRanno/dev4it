@@ -4,6 +4,8 @@ const proyectsController = require("../controllers/proyectsController.js");
 const validationsProyReg = require("../middlewares/validationsProyReg");
 const validationsProyUpd = require("../middlewares/validationsProyUpd");
 
+routerProyectos.get("/infoReact", proyectsController.infoReact);
+
 routerProyectos.get("/register", proyectsController.register);
 
 routerProyectos.post("/register", validationsProyReg, proyectsController.store);
