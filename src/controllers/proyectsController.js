@@ -3,7 +3,6 @@ const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
 const moment = require("moment");
-const fetch = require("node-fetch");
 
 let datosPersonal = [];
 
@@ -32,30 +31,15 @@ let estados = [
 
 const controller = {
   infoReact: (req, res) => {
-    // Proyecto.find({}, (error, proyectos) => {
-    //   if (error) {
-    //     return res.status(500).json({
-    //       message: "Error buscando los proyectos",
-    //     });
-    //   } else {
-    //     res.json({ total: proyectos.length, data: proyectos });
-    //   }
-    // }).populate({ path: "involved", strictPopulate: false });
-
-    fetch( "https://apis.datos.gob.ar/georef/api/provincias")
-      .then((res) => res.json())
-      .then((provincias) => {return res.json({ listado: provincias});});
-
-        fetch("https://apis.datos.gob.ar/georef/api/provincias")
-          .then((res) => res.json())
-          .then((provincias) => {
-            return res.json({ listado: provincias });
-          });
-
-          /* Traer algo util para un select
-          esto se suele hacer desde el front end!!
-          revisar el async await! */
-
+    Proyecto.find({}, (error, proyectos) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error buscando los proyectos",
+        });
+      } else {
+        res.json({ total: proyectos.length, data: proyectos });
+      }
+    }).populate({ path: "involved", strictPopulate: false });
   },
   //POST PATCH y DELETE Desde React??
   list: (req, res) => {

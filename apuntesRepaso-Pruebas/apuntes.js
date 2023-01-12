@@ -1377,12 +1377,11 @@ if (proyect.dateEnd < new Date()) {
 
 // 11-1-23 *************
 /* Quiero implementarle la parte de API (Application Programming Interface), para luego consumirla con el front-end creado 
-con REACT. VER DE QUE LOS ENDPOINTS APUNTEN A LOS DATOS REQUERIDOS DEL DETALLE DE PROYECTOS.
+con REACT.
 
- Me tengo que olvidar de las vistas de la app, y pensar que la info de mis sistema se envíe en formato json, a un endpoint (URL),
-para ser consumida por otra app, o Postman (en get, es simil buscar en el navegador, pero permite usar los otros verbos http), 
-u otro cliente, el cual no tiene que ser necesariamente del tipo navegador web.
- Tener en cuenta que las rutas no cambian, solo cambiará la forma en que nuestro servidor responderá a las peticiones.
+ Me tengo que olvidar de las vistas de la app, y pensar que la info de mis sistema se envíe en formato json, a un endpoint (URL), para ser consumida por otra app, o Postman (en get, es simil buscar en el navegador, pero permite usar los otros 
+  verbos http), u otro cliente, el cual no tiene que ser necesariamente del tipo navegador web.
+ Tener en cuenta que las rutas no cambian, solo cambiará la forma en que nuestro servidor responderá a las peticiones. (cambian un poco los controladores. Por ej, ya no va el render, sino el res.json configurando como lo enviaré)
  Surgen para compartir información entre apps, son las responsables que pueda dejar una peli empezada en Netflix y retomarla
 desde el celu.
  Las hay públicas (info paises), semi-públicas (Twiter - puedo pagar por X cantidad de info) - privadas (Netflix)
@@ -1390,26 +1389,23 @@ desde el celu.
  API REST: 
  REST son las siglas de Representational State Transfer
  un sistema a través del cual un front-end se puede comunicar con un back-end de una manera mucho más organizada y funcional.
- Siempre pensando en la optimización y la velocidad del sistema, com así tambiénb en la facilidad del uso del mismo.
+ Siempre pensando en la optimización y la velocidad del sistema, com así también en la facilidad del uso del mismo.
 
 SISTEMA REST:
   busca implementar un esquema o protocolo que le permita a todos los sistemas que se comunican con él entender en qué forma lo 
- tienen que hacery bajo que estructura deberán enviar sus peticiones para que sean atendidas
+ tienen que hacer y bajo que estructura deberán enviar sus peticiones para que sean atendidas
 
 HTTP:
-  protocolo que permite que a través de internet, 2 entidades (cliente y servidor) standarizadas, puedan comunicarse y entenderse
- mutuamente. Pero no habla de la forma en que lo hacen.. con la forma esta se fue tmb standarizando, y tomó la forma de 
- arquitectura del servicio, donde la más conocida, es REST (ej. Whatsapp - FB - Google)
+  protocolo que permite que, a través de internet, 2 entidades (cliente y servidor) standarizadas, puedan comunicarse y entenderse mutuamente. Pero no habla de la forma en que lo hacen.. con la forma esta se fue tmb standarizando, y tomó la forma de arquitectura del servicio, donde la más conocida, es REST (ej. Whatsapp - FB - Google)
 
 Características REST:
 1- Separar la app en 2.. por un lado la interfaz de usuario, por otro, todo lo que la app provee como servicio que la interfaz
-consume. Esto permite que se agreguen nuevas funcionalidades a los servicios sin afectar la interfaz. (Uno podría mudar una parte
-a la nube, o amazon, y la otra parte seguiría corriendo).
+consume. Esto permite que se agreguen nuevas funcionalidades a los servicios sin afectar la interfaz. (Uno podría mudar una parte a la nube, o amazon, y la otra parte seguiría corriendo).
 Arquitectura cliente-servidor
 
 Desde el lado del servidor, una arquitectura REST expone a los clientes una interfaz uniforme:
 -Todos los recursos del servidor tienen un nombre en forma de URL o hipervínculo
--Toda la información se intercambia a través del prtotocolo HTTP
+-Toda la información se intercambia a través del protocolo HTTP
 A esas URL, les llamamos ENDPOINTS, es decir, el servidor expone a los clientes, un conjunto de endpoints para que este pueda 
 acceder. Al conjunto de endpoints, se lo denomina API.
 Un endpoint está ligado al recurso (json, pdf, imagen...) que solicitamos
@@ -1467,38 +1463,155 @@ post /generos --- guarda info
 patch (parcial) - put / generos --- cambia info
 delete / generos --- elimina info
  */
-  infoReact: (req, res) => {
-    Proyecto.find({}, (error, proyectos) => {
-      if (error) {
-        return res.status(500).json({
-          message: "Error buscando los proyectos",
-        });
-      } else {
-        res.json({ total: proyectos.length, data: proyectos });
-      }
-    }).populate({ path: "involved", strictPopulate: false });
-    
-  }
+infoReact: (req, res) => {
+  Proyecto.find({}, (error, proyectos) => {
+    if (error) {
+      return res.status(500).json({
+        message: "Error buscando los proyectos",
+      });
+    } else {
+      res.json({ total: proyectos.length, data: proyectos });
+    }
+  }).populate({ path: "involved", strictPopulate: false });
+};
 
-  /* Nota: Cliente REST y Servidor REST */
+/* Nota: Cliente REST y Servidor REST */
 
-  /*POSTMAN - Es un cliente HTTP para probar servicios web, que permite testear, consumir y depurar API REST, monitorizarlas,
+/*POSTMAN - Es un cliente HTTP para probar servicios web, que permite testear, consumir y depurar API REST, monitorizarlas,
    escribir pruebas automatizadas, documentarlas, mockearlas y simularlas */
 
-  /*CONSUMO de APIs Propias y de Terceros:
+/*CONSUMO de APIs Propias y de Terceros:
    Al consumir una API de 3eros tendrá la certeza de cuando se envía una solicitud, pero no la certeza de cuando llegará la
   respuesta, por lo que es un pedido asincrónico.
    Para llevar a cabo este tipo de pedidos desde el backend, se usa un paquete de Node: node-fetch
    
-   NODE FETCH (hace lo mismo que AXIOS)
+   NODE FETCH (hace lo mismo que AXIOS = Hacer solicitudes HTTP a una API)
+  Si instalo "npm i node-fetch" me da un error porque las versiones recientes solo soportan ESM.
+  Por lo tanto instalo la última versión de las viejas que funciona normalmente:
 
-It is because of the node-fetch package. As recent versions of this package only support ESM, 
-you have to downgrade it to an older version node-fetch@2.6.1 or lower.
+  npm i node-fetch@2.6.1
+  */
+const fetch = require("node-fetch");
 
-npm i node-fetch@2.6.1
+fetch("https://apis.datos.gob.ar/georef/api/provincias")
+  .then((res) => res.json()) // CON LA RESPUESTA A MI PEDIDO, LE PIDO QUE LO CONVIERTA A JSON
+  .then((provincias) => { // UNA VEZ QUE TENGA EL JSON, A TRAVÉS DE OTRA PROMESA, PUEDO HACER LO QUE QUIERA...
+    return res.json({ listado: provincias }); // POR EJEMPLO, ENVIAR LOS DATOS, O RENDERIZARLOS EN UNA VISTA
+  });
 
-This should solve the issue.
-   */
-  //const fetch = require("node-fetch")
-  /* */
+// 12-1-23 *************
+
+// IMPORTANTE: API - PROMISES (Asyn-await Vs Then)
+
+/* Podría simplificar que hacer una API, es hacer lo mismo que hice con toda la App, pero en lugar de hacer los EJS/CSS y todo lo que sea del front, me limito a configurar los controladores para que estos dejen disponibles los recursos (la info de la BBDD), a través de distintas URL (endpoints).
+  Para consumir APIs de 3eros, se puede usar Fetch, o Axios. Estos se instalan, requieren, y llaman mediante un pedido asincrónico (Promesas / .then / async - await)
+  Los pedidos asincrónicos, están para que no se bloquee toda la app, mientras se espera un dato, la app sigue funcionando haciendo otra cosa. Cuando se pide algo, se genera una promesa, esta se puede cumplir o no. Si se cumple la promesa, se obtiene lo deseado, y opera con él, sino, se ejecuta el catch para ver cual fue el error.
+  Para tratar con estas promesas se puede usar el then, o el asyn/await.
+  El then, genera las peticiones en paralelo, lo cual lo hace más rápido, dado que el asyn/await es una tras otra.
+  El async/await, surgió para que tenga una forma más sencilla de lectura.. leo una función async, y sé que viene una promesa, al llegar al await, me dice que espera a obtener ese valor, para proseguir con la función o presentar el error.
+  Pero lo que tiene este método a favor, es que si bien no es en paralelo (a diferencia del then), es que si fueran muchas peticiones, mejor que vayan de a tandas, porque sino pueden tildar todo el proceso en sí.
+
+  Mejor explicación encontrada: 
+  https://www.aluracursos.com/blog/asyncawait-en-javascript-que-es-y-cuando-usar-programacion-asincrona
+
+  Usando Promesas con .then():
+*/
+function getUser(userId) {
+  const userData = fetch(`https://api.com/api/user/${userId}`)
+    .then((response) => response.json())
+    .then((data) => console.log(data.name));
+}
+
+getUser(1); // "Nombre Apellido"
+
+/*
+El método fetch() recibe el endpoint como parámetro y devuelve una Promise.
+¿Y cómo funcionan las Promesas? Las promesas tienen un método llamado .then(), que recibe una función callback y retorna un "objeto-promesa". NO ES un retorno de los datos, ES la promesa del retorno de esos datos.
+Entonces, podemos escribir el código de lo que sucederá a continuación con los datos recibidos por Promise, y JavaScript esperará a que Promise se resuelva sin pausar el flujo del programa.
+El resultado puede o no estar listo todavía, y no hay forma de obtener el valor de una Promesa de forma síncrona; Solo es posible pedirle a Promise que ejecute una función callback cuando el resultado esté disponible, ya sea lo que se solicitó (los datos de la API, por ejemplo) o un mensaje de error si algo salió mal con la solicitud (el servidor puede estar fuera de servicio, por ejemplo).
+
+En el ejemplo anterior: cuando iniciamos una cadena de promesas, por ejemplo para hacer una solicitud HTTP, mientras la respuesta está pendiente, retorna un Promise object. El objeto, a su vez, define una instancia del método .then(). En lugar de pasar la función callback directamente a la función inicial, se pasa a .then(). Cuando llega el resultado de la solicitud HTTP, el cuerpo de la solicitud se convierte a JSON y este valor convertido se pasa al siguiente método .then().
+
+La cadena de funciones fetch() .then() .then() no significa que se utilicen varias funciones callback con el mismo objeto de respuesta, sino que cada instancia de .then() a su vez devuelve una new Promise(). Toda la cadena se lee de forma síncrona en la primera ejecución y luego se ejecuta de forma asíncrona.
+
+Captura de errores con promesas
+
+El manejo de errores es importante en las operaciones asincrónicas. Cuando el código es síncrono, puede generar al menos una excepción incluso sin ningún tipo de manejo de errores. Sin embargo, en asincrónico, las excepciones no controladas a menudo pasan sin previo aviso y se vuelve mucho más difícil de depurar.
+
+No hay forma de usar try/catch cuando se usa .then(), ya que el cálculo solo se realizará después de devolver el objeto-Promise. Luego debemos pasar funciones que ejecuten las alternativas, en caso de éxito o fracaso de la operación. Por ejemplo:
+*/
+
+function getUserAgain(userId) {
+  const userData = fetch(`https://api.com/api/user/${userId}`)
+    .then((response) => response.json())
+    .then((data) => console.log(data.name))
+    .catch((error) => console.log(error))
+    .finally(() => {
+      "aviso de fin de cargamento ";
+    });
+}
+
+getUserAgain(1); // "Nombre Apellido"
+
+/*
+Además del método .then() que recibe el objeto-Promise para ser resuelto, el método .catch() retorna en caso de rechazo de la Promesa. Además, el último método, .finally(), se llama independientemente de si la promesa tiene éxito o falla, y la función callback de este método siempre se ejecuta en último lugar y se puede usar, por ejemplo, para cerrar una conexión o dar algún aviso de finalización.
+
+Resolviendo varias promesas (PROMISE.ALL)
+
+En el caso de múltiples promesas que se pueden hacer en paralelo (por ejemplo, algunos datos en diferentes endpoints REST), se puede usar Promise.all:
+ */
+
+const endpoints = [
+ "https://api.com/api/user/1",
+ "https://api.com/api/user/2",
+ "https://api.com/api/user/3",
+ "https://api.com/api/user/4"
+]
+
+const promises = endpoints.map(url => fetch(url).then(res => res.json()))
+
+Promise.all(promises)
+ .then(body => console.log(body.name))
+
+/* Usando async/await
+
+Las palabras clave async y await, implementadas a partir de ES2017, son una sintaxis que simplifica la programación asíncrona, facilitando el flujo de escritura y lectura de código; por lo que es posible escribir código que funcione de forma asíncrona, pero que se lea y estructure de forma síncrona. Async/await funciona con código basado en Promises, pero oculta las promesas para que la lectura sea más fluida y sencilla de entender.
+
+Al definir una función como async, podemos usar la palabra clave await antes de cualquier expresión que retorne una promesa. De esta forma, la ejecución de la función externa (la función async) se pausará hasta que se resuelva la Promesa.
+
+La palabra clave await recibe una Promesa y la convierte en un valor de retorno (o genera una excepción en caso de error). Cuando usamos await, JavaScript esperará hasta que finalice la Promesa. Si se completa con éxito (el término utilizado es fulfilled), el valor obtenido es retornado. Si la Promesa es rechazada (el término utilizado es rejected), se retorna el error arrojado por la excepción.
+
+Un ejemplo:*/
+
+let response = await fetch(`https://api.com/api/user/${userId}`);
+let userData = await response.json();
+
+//Solo puede usar await en funciones declaradas con la palabra-clave async, así que agréguela:
+
+async function getUser(userId) {
+ let response = await fetch(`https://api.com/api/user/${userId}`);
+ let userData = await response.json();
+ return userData.name; // no es necesario await en el return
+}
+
+/* Una función declarada como async significa que el valor de retorno de la función será, "por dentro de javascript", una Promesa. Si la promesa se resuelve normalmente, el objeto-promesa retornará el valor. Si arroja una excepción, podemos usar try/catch como estamos acostumbrados en los programas síncronos.
+
+Para ejecutar la función getUser(), ya que retorna una Promesa, puedes usar await:
+
+exibeDatosUser(await getUser(1))
+Recordar que await solo funciona si está dentro de otra función async. Si todavía no estás familiarizado, puedes usar .then() normalmente:
+
+getUser(1).then(exibeDadosUser).catch(reject)
+
+Resolviendo varias promesas
+
+En el caso de múltiples promesas que se pueden hacer en paralelo (por ejemplo, algunos datos en diferentes endpoints REST), puedes usar async/await junto con Promise.all: */
+
+async function getUser(userId) {
+ let response = await fetch(`https://api.com/api/user/${userId}`);
+ let userData = await response.json();
+ return userData;
+}
+
+let [user1, user2] = await Promise.all([getUser(1), getUser(2)])
 

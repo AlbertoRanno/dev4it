@@ -3,10 +3,22 @@ const bcryptjs = require("bcryptjs");
 const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
+const fetch = require("node-fetch");
 
-let roles = ["Gestor de proyectos", "Administrador de soluciones", "Web designer", "Diseñador UI/UX", "Frontend Developer", "Backend Developer", "Database Administrator", "Arquitecto Cloud", "QA", "otros"];
+let roles = [
+  "Gestor de proyectos",
+  "Administrador de soluciones",
+  "Web designer",
+  "Diseñador UI/UX",
+  "Frontend Developer",
+  "Backend Developer",
+  "Database Administrator",
+  "Arquitecto Cloud",
+  "QA",
+  "otros",
+];
 
-let seniority = ["Trainee", "Junior", "Semisenior", "Senior"]
+let seniority = ["Trainee", "Junior", "Semisenior", "Senior"];
 
 let datosProyectos = [];
 
@@ -80,11 +92,20 @@ const controller = {
     });
   },
   register: (req, res) => {
-    res.render("./staff/register", {
-      datosProyectos,
-      roles,
-      seniority,
-    });
+    fetch("https://apis.datos.gob.ar/georef/api/provincias")
+      .then((response) => response.json())
+      .then((provincias) =>
+        res.render("./staff/register", {
+          datosProyectos,
+          roles,
+          seniority,
+          provincias: provincias.provincias,
+        })
+      )
+      .catch((error) => console.log(error))
+      .finally(() => {
+        "Se cargaron los datos de la API consumida";
+      });
   },
   store: (req, res) => {
     const resultValidation = validationResult(req);
@@ -110,6 +131,7 @@ const controller = {
             datosProyectos,
             roles,
             seniority,
+            
           });
         } else if (resultValidation.isEmpty()) {
           const personal = new Persona({
@@ -173,6 +195,7 @@ const controller = {
             datosProyectos,
             roles,
             seniority,
+            
           });
         }
       }

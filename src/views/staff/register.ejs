@@ -109,6 +109,27 @@
 
               <div class="col-md-6 mt-3">
                 <div class="form-group">
+                  <label for="home"><b>Reside en:</b></label>
+                  
+                  <select name="home" id="home" class="form-control <%=
+                  locals.errors && errors.home ? "is-invalid" : null %>"
+                  
+                  >
+                  <option value="sinAsignar" <%= locals.oldData && oldData.home === "sinAsignar" ? "selected" : " " ; %> >
+                    Elige uno:</option>
+                    <% for (let i = 0; i < provincias.length; i++) { %>
+                      <option value="<%= provincias[i].nombre %>"
+                        <%= locals.oldData && oldData.home === provincias[i] ? "selected" : " " ; %>> <%= provincias[i].nombre %> </option>
+                      
+                  <% } %>
+
+                    </select>
+
+                  </div>
+                </div>
+
+              <div class="col-md-6 mt-3">
+                <div class="form-group">
                   <label for="avatar"><b>Imagen de Perfil:</b></label>
                   <input type="file" id="avatar" name="avatar"
                   class="form-control <%= locals.errors && errors.avatar ?
