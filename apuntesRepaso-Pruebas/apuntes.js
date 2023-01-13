@@ -1495,7 +1495,8 @@ const fetch = require("node-fetch");
 
 fetch("https://apis.datos.gob.ar/georef/api/provincias")
   .then((res) => res.json()) // CON LA RESPUESTA A MI PEDIDO, LE PIDO QUE LO CONVIERTA A JSON
-  .then((provincias) => { // UNA VEZ QUE TENGA EL JSON, A TRAVÉS DE OTRA PROMESA, PUEDO HACER LO QUE QUIERA...
+  .then((provincias) => {
+    // UNA VEZ QUE TENGA EL JSON, A TRAVÉS DE OTRA PROMESA, PUEDO HACER LO QUE QUIERA...
     return res.json({ listado: provincias }); // POR EJEMPLO, ENVIAR LOS DATOS, O RENDERIZARLOS EN UNA VISTA
   });
 
@@ -1562,16 +1563,15 @@ En el caso de múltiples promesas que se pueden hacer en paralelo (por ejemplo, 
  */
 
 const endpoints = [
- "https://api.com/api/user/1",
- "https://api.com/api/user/2",
- "https://api.com/api/user/3",
- "https://api.com/api/user/4"
-]
+  "https://api.com/api/user/1",
+  "https://api.com/api/user/2",
+  "https://api.com/api/user/3",
+  "https://api.com/api/user/4",
+];
 
-const promises = endpoints.map(url => fetch(url).then(res => res.json()))
+const promises = endpoints.map((url) => fetch(url).then((res) => res.json()));
 
-Promise.all(promises)
- .then(body => console.log(body.name))
+Promise.all(promises).then((body) => console.log(body.name));
 
 /* Usando async/await
 
@@ -1589,9 +1589,9 @@ let userData = await response.json();
 //Solo puede usar await en funciones declaradas con la palabra-clave async, así que agréguela:
 
 async function getUser(userId) {
- let response = await fetch(`https://api.com/api/user/${userId}`);
- let userData = await response.json();
- return userData.name; // no es necesario await en el return
+  let response = await fetch(`https://api.com/api/user/${userId}`);
+  let userData = await response.json();
+  return userData.name; // no es necesario await en el return
 }
 
 /* Una función declarada como async significa que el valor de retorno de la función será, "por dentro de javascript", una Promesa. Si la promesa se resuelve normalmente, el objeto-promesa retornará el valor. Si arroja una excepción, podemos usar try/catch como estamos acostumbrados en los programas síncronos.
@@ -1608,12 +1608,12 @@ Resolviendo varias promesas
 En el caso de múltiples promesas que se pueden hacer en paralelo (por ejemplo, algunos datos en diferentes endpoints REST), puedes usar async/await junto con Promise.all: */
 
 async function getUser(userId) {
- let response = await fetch(`https://api.com/api/user/${userId}`);
- let userData = await response.json();
- return userData;
+  let response = await fetch(`https://api.com/api/user/${userId}`);
+  let userData = await response.json();
+  return userData;
 }
 
-let [user1, user2] = await Promise.all([getUser(1), getUser(2)])
+let [user1, user2] = await Promise.all([getUser(1), getUser(2)]);
 
 // 13-1-23 *************
 /* JS FRONT
@@ -1652,21 +1652,115 @@ De Document son los que más se usan, ya que son los que me permitirán modifica
 La estructura, de más externa a interna, sería:
 Navegador - Window con su barra de navegación - Document con sus etiquetas html
 
+1- SELECCIONAR (DÓNDE??)
 Para empezar a modificar, lo importante primero es capturar lo que quiero modificar, y guardarlo en una variable, para tenerlo disponible. 
 Al elemento capturado, se lo denomina Nodo
 */
-let titulo = window.document.querySelector("h1") // donde el window se suele omitir
+let titulo = window.document.querySelector("h1"); // donde el window se suele omitir
 
 /* DOM SELECTORES */
-let captura1 = document.querySelector("form") // siempre un string
-let captura2 = document.querySelector("form.registration") // puntos para las clases
+let captura1 = document.querySelector("form"); // siempre un string
+let captura2 = document.querySelector("form.registration"); // puntos para las clases
 let captura3 = document.querySelector("form#unico"); // # para ID
 let captura4 = document.querySelector(".registration"); // solo clases = CSS // De haber más de un elemento con esa clase, captura solo el primero. Si los quisiera todos:
 let captura5 = document.querySelectorAll(".registration"); // TODOS //En la consola vería una NODELIST, que No es un Array, pero lo podemos tratar como tal.
-let captura6 = document.querySelector(".especial strong") // Idem CSS, de los que tienen clase especial, el que tenga la etiqueta strong.
-let captura7 = document.getElementById("unico") // idem a document.querySelector("#unico");
+let captura6 = document.querySelector(".especial strong"); // Idem CSS, de los que tienen clase especial, el que tenga la etiqueta strong.
+let captura7 = document.getElementById("unico"); // idem a document.querySelector("#unico");
 
 /* OBS. IMPORTANTE
 si uso el mismo archivo de scrip, para diferentes html, y hay elementos que están en uno de ellos, pero en el otro no, en la consola veería varios null.. para evitar esto, usar condicionales de la forma if ( captura7 != null ) { ... }, o genero otro archivo js para cada archivo
- */
- 
+
+2- MODIFICAR (QUÉ??)
+
+A la variable capturada, le puedo reemplazar contenido:*/
+captura1.innerText = "Lo que decía, lo reemplazo por esto";
+//o anexo:
+captura1.innerText += " o sin modificar lo que estaba, le agrego esto";
+// mismos casos, pero si quiero que interprete etiquetas HTML:
+captura1.innerHTML += "<strong>Le sumo esto remarcado</strong>";
+
+/* Cambio de Estilos CSS - (  MODO OSCURO )
+Elimino y/o agrego lineas al CSS que afecta al elemento
+
+Propiedad Style
+Permite sobreescribir las reglas de CSS que se aplican sobre un elemento */
+captura1.style.color = "cyan"; // se indica siempre en string
+captura1.style.fontSize = "12px"; //NOTAR: que las props que llevaban guiones, se escriben en camelCase
+
+//INTERACCION básica:
+let confirmaCambios = confirm("Querés cambiar el color del título?"); // devuelve T or F
+
+if (confirmaCambios) {
+  elH1.innerHTML += "<strong> - Uso el Home para repasar JS-Front</strong>";
+  elH1.style.backgroundColor = "cyan";
+}
+
+/* CLASSLIST
+ Si quisiera aplicar/desaplicar varios cambios de una sola vez, lo mejor es hacer una clase en el CSS y aplicarla o no. Por eso se recomienda esta forma, y no la anterior de propiedades sueltas: */
+captura1.classList.add("home");
+captura1.classList.remove("home");
+captura1.classList.toggle("home"); // switchea al refrescar, entre add y remove (o evento)
+
+/* CONTAINS
+ Sirve para preguntar si un elemento tiene una clase determinada. Devuelve un booleano: */
+captura1.classList.contains("home"); // true or false
+/* Se utiliza para hacer operaciones lógicas con los if/else */
+
+/* EVENTOS (click - presionar cierta tecla - ingresar texto en input - esperar 2 segundos...)
+ Para que los cambios sucedan en base a interacciones con el DOM (por lo gral interactuan los usuarios, pero también lo podría hacer la ventana (window) que carga el documento):
+
+ 1ero Cuál es el elemento que va a estar observando?
+ 2do Cuál es el evento que puede suceder en él?
+ 3ro Qué sucederá cuando el evento tome lugar?
+
+ 2 formas:
+ - on + accion = onload , onclick... que van a acompañados de una función que dice que hará
+ - función addEventListener = toma 2 parámetros, la acción, sin el "On", y el callback, que dice que hará
+
+ En ambos casos:
+ - la palabra reserva "this", que hará referencia a dónde sucedió el evento
+ - preventDefault, que evita la acción default de la etiqueta, por ej, que A, no nos traslade
+
+ con window.onload, puedo poner al script tranquilamente en el head, ya que le estoy indicando que se ejecute, una vez que se cargue completamente el objeto Document, dentro del objeto Window*/
+window.onload = function () {
+  // (*) La llamo onload
+  "lo que quiero que haga el script en si ";
+};
+//o con la sintaxis alternativa:
+window.addEventListener("load", function () {
+  // (*) la llamo addevent
+  console.log("el documento está listo");
+});
+
+//DIFERENCIA ENTRE AMBOS!! // (*)
+/* Si hiciera varios (*) onload sucesivos... solo se implementará el último, ya que piso al resto. Ej: */
+window.onload = function () {
+  console.log("no se verá...");
+};
+window.onload = function () {
+  console.log("... porque este lo pisa");
+};
+/* En cambio si hiciera varios (*) addevent, sucederían todos. Es decir  addEventListener permite poner varias reacciones a un evento, versus, onload que permite tener solo la última*/
+
+/* Todas las funciones de los eventos, pueden tener un parámetro, usualmente llamado "event" o "e", que si lo veo en la consola (console.log(e) dentro del evento), veré mucha info del evento en sí.
+También me permite el : e.preventDefault() 
+
+OBS! con un console.log(this), dentro del evento, veré en detalle, dónde sucedió el evento
+
+Eventos + usados:
+onclick ondblclick onmouseover onmousemove onscroll onkeydown onload onsubmit
+
+THIS
+En este caso usaré THIS para que automaticamente dectecte donde sucedió el evento:*/
+for (let i = 0; i < losH2.length; i++) {
+  losH2[i].addEventListener("click", function () {
+    this.style.color = "green";
+  });
+}
+
+/* EVENTOS HABITUALES DEL TECLADO:
+keydown keyup keypress (al completar el recorrido de ascenso y descenso)
+si quisiera saber que tecla presioné:*/
+window.addEventListener("keypress", function (e) {
+  console.log(e.key);
+});

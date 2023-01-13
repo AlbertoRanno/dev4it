@@ -48,3 +48,12 @@
   font-size: large;
   margin: 15px;
 }
+
+/* Estilos para el H2 del Home */
+.home {
+  color: crimson;
+  font-size: large;
+  font-style: oblique;
+  border: 3px red solid;
+  border-radius: 10px;
+}
