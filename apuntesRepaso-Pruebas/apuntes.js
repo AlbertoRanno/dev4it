@@ -1615,3 +1615,58 @@ async function getUser(userId) {
 
 let [user1, user2] = await Promise.all([getUser(1), getUser(2)])
 
+// 13-1-23 *************
+/* JS FRONT
+Es el único de los lenguajes que acepta el Front.
+Se vincula al HTML, mediante la etiqueta script.
+Tiene 2 formas: 
+-en línea o interna: poniendo la etiqueta directo en el html, en cada parte donde quiera que aplique. 
+(No es recomendable, repite mucho código, por lo que es dificil de mantener, y hace dificil de leer)
+-externa: mediante el atributo src, vinculo al documento ubicado en public/js.
+(La aplicación de esta última, anula la interna)
+
+Obs1: si bien es un documento js, comandos como req., res., render, no funcionan en él, dado que está orientado a la consola del navegador (por lo que no veré nada en la de node).
+Obs2: es BUENA PRÁCTICA colocar la etiqueta antes del final del body 
+...
+<script src=""></script>
+</body>
+y NO en el HEAD, porque JS es procedural, y si mi JS requiere algo del body, al momento de cargar el head, no lo tendrá..
+El tema es que si no requiere algo del cuerpo, y necesito aplicarlo a varios lados, yo lo pondría en el partial del head...
+Obs3: Puedo vincular vs archivos
+Obs4: puede llevar el atributo type="text/javascript"... pero no aporte mucho..
+
+LA IMPORTANCIA DEL JS EN EL FRONT
+es que permite modificar la interfaz, es decir, lo que tengo cargado, sin tener que ir de nuevo al servidor y volver!
+Para lograr dicho cometido, nos da 2 objetos nativos (los llamo cuando quiera, sin tener que guardarlos en variables):
+
+WINDOW y DOCUMENT
+Window, es la ventana.
+Para Document, primero entender DOM:
+DOM (Document Object Model) es LA REPRESENTACIÓN que hace JS de lo que hay en el HTML (como se ve cuando inspecciono)
+Document, me permite acceder al DOM
+
+Ambos tienen sus métodos (en la consola del navegador, los puedo ver)
+De Window principalmente se usa el objeto location, (window.location) y los relacionados al height y weight de la ventana.
+De Document son los que más se usan, ya que son los que me permitirán modificar los estilos, clases, eventos (onclick, onload..)
+
+La estructura, de más externa a interna, sería:
+Navegador - Window con su barra de navegación - Document con sus etiquetas html
+
+Para empezar a modificar, lo importante primero es capturar lo que quiero modificar, y guardarlo en una variable, para tenerlo disponible. 
+Al elemento capturado, se lo denomina Nodo
+*/
+let titulo = window.document.querySelector("h1") // donde el window se suele omitir
+
+/* DOM SELECTORES */
+let captura1 = document.querySelector("form") // siempre un string
+let captura2 = document.querySelector("form.registration") // puntos para las clases
+let captura3 = document.querySelector("form#unico"); // # para ID
+let captura4 = document.querySelector(".registration"); // solo clases = CSS // De haber más de un elemento con esa clase, captura solo el primero. Si los quisiera todos:
+let captura5 = document.querySelectorAll(".registration"); // TODOS //En la consola vería una NODELIST, que No es un Array, pero lo podemos tratar como tal.
+let captura6 = document.querySelector(".especial strong") // Idem CSS, de los que tienen clase especial, el que tenga la etiqueta strong.
+let captura7 = document.getElementById("unico") // idem a document.querySelector("#unico");
+
+/* OBS. IMPORTANTE
+si uso el mismo archivo de scrip, para diferentes html, y hay elementos que están en uno de ellos, pero en el otro no, en la consola veería varios null.. para evitar esto, usar condicionales de la forma if ( captura7 != null ) { ... }, o genero otro archivo js para cada archivo
+ */
+ 
