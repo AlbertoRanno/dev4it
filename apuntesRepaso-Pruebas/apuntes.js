@@ -936,7 +936,7 @@ Organización de pendientes - CSS en gral, botoneras de flujo, vistas de EDIT */
 
 // 24-11-22 *************
 /*Mongo DB 
-BD NoSQL - significa No relacional (es decir, que no se guardan en tablas relacionales, pero SI PUEDEN GUARDAR RELACIONES ENTRE DATOS - Las relaciones pueden estar incluso anidadas en una única escritura)
+BD NoSQL - significa No relacional (es decir, que no se guardan en tablas relacionales, pero SI PUEDEN GUARDAR RELACIONES ENTRE DATOS - Las relaciones pueden estar incluso anidadas en una única escritura - banca bien cruce de miles de datos, la otra -la que usé - se usa para cruce de muchos millones de datos)
 Su versión community - es una versión masiva gratuita
 Base de datos de documentos (Mayor productividad y escalabilidad) Cada registro, es un documento, que no es más que una estructura de pares Clave-Valor, que pueden contener diferentes tipos: strings - booleans - numbers... Los cuales son similares a objetos JSON. y las valores de los campos pueden tener otros documentos, arrays, o arrays de documentos.Ej:
 {
@@ -1337,7 +1337,7 @@ y después, acorde el caso, grabar el ID solo donde corresponda
 (PEGAR DIAGRAMA HECHO EN EXCEL QUE ME AYUDÓ A CORREGIR LA LÓGICA)
 */
 
-// Moment - modulo instalable para cambiar los formatos de las fechas:
+// Moment - modulo instalable para cambiar los formatos de las fechas: **** OJO QUE YA NO SE USA ****
 const moment = require("moment");
 let formattedDateStart = moment(proyectToEdit.dateStart).format("YYYY-MM-DD");
 // donde proyectToEdit.dateStart es la fecha que levanto de MongoDB
@@ -1377,7 +1377,7 @@ if (proyect.dateEnd < new Date()) {
 
 // 11-1-23 *************
 /* Quiero implementarle la parte de API (Application Programming Interface), para luego consumirla con el front-end creado 
-con REACT.
+con REACT. - y QUE LA PLANTILLA DE REACT SEA EL HOME??
 
  Me tengo que olvidar de las vistas de la app, y pensar que la info de mis sistema se envíe en formato json, a un endpoint (URL), para ser consumida por otra app, o Postman (en get, es simil buscar en el navegador, pero permite usar los otros 
   verbos http), u otro cliente, el cual no tiene que ser necesariamente del tipo navegador web.
@@ -1502,13 +1502,13 @@ fetch("https://apis.datos.gob.ar/georef/api/provincias")
 
 // 12-1-23 *************
 
-// IMPORTANTE: API - PROMISES (Asyn-await Vs Then)
+// IMPORTANTE: API - PROMISES (Async-await Vs Then)
 
 /* Podría simplificar que hacer una API, es hacer lo mismo que hice con toda la App, pero en lugar de hacer los EJS/CSS y todo lo que sea del front, me limito a configurar los controladores para que estos dejen disponibles los recursos (la info de la BBDD), a través de distintas URL (endpoints).
   Para consumir APIs de 3eros, se puede usar Fetch, o Axios. Estos se instalan, requieren, y llaman mediante un pedido asincrónico (Promesas / .then / async - await)
   Los pedidos asincrónicos, están para que no se bloquee toda la app, mientras se espera un dato, la app sigue funcionando haciendo otra cosa. Cuando se pide algo, se genera una promesa, esta se puede cumplir o no. Si se cumple la promesa, se obtiene lo deseado, y opera con él, sino, se ejecuta el catch para ver cual fue el error.
   Para tratar con estas promesas se puede usar el then, o el asyn/await.
-  El then, genera las peticiones en paralelo, lo cual lo hace más rápido, dado que el asyn/await es una tras otra.
+  El then, genera las peticiones en paralelo, lo cual lo hace más rápido, dado que el async/await es una tras otra.
   El async/await, surgió para que tenga una forma más sencilla de lectura.. leo una función async, y sé que viene una promesa, al llegar al await, me dice que espera a obtener ese valor, para proseguir con la función o presentar el error.
   Pero lo que tiene este método a favor, es que si bien no es en paralelo (a diferencia del then), es que si fueran muchas peticiones, mejor que vayan de a tandas, porque sino pueden tildar todo el proceso en sí.
 
@@ -1632,6 +1632,11 @@ Obs2: es BUENA PRÁCTICA colocar la etiqueta antes del final del body
 </body>
 y NO en el HEAD, porque JS es procedural, y si mi JS requiere algo del body, al momento de cargar el head, no lo tendrá..
 El tema es que si no requiere algo del cuerpo, y necesito aplicarlo a varios lados, yo lo pondría en el partial del head...
+O PONERLA EN EL HEAD, PERO DENTRO DEL ARCHIVO JS, PONER TODO DENTRO DE UN EVENTO ONLOAD
+
+ OBS! En el partial del HEAD, NO PONER la etiqueta head en el mismo (sí el resto del contenido), sino en cada página. Y luego el enlace al partial, dentro de cada etiqueta head, en cada página.
+Esto me va a permitir vincular diferentes scripts por cada pagina, evitando tener que poner los condicionales para evitar los null 
+
 Obs3: Puedo vincular vs archivos
 Obs4: puede llevar el atributo type="text/javascript"... pero no aporte mucho..
 
@@ -1764,3 +1769,24 @@ si quisiera saber que tecla presioné:*/
 window.addEventListener("keypress", function (e) {
   console.log(e.key);
 });
+
+// 17-1-23 *************
+/* Sin luz - internet
+Leí apuntes, y acomodé los partials/head */
+
+// 18-1-23 *************
+/* 
+*Validaciones de Form desde el Front "on time"
+-nunca está de más sumar capas de validaciones
+-Se desactivan / Mejor experiencia - Feedback + rápido
+
+*Eventos:
+-Focus (mouse sobre input) 
+-Blur (mouse abandona input)
+-Change (el valor cambia - se aplica no solo sobre los inputs, sino sobre cualquiera, incluso sobre el propio form)
+-Submit (enviar / preventDefault - if (form OK) { } else { e.preventDefault })
+
+*This - donde ocurre
+this.value - retorna la info en el campo que esté validando
+
+*/
