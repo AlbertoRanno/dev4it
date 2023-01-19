@@ -92,20 +92,11 @@ const controller = {
     });
   },
   register: (req, res) => {
-    fetch("https://apis.datos.gob.ar/georef/api/provincias")
-      .then((response) => response.json())
-      .then((provincias) =>
-        res.render("./staff/register", {
-          datosProyectos,
-          roles,
-          seniority,
-          provincias: provincias.provincias,
-        })
-      )
-      .catch((error) => console.log(error))
-      .finally(() => {
-        "Se cargaron los datos de la API consumida";
-      });
+    res.render("./staff/register", {
+      datosProyectos,
+      roles,
+      seniority,
+    });
   },
   store: (req, res) => {
     const resultValidation = validationResult(req);
@@ -131,7 +122,6 @@ const controller = {
             datosProyectos,
             roles,
             seniority,
-            
           });
         } else if (resultValidation.isEmpty()) {
           const personal = new Persona({
@@ -195,7 +185,6 @@ const controller = {
             datosProyectos,
             roles,
             seniority,
-            
           });
         }
       }

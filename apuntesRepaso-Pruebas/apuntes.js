@@ -1615,6 +1615,49 @@ async function getUser(userId) {
 
 let [user1, user2] = await Promise.all([getUser(1), getUser(2)]);
 
+/* Si quisiera consumir una API externa, desde el backend, que me permita poner en el register, un select con todas las provincias de argentina: */
+
+  register: (req, res) => {
+    fetch("https://apis.datos.gob.ar/georef/api/provincias")
+      .then((response) => response.json())
+      .then((provincias) =>
+        res.render("./staff/register", {
+          datosProyectos,
+          roles,
+          seniority,
+          provincias: provincias.provincias,
+        })
+      )
+      .catch((error) => console.log(error))
+      .finally(() => {
+        "Se cargaron los datos de la API consumida";
+      });
+  }
+
+  /* y en el EJS:
+
+  <div class="col-md-6 mt-3">
+              <div class="form-group">
+                <label for="home"><b>Reside en:</b></label>
+
+                <select name="home" id="home" class="form-control <%=
+                  locals.errors && errors.home ? "is-invalid" : null %>">
+                  <option value="sinAsignar"
+                    <%= locals.oldData && oldData.home === "sinAsignar" ? "selected" : " " ; %>>
+                    Elige uno:</option>
+                  <% for (let i = 0; i < provincias.length; i++) { %>
+                  <option value="<%= provincias[i].nombre %>"
+                    <%= locals.oldData && oldData.home === provincias[i] ? "selected" : " " ; %>>
+                    <%= provincias[i].nombre %> </option>
+
+                  <% } %>
+
+                </select>
+
+              </div>
+            </div>
+            */
+
 // 13-1-23 *************
 /* JS FRONT
 Es el único de los lenguajes que acepta el Front.
@@ -1789,4 +1832,11 @@ Leí apuntes, y acomodé los partials/head */
 *This - donde ocurre
 this.value - retorna la info en el campo que esté validando
 
+Importante! para que la validación del email, del lado del front, pueda ejecutarse, tuve que cambiar el 
+type del input. Pasarlo de “email”, a “text”, porque si no hago eso, el formulario directamente no permite
+hacer submit, si la expresión a validar no cumple con el tipo email. Pero tampoco muestra ningún error...
+Para que la expresión a validar viaje, es que paso el tipo del input a text.. y en ese caso será la función
+validarEmail la que la analice en base a la expresión regular que le haya pasado y muestre los errores 
+correspondientes
+        
 */

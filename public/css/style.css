@@ -49,11 +49,33 @@
   margin: 15px;
 }
 
-/* Estilos para el H2 del Home */
+/* H2 del Home */
 .home {
   color: crimson;
   font-size: large;
   font-style: oblique;
   border: 3px red solid;
   border-radius: 10px;
+}
+
+/* Listado Proyectos del User Register */
+.proyects {
+  width: 300px;
+}
+
+.list-proyects {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  align-content: flex-start;
+}
+
+.par {
+  color: darkblue;
+}
+
+.impar {
+  color: black;
 }
