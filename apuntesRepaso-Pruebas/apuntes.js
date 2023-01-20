@@ -1840,3 +1840,32 @@ validarEmail la que la analice en base a la expresión regular que le haya pasad
 correspondientes
         
 */
+
+// 20-1-23 *************
+/* sigo con las validaciones del register */
+function validarImage() {
+  // Obtener nombre de archivo
+  let archivo = image.value;
+  // Obtener extensión del archivo
+  let extension = archivo.substring(
+    /*substring() devuelve una parte de una cadena definida por los índices pasados ​​como parámetros a esta función.
+        Toma dos parámetros, el índice inicial y el índice final*/
+    archivo.lastIndexOf("."),
+    /*lastIndexOf(), el 1er parámetro, averigua la última posición donde el "." está presente */
+    archivo.length //2do parámetro, el índice final.
+  );
+  // Si la extensión obtenida no está incluida en la lista de valores del atributo "accept", mostraré el error.
+  if (
+    document
+      .querySelector("input.image")
+      .getAttribute("accept")
+      .split(
+        ","
+      ) /*String original del accept=".jpg, .png, .jpeg, .gif". El método split() devuelve un array con cada uno de
+           los elementos que estaban entre los separadores, en este caso, las comas: [.jpg, .png, .jpeg, .gif].*/
+      .indexOf(extension) < 0 //si la extensión no se encuentra en ese array, el indexOf dará "-1"
+  ) {
+    return true; /* devuelve que es verdad que la extensión no está en el array. Por lo que si la validación es true,
+        devuelvo un error*/
+  }
+}
