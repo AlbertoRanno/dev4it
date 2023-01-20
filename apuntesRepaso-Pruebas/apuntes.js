@@ -1617,24 +1617,24 @@ let [user1, user2] = await Promise.all([getUser(1), getUser(2)]);
 
 /* Si quisiera consumir una API externa, desde el backend, que me permita poner en el register, un select con todas las provincias de argentina: */
 
-  register: (req, res) => {
-    fetch("https://apis.datos.gob.ar/georef/api/provincias")
-      .then((response) => response.json())
-      .then((provincias) =>
-        res.render("./staff/register", {
-          datosProyectos,
-          roles,
-          seniority,
-          provincias: provincias.provincias,
-        })
-      )
-      .catch((error) => console.log(error))
-      .finally(() => {
-        "Se cargaron los datos de la API consumida";
-      });
-  }
+register: (req, res) => {
+  fetch("https://apis.datos.gob.ar/georef/api/provincias")
+    .then((response) => response.json())
+    .then((provincias) =>
+      res.render("./staff/register", {
+        datosProyectos,
+        roles,
+        seniority,
+        provincias: provincias.provincias,
+      })
+    )
+    .catch((error) => console.log(error))
+    .finally(() => {
+      "Se cargaron los datos de la API consumida";
+    });
+};
 
-  /* y en el EJS:
+/* y en el EJS:
 
   <div class="col-md-6 mt-3">
               <div class="form-group">
@@ -1869,3 +1869,64 @@ function validarImage() {
         devuelvo un error*/
   }
 }
+
+/* Pedidos asincrónicos - FETCH del lado del FRONT - donde más se usa!
+La estructura de fetch siempre será la misma:*/
+fetch("URL")
+  .then(function (respuesta) {
+    return respuesta.json();
+  })
+  .then(function (informacion) {
+    console.log(informacion);
+    // Lo que hará con esa info...  (* Ejemplo abajo)
+  })
+  .catch(function (error) {
+    alert(`Intente más tarde, error: ${error} `);
+  });
+/*- la URL o endpoint, al que pido la info
+ - un primer Then, que es la promesa de la petición, y como los endpoints por lo gral vienen configurados para entregar info en en formato json, ya de paso la configuro para poder usar, con .json()
+ - un segundo Then, que es la promesa que trae la info en sí, la cual necesito para trabajar, pero siempre tengo que ver como viene configurada (por lo gral, o siempre un objeto..), por eso el console.log()
+ - lo que quiera hacer con esa info
+ - el catch en caso de que algo falle...
+ 
+ (*ejemplo): */
+console.log(informacion.provincias);
+let list = document.querySelector("ul.list-prov");
+
+for (let i = 0; i < informacion.provincias.length; i++) {
+  let nombre = informacion.provincias[i].nombre;
+  list.innerHTML += "<li>" + nombre + "</li>";
+}
+
+/* Para conseguir que se muestre este listado, traido desde una api ajena, necesito en el EJS, tener la etiqueta <ul> que capturé, y es el lugar donde voy a mostrar los datos por medio del innerHTML con las etiquetas <li> */
+
+/* FETCH POR POST: envío datos a una API */
+fetch("URL", settings)
+  .then(function (respuesta) {
+    return respuesta.json();
+  })
+  .then(function (informacion) {
+    console.log(informacion);
+    // Lo que hará con esa info...  (* Ejemplo abajo)
+  })
+  .catch(function (error) {
+    alert(`Intente más tarde, error: ${error} `);
+  });
+
+/* Misma estructura que por GET, pero con un segundo parámetro, usualmente llamado "settings"
+  Básicamente, en este parámetro viaja la info que quiero mandar, pero hay que estructurarla: */
+let data = { id: 27, nombre: "Alberto Ranno", estado: "furioso" };
+//1- la info en forma de objeto
+
+let settings = {
+  method: "POST",
+  //3- aclaro que irá por POST
+  headers: {
+    "content-type": "application/json",
+    "x-api-key":
+      "dato-que-suelen-darnos-las-paginas-a-las-que-les-enviamos-la info",
+  },
+  //4- los encabezados, pueden o no ser opcionales, y su contenido puede cambiar
+  body: JSON.stringify(data),
+  //2- con JSON.stringify convierto la info que quiero mandar a JSON
+};

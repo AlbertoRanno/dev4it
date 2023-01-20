@@ -1,4 +1,5 @@
-*El update tiene cruzado los datos con los proyectos, hacer crud de proyectos y volver a la persistencia de proyectos en el update
+*Correciones pendientes:
+- register users, salen primero las validaciones del backend... por?
 
 *Vistas:
 - Not Found

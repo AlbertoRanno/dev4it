@@ -33,4 +33,25 @@ window.onload = function () {
       alert("Tocaste Enter!");
     }
   });
+
+  fetch("https://apis.datos.gob.ar/georef/api/provincias")
+    .then(function (respuesta) {
+      return respuesta.json();
+    })
+    .then(function (informacion) {
+      console.log(informacion.provincias);
+
+      let list = document.querySelector("ul.list-prov");
+
+      for (let i = 0; i < informacion.provincias.length; i++) {
+        let nombre = informacion.provincias[i].nombre;
+        list.innerHTML += "<li>" + nombre + "</li>";
+      }
+    })
+    .catch(function (error) {
+      alert(`Intente más tarde, error: ${error} `);
+    });
+
+
+    
 };
