@@ -39,7 +39,9 @@ const controller = {
       } else {
         res.json({ total: proyectos.length, data: proyectos });
       }
-    }).populate({ path: "involved", strictPopulate: false });
+    })
+      .populate({ path: "involved", strictPopulate: false })
+      .populate({ path: "manager", strictPopulate: false }); 
   },
   //POST PATCH y DELETE Desde React??
   list: (req, res) => {
@@ -67,7 +69,9 @@ const controller = {
           proyect,
         });
       }
-    }).populate({ path: "involved", strictPopulate: false });
+    })
+      .populate({ path: "involved", strictPopulate: false })
+      .populate({ path: "manager", strictPopulate: false });;
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search;

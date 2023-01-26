@@ -45,7 +45,7 @@
               Elige uno:</option>
             <% for (let i=0; i<personal.length ; i++) { %>
             <% if(personal[i].rol == "Gestor de proyectos"){ %>
-            <option value="<%= personal[i].name %>" <%= locals.oldData && oldData.manager === 
+            <option value="<%= personal[i].id %>" <%= locals.oldData && oldData.manager === 
             personal[i].name %> ? "selected" : " " ; %>> <%= personal[i].name %> </option>
             <% }} %>
           </select>

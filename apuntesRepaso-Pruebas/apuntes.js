@@ -1930,3 +1930,23 @@ let settings = {
   body: JSON.stringify(data),
   //2- con JSON.stringify convierto la info que quiero mandar a JSON
 };
+
+// 26-1-23 *************
+/* Estoy aprendiendo JAVA, pero pausé para retomar esto.
+Preparando el endpoint para el tablero de React.
+Se puede poblar más de un path: */
+infoReact: (req, res) => {
+  Proyecto.find({}, (error, proyectos) => {
+    if (error) {
+      return res.status(500).json({
+        message: "Error buscando los proyectos",
+      });
+    } else {
+      res.json({ total: proyectos.length, data: proyectos });
+    }
+  })
+    .populate({ path: "involved", strictPopulate: false })
+    .populate({ path: "manager", strictPopulate: false });
+};
+/* Para llegar a esto, modifiqué el value del register user, para que guarde el ID del manager del proyecto (y no su nombre), con lo cual, modificando el schema, y usando populate, tengo disponibles todos los datos del manager.
+  Ahora agregaré más campos que piden en el detalle de proyectos */
