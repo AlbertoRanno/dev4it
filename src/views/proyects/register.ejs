@@ -6,7 +6,7 @@
   <%- include('../partials/header.ejs')%>
   <div class="container">
 
-    <form action="/proyectos/register" method="POST" class="mt-3">
+    <form action="/proyectos/register" method="POST" class="row g-3 needs-validation mt-3" novalidate>
 
       <div class="row mb-3">
         <label for="name" class="col-2 col-form-label">
@@ -94,19 +94,62 @@
         </div>
       </div>
 
-      <div class="row mb-3">
-        <label class="col-2 col-form-label">
-          Personal Asignado:
-        </label>
+      <label class="col-2 col-form-label">Personal Asignado:</label>
+      <div class="row mb-3">        
         <div class="col-10">
           <div class="form-check">
+
             <% for (let i=0; i<personal.length; i++) { %>
+
+            <div class="extraDataInvolved">
+
             <% if(personal[i].rol != "Gestor de proyectos"){ %>
+
+              <div>
             <label for="<%= "involved" + [i] %>" class="form-check-label">
-              <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" name="involved" value="<%= personal[i]._id %>" />
-              <%= personal[i].name %> <br> <%= personal[i].rol %> - <%= personal[i].seniority %>
+              <%= personal[i].name %> - <%= personal[i].rol %> - <%= personal[i].seniority %>
             </label>
+            <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" 
+              name="involved" value="<%= personal[i]._id %>" />
+            
             <br>
+            <label for="<%= "nivel" + [i] %>">Nivel en relación al proyecto:</label>
+            <input type="text" name="nivel" id="<%= "nivel" + [i] %>" ></input>            
+
+            <br>
+            <label for="<%= "porcAsigXContrato" + [i] %>">Asignación por contrato:</label>
+            <select id="<%= "porcAsigXContrato" + [i] %>" name="porcAsigXContrato">          
+            <% for (let j=100; j>=0 ; j-=5) { %>            
+            <option value="<%= [j] %>" ><%= [j] %>%</option>           
+            <% } %>
+            </select>         
+
+            <br>
+             <label for="<%= "porcAsigReal" + [i] %>">Asignación real:</label>
+            <select id="<%= "porcAsigReal" + [i] %>" name="porcAsigReal">          
+            <% for (let j=100; j>=0 ; j-=5) { %>            
+            <option value="<%= [j] %>" ><%= [j] %>%</option>           
+            <% } %>
+            </select> 
+
+            <br>
+            <label for="<%= "hsMensXContrato" + [i] %>">Horas mensuales por contrato:</label>
+            <input type="number" name="hsMensXContrato" id="<%= "hsMensXContrato" + [i] %>" ></input>           
+
+            <br>
+            <label for="<%= "hsReales" + [i] %>">Horas reales:</label>
+            <input type="number" name="hsReales" id="<%= "hsReales" + [i] %>" ></input>
+
+            <br>
+            <label for="<%= "observationsUser" + [i] %>">Observaciones:</label>
+            <input type="text" name="observationsUser" id="<%= "observationsUser" + [i] %>" ></input>
+
+            <br><br>
+
+            </div>
+
+            </div>
+
             <% } }%>
           </div>
         </div>

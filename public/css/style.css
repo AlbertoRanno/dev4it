@@ -79,3 +79,14 @@
 .impar {
   color: black;
 }
+
+/*Usuario involucrados en los proyectos + sus datos extras*/
+.extraDataInvolved {
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: flex-start;
+}
+
