@@ -81,12 +81,20 @@
 }
 
 /*Usuario involucrados en los proyectos + sus datos extras*/
-.extraDataInvolved {
-
+.extraDataParent,
+.dataParent {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  align-content: flex-start;
+  justify-content: space-around;
+  align-content: space-around;
 }
 
+.extraDataChild,
+.dataChild {
+  flex-basis: 48%;
+}
+
+.extraDataChild {
+  border: lightgray solid 3px;
+  border-radius: 15px;
+}

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head><%- include('../partials/head.ejs', {title: "" })%></head>
+
+<head><%- include('../partials/head.ejs', {title: "" })%></head>
 
 <body>
   <%- include('../partials/header.ejs')%>
@@ -8,173 +9,141 @@
 
     <form action="/proyectos/register" method="POST" class="row g-3 needs-validation mt-3" novalidate>
 
-      <div class="row mb-3">
-        <label for="name" class="col-2 col-form-label">
-          Nombre:
-        </label>
-        <div class="col-10">
-          <input type="text" id="name" name="name" class="form-control 
-          <%= locals.errors && errors.name ? "is-invalid" : null %>"
-            value="<%= locals.oldData ? oldData.name : null %>" />
-          <% if(locals.errors && errors.name) { %>
-          <div class="text-danger"><%= errors.name.msg %></div>
-          <% } %>
-        </div>
+      <div class="dataParent">
+
+      <div class="input-group mb-3 dataChild">
+        <span class="input-group-text">Nombre:</span>
+        <input type="text" name="name" class="form-control <%= locals.errors && errors.name ? "is-invalid" : null %>"
+          value="<%= locals.oldData ? oldData.name : null %>">
+        <% if(locals.errors && errors.name) { %>
+        <div class="text-danger"><%= errors.name.msg %></div>
+        <% } %>
       </div>
 
-      <div class="row mb-3">
-        <label for="description" class="col-2 col-form-label">
-          Descripción:
-        </label>
-        <div class="col-10">
-          <textarea name="description" id="description" rows="4" class="form-control 
-          <%= locals.errors && errors.description ? "is-invalid" : null %>"><% if(locals.oldData && oldData.description) { %><%= oldData.description %><% } %></textarea>
-          <% if  (locals.errors && errors.description) { %>
-          <div class="text-danger"><%= errors.description.msg %></div>
-          <% } %>
-        </div>
+      <div class="input-group mb-3 dataChild">
+        <span class="input-group-text">URL:</span>
+        <input type="url" name="link" class="form-control">
       </div>
 
-      <div class="row mb-3">
-        <label for="manager" class="col-2 col-form-label">
-          Gestor:
-        </label>
-        <div class="col-3">
-          <select id="manager" class="form-control" name="manager">
-            <option value="sinAsignar" <%= locals.oldData && oldData.manager === "sinAsignar" ? "selected" : " " ; %>>
-              Elige uno:</option>
-            <% for (let i=0; i<personal.length ; i++) { %>
-            <% if(personal[i].rol == "Gestor de proyectos"){ %>
-            <option value="<%= personal[i].id %>" <%= locals.oldData && oldData.manager === 
+      <div class="input-group mb-3 dataChild">
+        <span class="input-group-text">Gestor:</span>
+        <select name="manager" class="form-control">
+          <option value="sinAsignar" <%= locals.oldData && oldData.manager === "sinAsignar" ? "selected" : " " ; %>>
+            Elige uno:</option>
+          <% for (let i=0; i<personal.length ; i++) { %>
+          <% if(personal[i].rol == "Gestor de proyectos"){ %>
+          <option value="<%= personal[i].id %>" <%= locals.oldData && oldData.manager === 
             personal[i].name %> ? "selected" : " " ; %>> <%= personal[i].name %> </option>
-            <% }} %>
-          </select>
-       <% if(locals.errors && errors.manager) { %>
-          <div class="text-danger"><%= errors.manager.msg %></div>
-          <% } %> </div>
+          <% }} %>
+        </select>
+        <% if(locals.errors && errors.manager) { %>
+        <div class="text-danger"><%= errors.manager.msg %></div>
+        <% } %>
       </div>
 
-      <div class="row mb-3">
-        <label for="condition" class="col-2 col-form-label">
-          Estado:
-        </label>
-        <div class="col-3">
-          
-          <select id="condition" class="form-control" name="condition">
-            <option value="sinAsignar" <%= locals.oldData && oldData.condition === "sinAsignar" ? "selected" : " " ; %>>
-              Elige uno:</option>
-            <% for (let i=0; i<estados.length ; i++) { %>
-            <option value="<%= estados[i] %>"
-              <%= locals.oldData && oldData.condition === estados[i] ? "selected" : " " ; %>>
-              <%= estados[i] %> </option>
-            <% } %>
-          </select>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <label for="dateStart" class="col-2 col-form-label">
-          Fecha de inicio:
-        </label>
-        <div class="col-2">
-          <input type="date" class="form-control" id="dateStart" name="dateStart" />
-          <% if (locals.errors &&
-                  errors.dateStart) { %>
-                  <div class="text-danger"><%= errors.dateStart.msg %></div>
-                  <% } %>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <label for="dateEnd" class="col-2 col-form-label">
-          Fecha fin:
-        </label>
-        <div class="col-2">
-          <input type="date" class="form-control" id="dateEnd" name="dateEnd" />
-        </div>
-      </div>
-
-      <label class="col-2 col-form-label">Personal Asignado:</label>
-      <div class="row mb-3">        
-        <div class="col-10">
-          <div class="form-check">
-
-            <% for (let i=0; i<personal.length; i++) { %>
-
-            <div class="extraDataInvolved">
-
-            <% if(personal[i].rol != "Gestor de proyectos"){ %>
-
-              <div>
-            <label for="<%= "involved" + [i] %>" class="form-check-label">
-              <%= personal[i].name %> - <%= personal[i].rol %> - <%= personal[i].seniority %>
-            </label>
-            <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" 
-              name="involved" value="<%= personal[i]._id %>" />
-            
-            <br>
-            <label for="<%= "nivel" + [i] %>">Nivel en relación al proyecto:</label>
-            <input type="text" name="nivel" id="<%= "nivel" + [i] %>" ></input>            
-
-            <br>
-            <label for="<%= "porcAsigXContrato" + [i] %>">Asignación por contrato:</label>
-            <select id="<%= "porcAsigXContrato" + [i] %>" name="porcAsigXContrato">          
-            <% for (let j=100; j>=0 ; j-=5) { %>            
-            <option value="<%= [j] %>" ><%= [j] %>%</option>           
-            <% } %>
-            </select>         
-
-            <br>
-             <label for="<%= "porcAsigReal" + [i] %>">Asignación real:</label>
-            <select id="<%= "porcAsigReal" + [i] %>" name="porcAsigReal">          
-            <% for (let j=100; j>=0 ; j-=5) { %>            
-            <option value="<%= [j] %>" ><%= [j] %>%</option>           
-            <% } %>
-            </select> 
-
-            <br>
-            <label for="<%= "hsMensXContrato" + [i] %>">Horas mensuales por contrato:</label>
-            <input type="number" name="hsMensXContrato" id="<%= "hsMensXContrato" + [i] %>" ></input>           
-
-            <br>
-            <label for="<%= "hsReales" + [i] %>">Horas reales:</label>
-            <input type="number" name="hsReales" id="<%= "hsReales" + [i] %>" ></input>
-
-            <br>
-            <label for="<%= "observationsUser" + [i] %>">Observaciones:</label>
-            <input type="text" name="observationsUser" id="<%= "observationsUser" + [i] %>" ></input>
-
-            <br><br>
-
-            </div>
-
-            </div>
-
-            <% } }%>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <label for="link" class="col-2 col-form-label">
-          Registros de trabajo:
-        </label>
-        <div class="col-10">
-          <input type="url" id="link" class="form-control" name="link" />
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <label for="observations" class="col-2 col-form-label">
-          Observaciones:
-        </label>
-        <div class="col-10">
-          <textarea name="observations" id="observations" rows="4" class="form-control 
-          <%= locals.errors && errors.observations ? "is-invalid" : null %>"></textarea>
-          <% if  (locals.errors && errors.observations) { %>
-          <div class="text-danger"><%= errors.observations.msg %></div>
+      <div class="input-group mb-3 dataChild">
+        <span class="input-group-text">Estado:</span>
+        <select class="form-control" name="condition">
+          <option value="sinAsignar" <%= locals.oldData && oldData.condition === "sinAsignar" ? "selected" : " " ; %>>
+            Elige uno:</option>
+          <% for (let i=0; i<estados.length ; i++) { %>
+          <option value="<%= estados[i] %>"
+            <%= locals.oldData && oldData.condition === estados[i] ? "selected" : " " ; %>>
+            <%= estados[i] %> </option>
           <% } %>
+        </select>
+        <% if(locals.errors && errors.condition) { %>
+        <div class="text-danger"><%= errors.condition.msg %></div>
+        <% } %>
+      </div>
+
+      <div class="input-group mb-3 dataChild">
+        <span class="input-group-text">Fecha de inicio:</span>
+        <input type="date" class="form-control" name="dateStart">
+        <% if (locals.errors && errors.dateStart) { %>
+        <div class="text-danger"><%= errors.dateStart.msg %></div>
+        <% } %>
+      </div>
+
+      <div class="input-group mb-3 dataChild">
+        <span class="input-group-text">Fecha fin:</span>
+        <input type="date" class="form-control" name="dateEnd">
+      </div>
+
+      <div class="input-group dataChild">
+        <span class="input-group-text">Descripción:</span>
+        <textarea class="form-control <%= locals.errors && errors.description ? "is-invalid" : null %>"
+          name="description" rows="3"></textarea>
+        <% if  (locals.errors && errors.description) { %>
+        <div class="text-danger"><%= errors.description.msg %></div>
+        <% } %>
+      </div>
+
+      <div class="input-group dataChild">
+        <span class="input-group-text">Observaciones:</span>
+        <textarea class="form-control <%= locals.errors && errors.observations ? "is-invalid" : null %>"
+          name="observations" rows="3"></textarea>
+        <% if  (locals.errors && errors.observations) { %>
+        <div class="text-danger"><%= errors.observations.msg %></div>
+        <% } %>
+      </div>
+
+      </div>
+
+      <h4><strong>Personal Asignado:</strong></h4>
+      <div class="extraDataParent">
+        <% for (let i=0; i<personal.length; i++) { %>
+
+        <% if(personal[i].rol != "Gestor de proyectos"){ %>
+
+        <div class="extraDataChild">
+
+          <div class="input-group-text mb-3">
+            <span class="input-group-text"><%= personal[i].name %> - <%= personal[i].rol %></span>
+            <input class="" type="checkbox" name="involved" value="<%= personal[i]._id %>">
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Nivel en relación al proyecto:</span>
+            <input type="text" name="nivel" class="form-control">
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Asignación por contrato:</span>
+            <select id="<%= "porcAsigXContrato" + [i] %>" name="porcAsigXContrato" class="form-control">
+              <% for (let j=100; j>=0 ; j-=5) { %>
+              <option value="<%= [j] %>"><%= [j] %>%</option>
+              <% } %>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Asignación real:</span>
+            <select id="<%= "porcAsigReal" + [i] %>" name="porcAsigReal" class="form-control">
+              <% for (let j=100; j>=0 ; j-=5) { %>
+              <option value="<%= [j] %>"><%= [j] %>%</option>
+              <% } %>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Hs. mensuales por contrato:</span>
+            <input type="number" name="hsMensXContrato" class="form-control">
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Horas reales:</span>
+            <input type="number" name="hsReales" class="form-control">
+          </div>
+
+          <div class="input-group">
+            <span class="input-group-text">Observaciones:</span>
+            <textarea class="form-control" name="observationsUser" rows="2"></textarea>
+          </div>
+
         </div>
+
+        <% } }%>
       </div>
 
       <div class="buttonPanel">
@@ -182,7 +151,7 @@
         <button type="submit" class="btn btn-success">
           Guardar Proyecto
         </button>
-      </div>
+      </div>     
 
     </form>
   </div>
