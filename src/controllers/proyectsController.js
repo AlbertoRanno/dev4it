@@ -70,8 +70,9 @@ const controller = {
         });
       }
     })
-      .populate({ path: "involved", strictPopulate: false })
-      .populate({ path: "manager", strictPopulate: false });
+      .populate({ path: "manager", strictPopulate: false })
+      .populate({ path: "involved", strictPopulate: false });
+    //.populate({ path: "projectsInfo", strictPopulate: false });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search;
@@ -152,7 +153,7 @@ const controller = {
               let personalInvolucrado = [];
               personalInvolucrado.push(req.body.involved);
 
-              let projectsInfo = {
+              let projectInfo = {
                 proyect: proyect._id,
                 nivel: req.body.nivel,
                 porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
@@ -163,19 +164,18 @@ const controller = {
                 _id: new mongoose.Types.ObjectId(),
               };
 
-              Persona.findByIdAndUpdate(
-                req.body.involved,
-                { projectsInfo },
-                (error, persona) => {
-                  if (error) {
-                    return res
-                      .status(500)
-                      .json({ message: "Error actualizando al usuario" });
-                  }
-                  console.log(persona);
-                  console.log(persona.projectsInfo);
+              Persona.findById(req.body.involved, (error, persona) => {
+                if (error) {
+                  return res
+                    .status(500)
+                    .json({ message: "Error buscando al personal" });
                 }
-              );
+
+                persona.projectsInfo.push(projectInfo)
+
+                persona.save();
+                //console.log(persona);
+              });
             }
 
             console.log(typeof req.body.involved);
