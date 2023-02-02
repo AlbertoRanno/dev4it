@@ -16,8 +16,8 @@
         <% if ( persona.proyects.length <1) { %>
         <li> Sin proyectos asignados </li>
         <% } else { %>
-        <% for (let i=0; i<persona.proyects.length ; i++) { %>
-        <li>"<%= persona.proyects[i].name %>"</li>
+        <% for (let i=0; i<persona.proyectsInfo.length ; i++) { %>
+        <li>"<%= persona.proyectsInfo[i].name %>"</li>
         <% }} %>
       </ol>
     </li>

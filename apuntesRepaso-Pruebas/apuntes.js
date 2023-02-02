@@ -1426,8 +1426,7 @@ Debe proveer una interfaz uniforme, para que la info se transfiera de forma esta
 
 Cuando el servidor envía una solicitud, esta transfiere una representación del estado del recurso requerido, a quien se lo haya
 solicitado. Dicha info se entrega por medio de HTTP, en uno de los siguientes formatos:
-JSON - RAW (datos sin formato)- XLT - texto sin formato (para HTML y CSS) - URL-encoded (datos codificados en forma de URL, lo que
-sería algo muy similar a un query string - ej: {} email%3Dcosmefulanito.fox%26passwird%3Dverysecret)
+JSON - RAW (datos sin formato)- XLT - texto sin formato (para HTML y CSS) - URL-encoded (datos codificados en forma de URL, lo que sería algo muy similar a un query string - ej: {} email%3Dcosmefulanito.fox%26passwird%3Dverysecret)
 Para enviar este info se debe agregar un encabezado en los headers:
 {} "Content-Type": "application/json"
 JSON {
@@ -1702,7 +1701,7 @@ Navegador - Window con su barra de navegación - Document con sus etiquetas html
 
 1- SELECCIONAR (DÓNDE??)
 Para empezar a modificar, lo importante primero es capturar lo que quiero modificar, y guardarlo en una variable, para tenerlo disponible. 
-Al elemento capturado, se lo denomina Nodo
+ *************** Al elemento capturado, se lo denomina Nodo ******************
 */
 let titulo = window.document.querySelector("h1"); // donde el window se suele omitir
 
@@ -1819,7 +1818,7 @@ Leí apuntes, y acomodé los partials/head */
 
 // 18-1-23 *************
 /* 
-*Validaciones de Form desde el Front "on time"
+*Validaciones de Form desde el Front - se llaman "on time"
 -nunca está de más sumar capas de validaciones
 -Se desactivan / Mejor experiencia - Feedback + rápido
 
@@ -1950,3 +1949,16 @@ infoReact: (req, res) => {
 };
 /* Para llegar a esto, modifiqué el value del register user, para que guarde el ID del manager del proyecto (y no su nombre), con lo cual, modificando el schema, y usando populate, tengo disponibles todos los datos del manager.
   Ahora agregaré más campos que piden en el detalle de proyectos */
+
+// 1-2-23 *************
+/* Días complicados.. poco tiempo y ánimo negativo...
+Repasé el archivo de apuntes completo. */
+
+// 2-2-23 *************
+/*
+https://mongoosejs.com/docs/api/schema.html#schema_Schema
+Example:
+const child = new Schema({ name: String });
+const schema = new Schema({ name: String, age: Number, children: [child] });
+const Tree = mongoose.model('Tree', schema);
+ */

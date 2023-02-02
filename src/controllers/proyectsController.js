@@ -41,7 +41,7 @@ const controller = {
       }
     })
       .populate({ path: "involved", strictPopulate: false })
-      .populate({ path: "manager", strictPopulate: false }); 
+      .populate({ path: "manager", strictPopulate: false });
   },
   //POST PATCH y DELETE Desde React??
   list: (req, res) => {
@@ -71,7 +71,7 @@ const controller = {
       }
     })
       .populate({ path: "involved", strictPopulate: false })
-      .populate({ path: "manager", strictPopulate: false });;
+      .populate({ path: "manager", strictPopulate: false });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search;
@@ -132,6 +132,7 @@ const controller = {
               personal: datosPersonal,
             });
           } else if (resultValidation.isEmpty()) {
+            //console.log(req.body);
             const proyect = new Proyecto({
               _id: new mongoose.Types.ObjectId(),
               name: req.body.name,
@@ -147,19 +148,34 @@ const controller = {
             });
 
             if (typeof req.body.involved == "string") {
-              console.log("Un solo usuario");
+              //console.log("Un solo usuario");
               let personalInvolucrado = [];
               personalInvolucrado.push(req.body.involved);
 
-              Persona.findById(req.body.involved, (error, persona) => {
-                if (error) {
-                  return res
-                    .status(500)
-                    .json({ message: "Error buscando al usuario" });
+              let projectsInfo = {
+                proyect: proyect._id,
+                nivel: req.body.nivel,
+                porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
+                porcAsigReal: parseInt(req.body.porcAsigReal, 10),
+                hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
+                hsReales: parseInt(req.body.hsReales, 10),
+                observationsUser: req.body.observationsUser,
+                _id: new mongoose.Types.ObjectId(),
+              };
+
+              Persona.findByIdAndUpdate(
+                req.body.involved,
+                { projectsInfo },
+                (error, persona) => {
+                  if (error) {
+                    return res
+                      .status(500)
+                      .json({ message: "Error actualizando al usuario" });
+                  }
+                  console.log(persona);
+                  console.log(persona.projectsInfo);
                 }
-                persona.proyects = persona.proyects.concat(proyect._id);
-                persona.save();
-              });
+              );
             }
 
             console.log(typeof req.body.involved);

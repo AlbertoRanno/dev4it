@@ -60,9 +60,11 @@ const controller = {
           message: `Error buscando a la persona con el id: ${id}`,
         });
       } else {
+        res.send(persona);
+        /*
         res.render("./staff/detail", {
           persona,
-        });
+        });*/
       }
     }).populate({ path: "proyects", strictPopulate: false });
   },
@@ -130,7 +132,7 @@ const controller = {
             email: req.body.email,
             rol: req.body.rol,
             password: bcryptjs.hashSync(req.body.password, 10),
-            proyects: req.body.proyects,
+            projectsInfo: req.body.proyects,
             seniority: req.body.seniority,
             avatar: "/images/avatars/" + req.file.filename,
             active: true,

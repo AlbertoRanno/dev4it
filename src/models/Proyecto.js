@@ -12,14 +12,6 @@ const ProyectoSchema = new mongoose.Schema(
     dateEnd: { type: Date }, //, min: Date.now
     involved: [{ type: Schema.Types.ObjectId, ref: "Persona" }],
     link: { type: String },
-    /**/
-    nivel: { type: String },
-    porcAsigXContrato: { type: Number },
-    porcAsigReal: { type: Number },
-    hsMensXContrato: { type: Number },
-    hsReales: { type: Number },
-    observationsUser: { type: String },
-
     observations: { type: String },
     active: { type: Boolean },
   },
