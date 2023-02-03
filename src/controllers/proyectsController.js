@@ -153,17 +153,6 @@ const controller = {
               let personalInvolucrado = [];
               personalInvolucrado.push(req.body.involved);
 
-              let projectInfo = {
-                proyect: proyect._id,
-                nivel: req.body.nivel,
-                porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
-                porcAsigReal: parseInt(req.body.porcAsigReal, 10),
-                hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
-                hsReales: parseInt(req.body.hsReales, 10),
-                observationsUser: req.body.observationsUser,
-                _id: new mongoose.Types.ObjectId(),
-              };
-
               Persona.findById(req.body.involved, (error, persona) => {
                 if (error) {
                   return res
@@ -171,7 +160,18 @@ const controller = {
                     .json({ message: "Error buscando al personal" });
                 }
 
-                persona.projectsInfo.push(projectInfo)
+                let projectInfo = {
+                  proyect: proyect._id,
+                  nivel: req.body.nivel,
+                  porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
+                  porcAsigReal: parseInt(req.body.porcAsigReal, 10),
+                  hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
+                  hsReales: parseInt(req.body.hsReales, 10),
+                  observationsUser: req.body.observationsUser,
+                  _id: new mongoose.Types.ObjectId(),
+                };
+
+                persona.projectsInfo.push(projectInfo);
 
                 persona.save();
                 //console.log(persona);
@@ -188,7 +188,19 @@ const controller = {
                       .status(500)
                       .json({ message: "Error buscando al personal" });
                   }
-                  persona.proyects = persona.proyects.concat(proyect._id);
+                  //persona.proyects = persona.proyects.concat(proyect._id);
+
+                  let projectInfo = {
+                    proyect: personalInvolucrado[i],
+                    nivel: req.body.nivel,
+                    porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
+                    porcAsigReal: parseInt(req.body.porcAsigReal, 10),
+                    hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
+                    hsReales: parseInt(req.body.hsReales, 10),
+                    observationsUser: req.body.observationsUser,
+                    _id: new mongoose.Types.ObjectId(),
+                  };
+                  persona.projectsInfo.push(projectInfo);
                   persona.save();
                 });
               }

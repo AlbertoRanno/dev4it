@@ -132,7 +132,7 @@ const controller = {
             email: req.body.email,
             rol: req.body.rol,
             password: bcryptjs.hashSync(req.body.password, 10),
-            projectsInfo: req.body.proyects,
+            projectsInfo: [{ proyect: req.body.proyects }],
             seniority: req.body.seniority,
             avatar: "/images/avatars/" + req.file.filename,
             active: true,
