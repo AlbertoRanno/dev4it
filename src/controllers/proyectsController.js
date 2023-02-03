@@ -170,9 +170,8 @@ const controller = {
                   observationsUser: req.body.observationsUser,
                   _id: new mongoose.Types.ObjectId(),
                 };
-
+             
                 persona.projectsInfo.push(projectInfo);
-
                 persona.save();
                 //console.log(persona);
               });

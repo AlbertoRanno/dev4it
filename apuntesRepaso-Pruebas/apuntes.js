@@ -1962,3 +1962,14 @@ const child = new Schema({ name: String });
 const schema = new Schema({ name: String, age: Number, children: [child] });
 const Tree = mongoose.model('Tree', schema);
  */
+
+// 3-2-23 *************
+/* Para cuando haga la nueva edición de proyectos */
+for (let i = 0; i < persona.projectsInfo.length; i++) {
+  if (persona.projectsInfo[i].proyect == proyect._id) {
+    persona.projectsInfo = persona.projectsInfo.filter(
+      persona.projectsInfo[i].proyect != proyect._id
+    );
+    console.log(persona.projectsInfo);
+  }
+}

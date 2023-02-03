@@ -126,13 +126,14 @@ const controller = {
             seniority,
           });
         } else if (resultValidation.isEmpty()) {
+          console.log(req.body);
           const personal = new Persona({
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             email: req.body.email,
             rol: req.body.rol,
             password: bcryptjs.hashSync(req.body.password, 10),
-            projectsInfo: [{ proyect: req.body.proyects }],
+            projectsInfo: [],
             seniority: req.body.seniority,
             avatar: "/images/avatars/" + req.file.filename,
             active: true,
@@ -141,10 +142,9 @@ const controller = {
 
           //console.log(typeof req.body.proyects);
           if (typeof req.body.proyects == "string") {
-            let proyectosInvolucrados = [];
-            proyectosInvolucrados.push(req.body.proyects);
+            personal.projectsInfo.push({ proyect: req.body.proyects });
 
-            Proyecto.findById(proyectosInvolucrados, (error, proyecto) => {
+            Proyecto.findById(req.body.proyects, (error, proyecto) => {
               if (error) {
                 return res.status(500).json({
                   message: "Error buscando el proyecto",
@@ -157,9 +157,10 @@ const controller = {
 
           //console.log(typeof req.body.proyects);
           if (typeof req.body.proyects == "object") {
-            console.log("Varios proyectos");
             let proyectosInvolucrados = req.body.proyects;
             for (let i = 0; i < proyectosInvolucrados.length; i++) {
+              personal.projectsInfo.push({ proyect: proyectosInvolucrados[i] });
+
               Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
                 if (error) {
                   return res.status(500).json({
