@@ -1973,3 +1973,12 @@ for (let i = 0; i < persona.projectsInfo.length; i++) {
     console.log(persona.projectsInfo);
   }
 }
+/* Al haber cambiado el schema de Persona, no funcionaba la asociacion de proyectos cuando guardaba un usuario nuevo. Lo corregí aprovechando cada caso (string - object): */
+const personaal = {
+  //... objeto "personal" del store
+  projectsInfo: [], // defino acá el array
+};
+// string:
+personal.projectsInfo.push({ proyect: req.body.proyects });
+// object: (dentro del for - donde proyectosInvolucrados es el array de req.body.proyects)
+personal.projectsInfo.push({ proyect: proyectosInvolucrados[i] });

@@ -16,6 +16,8 @@
       </li>
       <li class="list-group-item">
         <strong>Manager: </strong><%= proyect.manager.name %>
+        <br />
+        <img src="<%=proyect.manager.avatar%>" alt="perfil-del-manager" />
       </li>
       <li class="list-group-item">
         <strong>Estado: </strong><%= proyect.condition %>
@@ -40,9 +42,23 @@
         <ol>
           <% if ( proyect.involved.length <1) { %>
           <li>Sin personal asignado</li>
-          <% } else { %> <% for( let i = 0; i < proyect.involved.length; i++ ) {
-          %>
+          <% } else { %> <% for( let i = 0; i < proyect.involved.length; i++ ){%>
           <li><%= proyect.involved[i].name %></li>
+          <ul> 
+            <% for (let j = 0; j < proyect.involved[i].projectsInfo.length; j++){ %>
+                  
+               
+               <li>Nivel: <%=proyect.involved[i].projectsInfo[j].nivel %></li> 
+               <li>Porcentaje asignación por contrato: <%=proyect.involved[i].projectsInfo[j].porcAsigXContrato%></li>
+               <li>Porcentaje asignación real: <%=proyect.involved[i].projectsInfo[j].porcAsigReal%></li>
+               <li>Horas mensuales por contrato: <%=proyect.involved[i].projectsInfo[j].hsMensXContrato%></li>
+               <li>Horas reales: <%=proyect.involved[i].projectsInfo[j].hsReales%></li>
+               <li>Observaciones: <%=proyect.involved[i].projectsInfo[j].observationsUser%></li>
+               
+                
+            <% } %>
+        </ul>
+
           <% }} %>
         </ol>
       </li>

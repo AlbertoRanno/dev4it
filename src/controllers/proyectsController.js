@@ -65,14 +65,17 @@ const controller = {
           message: `Error buscando al proyecto con id: ${id}`,
         });
       } else {
+        //console.log(proyect);
         res.render("./proyects/detail", {
           proyect,
         });
       }
     })
       .populate({ path: "manager", strictPopulate: false })
-      .populate({ path: "involved", strictPopulate: false });
-    //.populate({ path: "projectsInfo", strictPopulate: false });
+      .populate({
+        path: "involved",
+        populate: [{ path: "projectsInfo" }],
+      });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search;
@@ -170,7 +173,7 @@ const controller = {
                   observationsUser: req.body.observationsUser,
                   _id: new mongoose.Types.ObjectId(),
                 };
-             
+
                 persona.projectsInfo.push(projectInfo);
                 persona.save();
                 //console.log(persona);
