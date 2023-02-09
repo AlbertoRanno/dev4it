@@ -17,7 +17,7 @@
       <li class="list-group-item">
         <strong>Manager: </strong><%= proyect.manager.name %>
         <br />
-        <img src="<%=proyect.manager.avatar%>" alt="perfil-del-manager" />
+        <img src="<%=proyect.manager.avatar%>" class="avatar" alt="perfil-del-manager" />
       </li>
       <li class="list-group-item">
         <strong>Estado: </strong><%= proyect.condition %>
@@ -46,7 +46,7 @@
           <li><%= proyect.involved[i].name %></li>
           <ul> 
             <% for (let j = 0; j < proyect.involved[i].projectsInfo.length; j++){ %>
-                  
+                <% if (((proyect.involved[i].projectsInfo[j].proyect).toString()).slice(1) == ((proyect._id).toString()).slice(1)) { %>
                
                <li>Nivel: <%=proyect.involved[i].projectsInfo[j].nivel %></li> 
                <li>Porcentaje asignación por contrato: <%=proyect.involved[i].projectsInfo[j].porcAsigXContrato%></li>
@@ -54,9 +54,8 @@
                <li>Horas mensuales por contrato: <%=proyect.involved[i].projectsInfo[j].hsMensXContrato%></li>
                <li>Horas reales: <%=proyect.involved[i].projectsInfo[j].hsReales%></li>
                <li>Observaciones: <%=proyect.involved[i].projectsInfo[j].observationsUser%></li>
-               
                 
-            <% } %>
+            <% }} %>
         </ul>
 
           <% }} %>
