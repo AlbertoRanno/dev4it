@@ -74,7 +74,7 @@ const controller = {
       .populate({ path: "manager", strictPopulate: false })
       .populate({
         path: "involved",
-        populate: [{ path: "projectsInfo" }],
+        //populate: [{ path: "projectsInfo" }],
       });
   },
   search: (req, res) => {
@@ -265,7 +265,11 @@ const controller = {
           formattedDateEnd,
         });
       }
-    });
+    })
+      .populate({ path: "manager", strictPopulate: false })
+      .populate({
+        path: "involved",
+      });
   },
   update: (req, res) => {
     const resultValidation = validationResult(req);
@@ -280,10 +284,16 @@ const controller = {
       }
 
       for (let i = 0; i < personas.length; i++) {
-        let indiceArray = personas[i].proyects.indexOf(id);
-        if (indiceArray != -1) {
-          personas[i].proyects.splice(indiceArray, 1);
-          personas[i].save();
+        for (let j = 0; j < personas[i].projectsInfo.length; j++) {
+          /*Lógica: Busco en cada persona del array persona, y en cada una de ellas, busco en su array de objetos "projectsInfo".
+          Para ver si está el ID de este proyecto, y si está, borrar ese objeto completo del array. Para luego guardarlo solo donde 
+          corresponda?? NO - XQ ELIMINARÍA ASÍ LOS DATOS EXTRAS DE ESOS OBJETOS, QUE ACTUALMENTE SOLO CARGO CUANDO DOY DE ALTA AL
+          PROYECTO. ADEMÀS DE QUE POR SACAR A ALGUIEN DE UN PROYECTO, NO CORRESPONDE TENER QUE CARGAR MANUALMENTE AL RESTO*/
+          // let indiceArray = personas[i].projectsInfo[j].indexOf(id);
+          // if (indiceArray != -1) {
+          //   personas[i].projectsInfo[j].splice(indiceArray, 1);
+          //   personas[i].save();
+          // }
         }
       }
     });
@@ -398,7 +408,11 @@ const controller = {
           });
         }
       }
-    });
+    })
+      .populate({ path: "manager", strictPopulate: false })
+      .populate({
+        path: "involved",
+      });
   },
   softdelete: (req, res) => {
     let id = req.params.id;

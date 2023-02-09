@@ -95,30 +95,72 @@
         <div class="col-2">
           <input type="date" id="dateEnd" class="form-control" name="dateEnd" value="<%= formattedDateEnd %>" />
         </div>
-      </div>
+      </div>  
 
-      <div class="row mb-3">
+       <div class="row mb-3">
         <label class="col-2 col-form-label">
           Personal Asignado:
         </label>
         <div class="col-10">
-          <div class="form-check">
+          <div class="form-check extraDataParent">
+  
+        <% for (let i=0; i<toAssign.length; i++) { %>   
+        <div class="extraDataChild">
 
-            <% for (let i=0; i< toAssign.length; i++) { %>        
-           
-              <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" name="involved" value="<%= toAssign[i]._id %>" 
+          <div class="input-group-text mb-3">
+            <a href="/personal/detail/<%= toAssign[i].id %>"><i class="fa-solid fa-arrows-to-eye"></i></a>
+            <span class="input-group-text"><%= toAssign[i].name %> - <%= toAssign[i].rol %></span>
+            <input class="" type="checkbox" name="involved" value="<%= toAssign[i]._id %>"      
+            <% for( let j = 0; j < proyectToEdit.involved.length; j++ ) { %>
+              <%= proyectToEdit.involved[j]._id == toAssign[i].id ? "checked" : null%> 
+              <% } %>
+              >            
+          </div>
 
-              <% for( let j = 0; j < proyectToEdit.involved.length; j++ ) { %>
-              <%= proyectToEdit.involved[j] == toAssign[i].id ? "checked" : null%> 
-              <% } %>/>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Nivel en relación al proyecto:</span>
+            <input type="text" name="nivel" class="form-control"             
+            <% for( let j = 0; j < toAssign[i].projectsInfo.length; j++ ) { %>           
+              value="<%= toAssign[i].projectsInfo[j].nivel %>"
+              <% } %>
+            >
+          </div>
 
-            <label for="<%= "involved" + [i] %>"  class="form-check-label"><%= toAssign[i].name %> <br> <%= toAssign[i].rol %> - <%= toAssign[i].seniority %></label>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Asignación por contrato:</span>
+            <select id="<%= "porcAsigXContrato" + [i] %>" name="porcAsigXContrato" class="form-control">
+              <% for (let j=100; j>=0 ; j-=5) { %>
+              <option value="<%= [j] %>"><%= [j] %>%</option>
+              <% } %>
+            </select>
+          </div>
 
-             <a href="/personal/detail/<%= toAssign[i].id %>"><i class="fa-solid fa-arrows-to-eye"></i></a>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Asignación real:</span>
+            <select id="<%= "porcAsigReal" + [i] %>" name="porcAsigReal" class="form-control">
+              <% for (let j=100; j>=0 ; j-=5) { %>
+              <option value="<%= [j] %>"><%= [j] %>%</option>
+              <% } %>
+            </select>
+          </div>
 
-            <br>
-            <% } %>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Hs. mensuales por contrato:</span>
+            <input type="number" name="hsMensXContrato" class="form-control">
+          </div>
 
+          <div class="input-group mb-3">
+            <span class="input-group-text">Horas reales:</span>
+            <input type="number" name="hsReales" class="form-control">
+          </div>
+
+          <div class="input-group">
+            <span class="input-group-text">Observaciones:</span>
+            <textarea class="form-control" name="observationsUser" rows="2"><% for( let j = 0; j < toAssign[i].projectsInfo.length; j++ ) { %><% if ((toAssign[i].projectsInfo[j].proyect).toString() == proyectToEdit._id) {%><%=toAssign[i].projectsInfo[j].observationsUser%><% }} %></textarea>
+          </div>
+
+        </div>
+        <%  } %>
           </div>
         </div>
       </div>

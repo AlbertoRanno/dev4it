@@ -1982,3 +1982,29 @@ const personaal = {
 personal.projectsInfo.push({ proyect: req.body.proyects });
 // object: (dentro del for - donde proyectosInvolucrados es el array de req.body.proyects)
 personal.projectsInfo.push({ proyect: proyectosInvolucrados[i] });
+
+ <div class="row mb-3">
+        <label class="col-2 col-form-label">
+          Personal Asignado:
+        </label>
+        <div class="col-10">
+          <div class="form-check">
+
+            <% for (let i=0; i< toAssign.length; i++) { %>        
+           
+              <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" name="involved" value="<%= toAssign[i]._id %>" 
+
+              <% for( let j = 0; j < proyectToEdit.involved.length; j++ ) { %>
+              <%= proyectToEdit.involved[j] == toAssign[i].id ? "checked" : null%> 
+              <% } %>/>
+
+            <label for="<%= "involved" + [i] %>"  class="form-check-label"><%= toAssign[i].name %> <br> <%= toAssign[i].rol %> - <%= toAssign[i].seniority %></label>
+
+             <a href="/personal/detail/<%= toAssign[i].id %>"><i class="fa-solid fa-arrows-to-eye"></i></a>
+
+            <br>
+            <% } %>
+
+          </div>
+        </div>
+      </div>
