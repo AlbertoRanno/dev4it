@@ -2008,3 +2008,16 @@ personal.projectsInfo.push({ proyect: proyectosInvolucrados[i] });
           </div>
         </div>
       </div>
+
+       <div class="input-group mb-3">
+            <span class="input-group-text">Asignación real:</span>
+            <select id="<%= "porcAsigReal" + [i] %>" name="porcAsigReal" class="form-control">
+              <% for (let j=100; j>=0 ; j-=5) { %>
+              <option value="<%= [j] %>"
+                <% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigReal %>
+                <% }} %>><%= [j] %>%</option>
+              <% } %>
+            </select>
+          </div>

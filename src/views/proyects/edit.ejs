@@ -45,8 +45,6 @@
         </label>
         <div class="col-3">
           <select class="form-control" id="manager" name="manager">
-            <option value="sinAsignar" <%= locals.oldData && oldData.manager === "sinAsignar" ? "selected" : " " ; %>>
-              Sin asignar</option>
             <% for (let i=0; i<personal.length ; i++) { %>              
             <% if(personal[i].rol == "Gestor de proyectos"){ %>
             <option value="<%= personal[i].name %>" 
@@ -132,6 +130,15 @@
               <% for (let j=100; j>=0 ; j-=5) { %>
               <option value="<%= [j] %>"><%= [j] %>%</option>
               <% } %>
+              <option value="<% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigXContrato %>
+                <% }} %>"
+                selected
+                ><% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigXContrato %>
+                <% }} %>%</option>
             </select>
           </div>
 
@@ -141,17 +148,34 @@
               <% for (let j=100; j>=0 ; j-=5) { %>
               <option value="<%= [j] %>"><%= [j] %>%</option>
               <% } %>
+              <option value="<% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigReal %>
+                <% }} %>"
+                selected
+                ><% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigReal %>
+                <% }} %>%</option>
             </select>
           </div>
 
           <div class="input-group mb-3">
             <span class="input-group-text">Hs. mensuales por contrato:</span>
-            <input type="number" name="hsMensXContrato" class="form-control">
+            <input type="number" name="hsMensXContrato" class="form-control"
+            <% for( let j = 0; j < toAssign[i].projectsInfo.length; j++ ) { %>           
+              value="<%= toAssign[i].projectsInfo[j].hsMensXContrato %>"
+              <% } %>
+            >
           </div>
 
           <div class="input-group mb-3">
             <span class="input-group-text">Horas reales:</span>
-            <input type="number" name="hsReales" class="form-control">
+            <input type="number" name="hsReales" class="form-control"
+            <% for( let j = 0; j < toAssign[i].projectsInfo.length; j++ ) { %>           
+              value="<%= toAssign[i].projectsInfo[j].hsReales %>"
+              <% } %>
+            >
           </div>
 
           <div class="input-group">
