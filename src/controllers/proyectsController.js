@@ -3,6 +3,7 @@ const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
 const moment = require("moment");
+const { findByIdAndDelete } = require("../models/Persona");
 
 let datosPersonal = [];
 
@@ -153,8 +154,6 @@ const controller = {
 
             if (typeof req.body.involved == "string") {
               //console.log("Un solo usuario");
-              let personalInvolucrado = [];
-              personalInvolucrado.push(req.body.involved);
 
               Persona.findById(req.body.involved, (error, persona) => {
                 if (error) {
@@ -165,12 +164,12 @@ const controller = {
 
                 let projectInfo = {
                   proyect: proyect._id,
-                  nivel: req.body.nivel,
+                  nivel: req.body.nivel.toString(),
                   porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
                   porcAsigReal: parseInt(req.body.porcAsigReal, 10),
                   hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
                   hsReales: parseInt(req.body.hsReales, 10),
-                  observationsUser: req.body.observationsUser,
+                  observationsUser: req.body.observationsUser.toString(),
                   _id: new mongoose.Types.ObjectId(),
                 };
 
@@ -275,25 +274,24 @@ const controller = {
     const resultValidation = validationResult(req);
     let id = req.params.id;
 
-    // Borro el proyecto de todos los usuarios, y luego guardo donde corresponda
     Persona.find({}, (error, personas) => {
       if (error) {
         return res.status(500).json({
-          message: "Error buscando los personas",
+          message: `Error: ${error}`,
         });
-      }
-
-      for (let i = 0; i < personas.length; i++) {
-        for (let j = 0; j < personas[i].projectsInfo.length; j++) {
-          /*Lógica: Busco en cada persona del array persona, y en cada una de ellas, busco en su array de objetos "projectsInfo".
-          Para ver si está el ID de este proyecto, y si está, borrar ese objeto completo del array. Para luego guardarlo solo donde 
-          corresponda?? NO - XQ ELIMINARÍA ASÍ LOS DATOS EXTRAS DE ESOS OBJETOS, QUE ACTUALMENTE SOLO CARGO CUANDO DOY DE ALTA AL
-          PROYECTO. ADEMÀS DE QUE POR SACAR A ALGUIEN DE UN PROYECTO, NO CORRESPONDE TENER QUE CARGAR MANUALMENTE AL RESTO*/
-          // let indiceArray = personas[i].projectsInfo[j].indexOf(id);
-          // if (indiceArray != -1) {
-          //   personas[i].projectsInfo[j].splice(indiceArray, 1);
-          //   personas[i].save();
-          // }
+      } else {
+        for (let i = 0; i < personas.length; i++) {
+          Persona.findByIdAndUpdate(
+            personas[i]._id,
+            { projectsInfo: [] },
+            (error, personas) => {
+              if (error) {
+                return res.status(500).json({
+                  message: `Error: ${error}`,
+                });
+              }
+            }
+          );
         }
       }
     });
@@ -345,20 +343,44 @@ const controller = {
                     message: "Error buscando el proyecto",
                   });
                 }
-                persona.proyects = persona.proyects.concat(id);
+                let projectInfo = {
+                  proyect: proyectToEdit._id,
+                  nivel: req.body.nivel.toString(),
+                  porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
+                  porcAsigReal: parseInt(req.body.porcAsigReal, 10),
+                  hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
+                  hsReales: parseInt(req.body.hsReales, 10),
+                  observationsUser: req.body.observationsUser.toString(),
+                  _id: new mongoose.Types.ObjectId(),
+                };
+
+                persona.projectsInfo.push(projectInfo);
                 persona.save();
               });
+
               break;
 
             case "object":
-              for (let i = 0; i < involved.length; i++) {
-                Persona.findById(involved[i], (error, persona) => {
+              let personalInvolucrado = req.body.involved;
+              for (let i = 0; i < personalInvolucrado.length; i++) {
+                Persona.findById(personalInvolucrado[i], (error, persona) => {
                   if (error) {
-                    return res.status(500).json({
-                      message: "Error buscando los personas",
-                    });
+                    return res
+                      .status(500)
+                      .json({ message: "Error buscando al personal" });
                   }
-                  persona.proyects = persona.proyects.concat(id);
+
+                  let projectInfo = {
+                    proyect: personalInvolucrado[i],
+                    nivel: req.body.nivel.toString(),
+                    porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
+                    porcAsigReal: parseInt(req.body.porcAsigReal, 10),
+                    hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
+                    hsReales: parseInt(req.body.hsReales, 10),
+                    observationsUser: req.body.observationsUser.toString(),
+                    _id: new mongoose.Types.ObjectId(),
+                  };
+                  persona.projectsInfo.push(projectInfo);
                   persona.save();
                 });
               }
@@ -388,7 +410,7 @@ const controller = {
             (error, proyect) => {
               if (error) {
                 return res.status(500).json({
-                  message: "Error guardando en DB",
+                  message: `Error ${error}`,
                 });
               } else {
                 res.redirect("/proyectos");

@@ -47,7 +47,7 @@
           <select class="form-control" id="manager" name="manager">
             <% for (let i=0; i<personal.length ; i++) { %>              
             <% if(personal[i].rol == "Gestor de proyectos"){ %>
-            <option value="<%= personal[i].name %>" 
+            <option value="<%= personal[i]._id %>" 
               <%= proyectToEdit.manager == personal[i].name ? "selected" : null %>> <%= personal[i].name %> </option>
             <% }} %>
           </select>

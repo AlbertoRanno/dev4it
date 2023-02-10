@@ -1983,41 +1983,41 @@ personal.projectsInfo.push({ proyect: req.body.proyects });
 // object: (dentro del for - donde proyectosInvolucrados es el array de req.body.proyects)
 personal.projectsInfo.push({ proyect: proyectosInvolucrados[i] });
 
- <div class="row mb-3">
-        <label class="col-2 col-form-label">
-          Personal Asignado:
-        </label>
-        <div class="col-10">
-          <div class="form-check">
+// 9 y 10/2/23 *************
+/* Demoré un montón corrigiendo el UPDTADE de projects, con dataExtra, porque buscaba el error leeejos, d
+donde estaba... todo por no prestar atención, y haber corregido antes al indicador `${error}`. El error era que el value del 
+campo Manager, me estaba guardando el Nombre, en lugar del ID, y no se condecìa con el modelo.. una huevada...
+Luego tuve que aplicar las modificaciones pertinentes por el cambio de Schema.
+Luego demoré por querer usar en MONGO, indicaciones genéricas como el "delete... ", o querer usar los métodos comunes de los
+arrays, pero con arrays multidimensionales (y la mayoría, no funcionan).
+La solución, fue pensar, de nuevo, mejor la lógica, a algo más simple:
+-Que busque a todas las personas, que rastree a c/u por su ID, y actualice su propiedad "projectsInfo" a []
+-Esto, con la propiedad de Mongoose "findByIdAndUpdate", que sabía, (a diferencia de con lo que perdí tanto tiempo, que funcionaba).
+-Luego, con la misma prop, actualizo DONDE corresponda (habiendo borrado todo previamente).
+-La propiedad que vuelve a grabar los datos extras en cada persona, es involved, que según el tipo de dato que viajó en el body
+(undefined, string, object), no hará nada (undefined - ya había borrado previamente, y no se quiere asociar el proyecto a 
+ninguna persona), defino el objecto con los datos extra, y lo pusheo al [] de la persona que corresponda (string), recorro el
+array de IDs que trae "involved", y para cada uno de esos casos, hago lo que hice para el string (object)
 
-            <% for (let i=0; i< toAssign.length; i++) { %>        
-           
-              <input type="checkbox" class="form-check-input" id="<%= "involved" + [i] %>" name="involved" value="<%= toAssign[i]._id %>" 
-
-              <% for( let j = 0; j < proyectToEdit.involved.length; j++ ) { %>
-              <%= proyectToEdit.involved[j] == toAssign[i].id ? "checked" : null%> 
-              <% } %>/>
-
-            <label for="<%= "involved" + [i] %>"  class="form-check-label"><%= toAssign[i].name %> <br> <%= toAssign[i].rol %> - <%= toAssign[i].seniority %></label>
-
-             <a href="/personal/detail/<%= toAssign[i].id %>"><i class="fa-solid fa-arrows-to-eye"></i></a>
-
-            <br>
-            <% } %>
-
-          </div>
-        </div>
-      </div>
-
-       <div class="input-group mb-3">
-            <span class="input-group-text">Asignación real:</span>
-            <select id="<%= "porcAsigReal" + [i] %>" name="porcAsigReal" class="form-control">
-              <% for (let j=100; j>=0 ; j-=5) { %>
-              <option value="<%= [j] %>"
-                <% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
-                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
-                 <%= toAssign[i].projectsInfo[h].porcAsigReal %>
-                <% }} %>><%= [j] %>%</option>
-              <% } %>
-            </select>
-          </div>
+Proyecto.findByIdAndUpdate(
+            id,
+            {
+              name,
+              description,
+              manager,
+              condition,
+              dateStart,
+              dateEnd,
+              involved,
+              link,
+              observations,
+              active,
+            }, (error, proyect) => {
+              if (error) {
+                return res.status(500).json({
+                  message: `Error ${error}`,
+                });
+              } else {
+                res.redirect("/proyectos");
+              }
+            } */
