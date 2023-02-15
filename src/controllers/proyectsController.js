@@ -67,9 +67,10 @@ const controller = {
         });
       } else {
         //console.log(proyect);
-        res.render("./proyects/detail", {
+        res.send(proyect);
+        /*res.render("./proyects/detail", {
           proyect,
-        });
+        });*/
       }
     })
       .populate({ path: "manager", strictPopulate: false })
@@ -137,7 +138,6 @@ const controller = {
               personal: datosPersonal,
             });
           } else if (resultValidation.isEmpty()) {
-            //console.log(req.body);
             const proyect = new Proyecto({
               _id: new mongoose.Types.ObjectId(),
               name: req.body.name,
@@ -147,6 +147,7 @@ const controller = {
               dateStart: req.body.dateStart,
               dateEnd: req.body.dateEnd,
               involved: req.body.involved,
+              projectsInfo: [],
               link: req.body.link,
               observations: req.body.observations,
               active: true,
@@ -155,27 +156,27 @@ const controller = {
             if (typeof req.body.involved == "string") {
               //console.log("Un solo usuario");
 
+              let projectInfo = {
+                person: req.body.involved,
+                nivel: req.body.nivel.toString(),
+                porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
+                porcAsigReal: parseInt(req.body.porcAsigReal, 10),
+                hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
+                hsReales: parseInt(req.body.hsReales, 10),
+                observationsUser: req.body.observationsUser.toString(),
+                _id: new mongoose.Types.ObjectId(),
+              };
+
+              proyect.projectsInfo = projectInfo;
+
               Persona.findById(req.body.involved, (error, persona) => {
                 if (error) {
-                  return res
-                    .status(500)
-                    .json({ message: "Error buscando al personal" });
+                  return res.status(500).json({
+                    message: `Error: ${error}`,
+                  });
                 }
-
-                let projectInfo = {
-                  proyect: proyect._id,
-                  nivel: req.body.nivel.toString(),
-                  porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
-                  porcAsigReal: parseInt(req.body.porcAsigReal, 10),
-                  hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
-                  hsReales: parseInt(req.body.hsReales, 10),
-                  observationsUser: req.body.observationsUser.toString(),
-                  _id: new mongoose.Types.ObjectId(),
-                };
-
-                persona.projectsInfo.push(projectInfo);
+                persona.projectInfo.push(proyect._id);
                 persona.save();
-                //console.log(persona);
               });
             }
 
@@ -183,27 +184,33 @@ const controller = {
             if (typeof req.body.involved == "object") {
               let personalInvolucrado = req.body.involved;
               for (let i = 0; i < personalInvolucrado.length; i++) {
-                Persona.findById(personalInvolucrado[i], (error, persona) => {
-                  if (error) {
-                    return res
-                      .status(500)
-                      .json({ message: "Error buscando al personal" });
-                  }
-                  //persona.proyects = persona.proyects.concat(proyect._id);
+                let projectInfo = {
+                  person: personalInvolucrado[i],
+                  _id: new mongoose.Types.ObjectId(),
+                };
 
-                  let projectInfo = {
-                    proyect: personalInvolucrado[i],
-                    nivel: req.body.nivel,
-                    porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
-                    porcAsigReal: parseInt(req.body.porcAsigReal, 10),
-                    hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
-                    hsReales: parseInt(req.body.hsReales, 10),
-                    observationsUser: req.body.observationsUser,
-                    _id: new mongoose.Types.ObjectId(),
-                  };
-                  persona.projectsInfo.push(projectInfo);
-                  persona.save();
-                });
+                if (projectInfo.person != null) {
+                  projectInfo.nivel = req.body.nivel[i];
+                  projectInfo.porcAsigXContrato = req.body.porcAsigXContrato[i];
+                  projectInfo.porcAsigReal = req.body.porcAsigReal[i];
+                  projectInfo.hsMensXContrato = req.body.hsMensXContrato[i];
+                  projectInfo.hsReales = req.body.hsReales[i];
+                  projectInfo.observationsUser = req.body.observationsUser[i];
+                }
+
+                console.log(projectInfo);
+                proyect.projectsInfo.push(projectInfo);
+
+                // Persona.findById(personalInvolucrado[i], (error, persona) => {
+                //   if (error) {
+                //     return res
+                //       .status(500)
+                //       .json({ message: "Error buscando al personal" });
+                //   }
+
+                //   persona.projectsInfo.push(projectInfo);
+                //   persona.save();
+                // });
               }
             }
 
@@ -363,7 +370,7 @@ const controller = {
             case "object":
               console.log(req.body);
               let personalInvolucrado = req.body.involved;
-             console.log("personalInvolucrado " + personalInvolucrado);
+              console.log("personalInvolucrado " + personalInvolucrado);
               for (let i = 0; i < personalInvolucrado.length; i++) {
                 Persona.findById(personalInvolucrado[i], (error, persona) => {
                   if (error) {

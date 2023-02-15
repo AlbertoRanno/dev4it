@@ -2036,3 +2036,16 @@ venía, porque el experimento se complica, solo cambio de rama, y esta la puedo 
 git branch -d cambioEstructura // la va a eliminar, siempre y cuando no esté parado sobre ella
 Si el experimento funcionan, luego hago el merge
 */
+
+/* Req.body is not iterable in node.js!!
+Servirá el FOR..IN ?? */
+const object = { a: 1, b: 2, c: 3 };
+
+for (const property in object) {
+  console.log(`${property}: ${object[property]}`);
+}
+
+// Expected output:
+// "a: 1"
+// "b: 2"
+// "c: 3"
