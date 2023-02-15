@@ -2021,3 +2021,18 @@ Proyecto.findByIdAndUpdate(
                 res.redirect("/proyectos");
               }
             } */
+
+// 14 y 15-2-23 *************
+/* Cansado de emparchar la estructura, y complicarme con los comandos propios de Mongo, para que modifique
+objectos que están demasiado sumergidos en la estructura, opto por crear una nueva rama en GIT, y probar
+de cambiar la estructura una vez más, con el fin de simplificarla, y poder trabajar con los comandos simples
+que aprendé de Mongo */
+/*
+git branch // Me dice, marcándome en verde, en que rama estoy
+git branch cambioEstructura // Crea la rama "cambioEstructura"
+git checkout cambioEstructura // Me deja parado en la rama nueva - "Switched to branch "cambioEstructura"
+git add . / git commit -m "" / git push , harán las modificaciones sobre esta rama, si quiero seguir como
+venía, porque el experimento se complica, solo cambio de rama, y esta la puedo eliminar:
+git branch -d cambioEstructura // la va a eliminar, siempre y cuando no esté parado sobre ella
+Si el experimento funcionan, luego hago el merge
+*/

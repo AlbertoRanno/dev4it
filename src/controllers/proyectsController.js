@@ -353,7 +353,7 @@ const controller = {
                   observationsUser: req.body.observationsUser.toString(),
                   _id: new mongoose.Types.ObjectId(),
                 };
-
+                console.log(req.body);
                 persona.projectsInfo.push(projectInfo);
                 persona.save();
               });
@@ -361,25 +361,27 @@ const controller = {
               break;
 
             case "object":
+              console.log(req.body);
               let personalInvolucrado = req.body.involved;
+             console.log("personalInvolucrado " + personalInvolucrado);
               for (let i = 0; i < personalInvolucrado.length; i++) {
                 Persona.findById(personalInvolucrado[i], (error, persona) => {
                   if (error) {
-                    return res
-                      .status(500)
-                      .json({ message: "Error buscando al personal" });
+                    return res.status(500).json({
+                      message: "Error buscando el proyecto",
+                    });
                   }
-
                   let projectInfo = {
-                    proyect: personalInvolucrado[i],
-                    nivel: req.body.nivel.toString(),
-                    porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
-                    porcAsigReal: parseInt(req.body.porcAsigReal, 10),
-                    hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
-                    hsReales: parseInt(req.body.hsReales, 10),
-                    observationsUser: req.body.observationsUser.toString(),
+                    proyect: proyectToEdit._id,
+                    nivel: req.body.nivel,
+                    porcAsigXContrato: req.body.porcAsigXContrato,
+                    porcAsigReal: req.body.porcAsigReal,
+                    hsMensXContrato: req.body.hsMensXContrato,
+                    hsReales: req.body.hsReales,
+                    observationsUser: req.body.observationsUser,
                     _id: new mongoose.Types.ObjectId(),
                   };
+                  console.log(projectInfo);
                   persona.projectsInfo.push(projectInfo);
                   persona.save();
                 });
