@@ -2053,3 +2053,5 @@ for (const property in object) {
 /*
 Mongoose uses the mongodb-native driver, which uses the custom ObjectID type. You can compare ObjectIDs with the .equals() method. With your example, results.userId.equals(AnotherMongoDocument._id). The ObjectID type also has a toString() method, if you wish to store a stringified version of the ObjectID in JSON format, or a cookie.
 */
+
+/*((proyect.projectsInfo[j].person).toString()).slice(1) == ((proyect._id).toString()).slice(1)*/

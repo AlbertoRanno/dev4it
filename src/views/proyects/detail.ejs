@@ -45,19 +45,19 @@
           <% } else { %> <% for( let i = 0; i < proyect.involved.length; i++ ){%>
           <li><%= proyect.involved[i].name %></li>
           <ul> 
-            <% for (let j = 0; j < proyect.involved[i].projectsInfo.length; j++){ %>
-                <% if (((proyect.involved[i].projectsInfo[j].proyect).toString()).slice(1) == ((proyect._id).toString()).slice(1)) { %>
+            <% for (let j = 0; j < proyect.projectsInfo.length; j++){ %>
+                <% if (((proyect.projectsInfo[j].person).toString()).slice(1) == ((proyect.involved[i]._id).toString()).slice(1)) { %>
                
-               <li>Nivel: <%=proyect.involved[i].projectsInfo[j].nivel %></li> 
-               <li>Porcentaje asignación por contrato: <%=proyect.involved[i].projectsInfo[j].porcAsigXContrato%></li>
-               <li>Porcentaje asignación real: <%=proyect.involved[i].projectsInfo[j].porcAsigReal%></li>
-               <li>Horas mensuales por contrato: <%=proyect.involved[i].projectsInfo[j].hsMensXContrato%></li>
-               <li>Horas reales: <%=proyect.involved[i].projectsInfo[j].hsReales%></li>
-               <li>Observaciones: <%=proyect.involved[i].projectsInfo[j].observationsUser%></li>
+               <li>Nivel: <%=proyect.projectsInfo[j].nivel %></li> 
+                <li>Porcentaje asignación por contrato: <%=proyect.projectsInfo[j].porcAsigXContrato%></li>
+               <li>Porcentaje asignación real: <%=proyect.projectsInfo[j].porcAsigReal%></li>
+               <li>Horas mensuales por contrato: <%=proyect.projectsInfo[j].hsMensXContrato%></li>
+               <li>Horas reales: <%=proyect.projectsInfo[j].hsReales%></li>
+               <li>Observaciones: <%=proyect.projectsInfo[j].observationsUser%></li>
+              
                 
             <% }} %>
         </ul>
-
           <% }} %>
         </ol>
       </li>

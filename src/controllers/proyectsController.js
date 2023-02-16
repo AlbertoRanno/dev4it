@@ -44,7 +44,7 @@ const controller = {
       .populate({ path: "involved", strictPopulate: false })
       .populate({ path: "manager", strictPopulate: false });
   },
-  //POST PATCH y DELETE Desde React??
+  //POST PATCH y DELETE Desde React?
   list: (req, res) => {
     Proyecto.find({}, (error, proyectos) => {
       if (error) {
@@ -66,11 +66,10 @@ const controller = {
           message: `Error buscando al proyecto con id: ${id}`,
         });
       } else {
-        //console.log(proyect);
-        res.send(proyect);
-        /*res.render("./proyects/detail", {
+        //res.send(proyect);
+        res.render("./proyects/detail", {
           proyect,
-        });*/
+        });
       }
     })
       .populate({ path: "manager", strictPopulate: false })
