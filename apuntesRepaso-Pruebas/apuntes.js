@@ -2055,3 +2055,63 @@ Mongoose uses the mongodb-native driver, which uses the custom ObjectID type. Yo
 */
 
 /*((proyect.projectsInfo[j].person).toString()).slice(1) == ((proyect._id).toString()).slice(1)*/
+
+          
+          <div class="input-group mb-3">
+            <span class="input-group-text">Asignación por contrato:</span>
+            <select id="<%= "porcAsigXContrato" + [i] %>" name="porcAsigXContrato" class="form-control">
+              <% for (let j=100; j>=0 ; j-=5) { %>
+              <option value="<%= [j] %>"><%= [j] %>%</option>
+              <% } %>
+              <option value="<% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigXContrato %>
+                <% }} %>"
+                selected
+                ><% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigXContrato %>
+                <% }} %>%</option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Asignación real:</span>
+            <select id="<%= "porcAsigReal" + [i] %>" name="porcAsigReal" class="form-control">
+              <% for (let j=100; j>=0 ; j-=5) { %>
+              <option value="<%= [j] %>"><%= [j] %>%</option>
+              <% } %>
+              <option value="<% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigReal %>
+                <% }} %>"
+                selected
+                ><% for( let h = 0; h < toAssign[i].projectsInfo.length; h++ ) { %> 
+                  <% if ((toAssign[i].projectsInfo[h].proyect).toString() == proyectToEdit._id) {%>
+                 <%= toAssign[i].projectsInfo[h].porcAsigReal %>
+                <% }} %>%</option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Hs. mensuales por contrato:</span>
+            <input type="number" name="hsMensXContrato" class="form-control"
+            <% for( let j = 0; j < toAssign[i].projectsInfo.length; j++ ) { %>           
+              value="<%= toAssign[i].projectsInfo[j].hsMensXContrato %>"
+              <% } %>
+            >
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">Horas reales:</span>
+            <input type="number" name="hsReales" class="form-control"
+            <% for( let j = 0; j < toAssign[i].projectsInfo.length; j++ ) { %>           
+              value="<%= toAssign[i].projectsInfo[j].hsReales %>"
+              <% } %>
+            >
+          </div>
+
+          <div class="input-group">
+            <span class="input-group-text">Observaciones:</span>
+            <textarea class="form-control" name="observationsUser" rows="2"><% for( let j = 0; j < toAssign[i].projectsInfo.length; j++ ) { %><% if ((toAssign[i].projectsInfo[j].proyect).toString() == proyectToEdit._id) {%><%=toAssign[i].projectsInfo[j].observationsUser%><% }} %></textarea>
+          </div>

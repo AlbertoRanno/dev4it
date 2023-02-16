@@ -12,12 +12,12 @@
     <li class="list-group-item"><strong>Seniority: </strong><%= persona.seniority %></li>
     <li class="list-group-item"><strong>Email: </strong><%= persona.email %></li>
     <li class="list-group-item"><strong>Proyectos: </strong>
-      <ul>
-        <% if ( persona.proyects.length <1) { %>
+      <ol>
+        <% if ( persona.projectInfo.length <1) { %>
         <li> Sin proyectos asignados </li>
         <% } else { %>
-        <% for (let i=0; i<persona.proyectsInfo.length ; i++) { %>
-        <li>"<%= persona.proyectsInfo[i].name %>"</li>
+        <% for (let i=0; i<persona.projectInfo.length ; i++) { %>
+        <li>"<%= persona.projectInfo[i].name %>"</li>
         <% }} %>
       </ol>
     </li>

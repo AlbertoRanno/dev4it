@@ -60,13 +60,13 @@ const controller = {
           message: `Error buscando a la persona con el id: ${id}`,
         });
       } else {
-        res.send(persona);
-        /*
+        //res.send(persona);
+        
         res.render("./staff/detail", {
           persona,
-        });*/
+        });
       }
-    }).populate({ path: "proyects", strictPopulate: false });
+    }).populate({ path: "projectInfo", strictPopulate: false });
   },
   search: (req, res) => {
     const loQueBuscoElUsuario = req.query.search.toLocaleLowerCase();
@@ -268,6 +268,10 @@ const controller = {
           message: `Error localizando a la persona con el id: ${id}`,
         });
       } else {
+        // res.send(personalToEdit);
+
+        /*<% for (let j = 0; j < personalToEdit.projectInfo.length; j++) { %>
+                    <%= personalToEdit.projectInfo[j].equal(datosProyectos[i].id) ? "checked" : null %> <% } %> */
         res.render("./staff/edit", {
           personalToEdit,
           datosProyectos,
@@ -275,7 +279,7 @@ const controller = {
           seniority,
         });
       }
-    });
+    }).populate({ path: "projectInfo", strictPopulate: false });
   },
   update: (req, res) => {
     const resultValidation = validationResult(req);

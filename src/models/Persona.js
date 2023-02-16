@@ -10,7 +10,7 @@ const PersonaSchema = new Schema(
     password: { type: String },
     seniority: { type: String },
     avatar: { type: String },
-    projectInfo: [{ type: String }],
+    projectInfo: [{ type: Schema.Types.ObjectId, ref: "Proyecto" }],
     active: { type: Boolean },
     admin: { type: Boolean },
   },
