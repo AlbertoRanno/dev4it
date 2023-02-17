@@ -279,8 +279,6 @@ const controller = {
           .add(1, "days")
           .format("YYYY-MM-DD");
 
-          console.log(proyectToEdit);
-
         res.render("./proyects/edit", {
           proyectToEdit,
           personal: datosPersonal,

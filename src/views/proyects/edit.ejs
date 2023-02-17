@@ -118,11 +118,11 @@
           <div class="input-group mb-3">
             <span class="input-group-text">Nivel en relación al proyecto:</span>
             <input type="text" name="nivel" class="form-control"
-            <% for (let j = 0; j < proyectToEdit.projectsInfo.length; j++) {%>
-              
-            value="<%= proyectToEdit.projectsInfo[j].nivel %>"
-              
-            <% } %>            
+            
+            <% for (let j = 0; j < proyectToEdit.involved.length; j++) {%>
+            <% if (proyectToEdit.involved[j]._id == toAssign[i].id) { %>
+            value="<%= proyectToEdit.projectsInfo[j].nivel %>"<% }} %>
+
             >            
           </div>
 
@@ -134,7 +134,14 @@
               <% for (let j=100; j>=0 ; j-=5) { %>
               <option value="<%= [j] %>"><%= [j] %>%</option>
               <% } %>
-              
+              <option 
+              <% for (let j = 0; j < proyectToEdit.involved.length; j++) {%>
+            <% if (proyectToEdit.involved[j]._id == toAssign[i].id) { %>
+            value="<%= proyectToEdit.projectsInfo[j].porcAsigXContrato %>"<% }} %>
+            selected>
+            <% for (let j = 0; j < proyectToEdit.involved.length; j++) {%>
+            <% if (proyectToEdit.involved[j]._id == toAssign[i].id) { %>
+            <%= proyectToEdit.projectsInfo[j].porcAsigXContrato %>%<% }} %></option>
             </select>
           </div>
 
@@ -146,7 +153,14 @@
               <% for (let j=100; j>=0 ; j-=5) { %>
               <option value="<%= [j] %>"><%= [j] %>%</option>
               <% } %>
-              
+              <option 
+              <% for (let j = 0; j < proyectToEdit.involved.length; j++) {%>
+            <% if (proyectToEdit.involved[j]._id == toAssign[i].id) { %>
+            value="<%= proyectToEdit.projectsInfo[j].porcAsigReal %>"<% }} %>
+            selected>
+            <% for (let j = 0; j < proyectToEdit.involved.length; j++) {%>
+            <% if (proyectToEdit.involved[j]._id == toAssign[i].id) { %>
+            <%= proyectToEdit.projectsInfo[j].porcAsigReal %>%<% }} %></option>
             </select>
           </div>
 
@@ -155,7 +169,10 @@
           <div class="input-group mb-3">
             <span class="input-group-text">Hs. mensuales por contrato:</span>
             <input type="number" name="hsMensXContrato" class="form-control" min="0"
-          
+          <% for (let j = 0; j < proyectToEdit.involved.length; j++) {%>
+            <% if (proyectToEdit.involved[j]._id == toAssign[i].id) { %>
+            value="<%= proyectToEdit.projectsInfo[j].hsMensXContrato %>"
+            <% }} %>
             >
           </div>
 
@@ -164,6 +181,11 @@
           <div class="input-group mb-3">
             <span class="input-group-text">Horas reales:</span>
             <input type="number" name="hsReales" class="form-control" min="0"
+
+            <% for (let j = 0; j < proyectToEdit.involved.length; j++) {%>
+            <% if (proyectToEdit.involved[j]._id == toAssign[i].id) { %>
+            value="<%= proyectToEdit.projectsInfo[j].hsReales %>"
+            <% }} %>
           
             >
           </div>
@@ -172,8 +194,8 @@
 
           <div class="input-group">
             <span class="input-group-text">Observaciones:</span>
-            <textarea class="form-control" name="observationsUser" rows="2">
-              
+            <textarea class="form-control" name="observationsUser" rows="2"><%for(let j=0;j<proyectToEdit.involved.length; j++){%>
+            <%if(proyectToEdit.involved[j]._id == toAssign[i].id){%><%=proyectToEdit.projectsInfo[j].observationsUser.trim()%><%}}%>
               </textarea>
           </div>
 
