@@ -313,7 +313,7 @@ const controller = {
           let password = bcryptjs.hashSync(req.body.password, 10);
           let proyects = req.body.proyects;
           let seniority = req.body.seniority;
-          let avatar = req.body.avatar;
+          let avatar = "/images/avatars/" + req.file.filename;
           let active = req.body.active;
           delete req.body.repeatPassword;
 
