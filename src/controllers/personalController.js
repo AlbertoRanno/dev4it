@@ -150,6 +150,16 @@ const controller = {
                 });
               }
               proyecto.involved = proyecto.involved.concat(personal._id);
+              proyecto.projectsInfo = proyecto.projectsInfo.concat({
+                person: personal._id,
+                nivel: "A definir",
+                porcAsigXContrato: 100,
+                porcAsigReal: 100,
+                hsMensXContrato: 0,
+                hsReales: 0,
+                observationsUser: "",
+                _id: new mongoose.Types.ObjectId(),
+              });
               proyecto.save();
             });
           }
@@ -167,6 +177,16 @@ const controller = {
                   });
                 }
                 proyecto.involved = proyecto.involved.concat(personal._id);
+                 proyecto.projectsInfo = proyecto.projectsInfo.concat({
+                   person: personal._id,
+                   nivel: "A definir",
+                   porcAsigXContrato: 100,
+                   porcAsigReal: 100,
+                   hsMensXContrato: 0,
+                   hsReales: 0,
+                   observationsUser: "",
+                   _id: new mongoose.Types.ObjectId(),
+                 });
                 proyecto.save();
               });
             }
