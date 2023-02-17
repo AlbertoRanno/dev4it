@@ -298,25 +298,27 @@ const controller = {
     const resultValidation = validationResult(req);
     let id = req.params.id;
 
+    // Busco en c/persona si ya estaba involucrada en este proyecto, y si estaba, lo borro
+    // para guardar solamente donde corresponda
     Persona.find({}, (error, personas) => {
       if (error) {
         return res.status(500).json({
           message: `Error: ${error}`,
         });
-      } else {
-        for (let i = 0; i < personas.length; i++) {
-          Persona.findByIdAndUpdate(
-            personas[i]._id,
-            { projectsInfo: [] },
-            (error, personas) => {
-              if (error) {
-                return res.status(500).json({
-                  message: `Error: ${error}`,
-                });
-              }
-            }
-          );
-        }
+      }
+      for (let i = 0; i < personas.length; i++) {
+        Persona.findById(personas[i]._id, (error, persona) => {
+          if (error) {
+            return res.status(500).json({
+              message: `Error: ${error}`,
+            });
+          }
+          let indiceArray = persona.projectInfo.indexOf(id);
+          if (indiceArray != -1) {
+            persona.projectInfo.splice(indiceArray, 1);
+            persona.save();
+          }
+        });
       }
     });
 
@@ -347,7 +349,7 @@ const controller = {
           let condition = req.body.condition;
           let dateStart = req.body.dateStart;
           let dateEnd = req.body.dateEnd;
-          let involved = req.body.involved;
+          let involved = [];
           let link = req.body.link;
           let observations = req.body.observations;
           let active = req.body.active;
@@ -356,57 +358,36 @@ const controller = {
 
           switch (typeof involved) {
             case "undefined":
-              involved = [];
-
+              console.log("undefined");
               break;
 
             case "string":
-              Persona.findById(involved, (error, persona) => {
+              involved.push(req.body.involved);
+
+              Persona.findById(req.body.involved, (error, persona) => {
                 if (error) {
                   return res.status(500).json({
                     message: "Error buscando el proyecto",
                   });
                 }
-                let projectInfo = {
-                  proyect: proyectToEdit._id,
-                  nivel: req.body.nivel.toString(),
-                  porcAsigXContrato: parseInt(req.body.porcAsigXContrato, 10),
-                  porcAsigReal: parseInt(req.body.porcAsigReal, 10),
-                  hsMensXContrato: parseInt(req.body.hsMensXContrato, 10),
-                  hsReales: parseInt(req.body.hsReales, 10),
-                  observationsUser: req.body.observationsUser.toString(),
-                  _id: new mongoose.Types.ObjectId(),
-                };
-                console.log(req.body);
-                persona.projectsInfo.push(projectInfo);
+                persona.projectInfo.push(id);
                 persona.save();
               });
 
               break;
 
             case "object":
-              console.log(req.body);
               let personalInvolucrado = req.body.involved;
-              console.log("personalInvolucrado " + personalInvolucrado);
               for (let i = 0; i < personalInvolucrado.length; i++) {
+                involved.push(personalInvolucrado[i]);
+
                 Persona.findById(personalInvolucrado[i], (error, persona) => {
                   if (error) {
                     return res.status(500).json({
                       message: "Error buscando el proyecto",
                     });
                   }
-                  let projectInfo = {
-                    proyect: proyectToEdit._id,
-                    nivel: req.body.nivel,
-                    porcAsigXContrato: req.body.porcAsigXContrato,
-                    porcAsigReal: req.body.porcAsigReal,
-                    hsMensXContrato: req.body.hsMensXContrato,
-                    hsReales: req.body.hsReales,
-                    observationsUser: req.body.observationsUser,
-                    _id: new mongoose.Types.ObjectId(),
-                  };
-                  console.log(projectInfo);
-                  persona.projectsInfo.push(projectInfo);
+                  persona.projectInfo.push(id);
                   persona.save();
                 });
               }
