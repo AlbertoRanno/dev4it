@@ -118,7 +118,8 @@
 
             <div class="col-md-6 mt-3">
               <div class="form-group">
-                <label class="form-check-label"><b>Proyectos involucrado:</b></label>
+                <label class="form-check-label"><b>Proyectos:</b></label>
+                <i>- edite ingresando a cada uno -</i>
                 <% for(let i=0; i<datosProyectos.length; i++){ %>
                 <div>
 
@@ -126,7 +127,7 @@
                     value="<%= datosProyectos[i]._id %>"
 
                     <% for (let j = 0; j < personalToEdit.projectInfo.length; j++) { %>
-                    <%= (personalToEdit.projectInfo[j]._id).toString() == (datosProyectos[i]._id).toString() ? "checked" : null %> <% } %> />
+                    <%= (personalToEdit.projectInfo[j]._id).toString() == (datosProyectos[i]._id).toString() ? "checked" : null %> <% } %> disabled/>
 
                   <label for="<%= "proyecto" + [i] %>"><%= datosProyectos[i].name %></label>
 

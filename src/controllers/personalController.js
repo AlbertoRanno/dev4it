@@ -61,7 +61,7 @@ const controller = {
         });
       } else {
         //res.send(persona);
-        
+
         res.render("./staff/detail", {
           persona,
         });
@@ -126,7 +126,6 @@ const controller = {
             seniority,
           });
         } else if (resultValidation.isEmpty()) {
-          console.log(req.body);
           const personal = new Persona({
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
@@ -142,7 +141,7 @@ const controller = {
 
           //console.log(typeof req.body.proyects);
           if (typeof req.body.proyects == "string") {
-            personal.projectsInfo.push({ proyect: req.body.proyects });
+            personal.projectInfo.push(req.body.proyects);
 
             Proyecto.findById(req.body.proyects, (error, proyecto) => {
               if (error) {
@@ -159,7 +158,7 @@ const controller = {
           if (typeof req.body.proyects == "object") {
             let proyectosInvolucrados = req.body.proyects;
             for (let i = 0; i < proyectosInvolucrados.length; i++) {
-              personal.projectsInfo.push({ proyect: proyectosInvolucrados[i] });
+              personal.projectInfo.push(proyectosInvolucrados[i]);
 
               Proyecto.findById(proyectosInvolucrados[i], (error, proyecto) => {
                 if (error) {
@@ -268,10 +267,6 @@ const controller = {
           message: `Error localizando a la persona con el id: ${id}`,
         });
       } else {
-        // res.send(personalToEdit);
-
-        /*<% for (let j = 0; j < personalToEdit.projectInfo.length; j++) { %>
-                    <%= personalToEdit.projectInfo[j].equal(datosProyectos[i].id) ? "checked" : null %> <% } %> */
         res.render("./staff/edit", {
           personalToEdit,
           datosProyectos,
@@ -285,22 +280,25 @@ const controller = {
     const resultValidation = validationResult(req);
     let id = req.params.id;
 
-    // lo borro de todos los proyectos, y luego guardo donde corresponda
-    Proyecto.find({}, (error, proyectos) => {
-      if (error) {
-        return res.status(500).json({
-          message: "Error buscando los proyectos",
-        });
-      }
+    //Cambié vs veces la lógica, y lo mejor me parece que se edite desde cada proyecto, si pertenece,
+    //o no, al mismo, y en la relación con cada uno
 
-      for (let i = 0; i < proyectos.length; i++) {
-        let indiceArray = proyectos[i].involved.indexOf(id);
-        if (indiceArray != -1) {
-          proyectos[i].involved.splice(indiceArray, 1);
-          proyectos[i].save();
-        }
-      }
-    });
+    // lo borro de todos los proyectos, y luego guardo donde corresponda
+    // Proyecto.find({}, (error, proyectos) => {
+    //   if (error) {
+    //     return res.status(500).json({
+    //       message: "Error buscando los proyectos",
+    //     });
+    //   }
+
+    //   for (let i = 0; i < proyectos.length; i++) {
+    //     let indiceArray = proyectos[i].involved.indexOf(id);
+    //     if (indiceArray != -1) {
+    //       proyectos[i].involved.splice(indiceArray, 1);
+    //       proyectos[i].save();
+    //     }
+    //   }
+    // });
 
     Persona.findById(id, (error, userToModify) => {
       if (error) {
@@ -319,51 +317,51 @@ const controller = {
           let active = req.body.active;
           delete req.body.repeatPassword;
 
-          console.log(typeof proyects);
+          // console.log(typeof proyects);
 
-          switch (typeof proyects) {
-            case "undefined":
-              proyects = [];
+          // switch (typeof proyects) {
+          //   case "undefined":
+          //     proyects = [];
 
-              break;
+          //     break;
 
-            case "string":
-              Proyecto.findById(proyects, (error, proyecto) => {
-                if (error) {
-                  return res.status(500).json({
-                    message: "Error buscando el proyecto",
-                  });
-                }
-                proyecto.involved = proyecto.involved.concat(id);
-                proyecto.save();
-              });
-              break;
+          //   case "string":
+          //     Proyecto.findById(proyects, (error, proyecto) => {
+          //       if (error) {
+          //         return res.status(500).json({
+          //           message: "Error buscando el proyecto",
+          //         });
+          //       }
+          //       proyecto.involved = proyecto.involved.concat(id);
+          //       proyecto.save();
+          //     });
+          //     break;
 
-            case "object":
-              let proyectsInvolucrados = req.body.proyects;
+          //   case "object":
+          //     let proyectsInvolucrados = req.body.proyects;
 
-              for (let i = 0; i < proyectsInvolucrados.length; i++) {
-                Proyecto.findById(
-                  proyectsInvolucrados[i],
-                  (error, proyecto) => {
-                    if (error) {
-                      return res.status(500).json({
-                        message: "Error buscando los proyectos",
-                      });
-                    }
-                    proyecto.involved = proyecto.involved.concat(id);
-                    proyecto.save();
-                  }
-                );
-              }
-              break;
+          //     for (let i = 0; i < proyectsInvolucrados.length; i++) {
+          //       Proyecto.findById(
+          //         proyectsInvolucrados[i],
+          //         (error, proyecto) => {
+          //           if (error) {
+          //             return res.status(500).json({
+          //               message: "Error buscando los proyectos",
+          //             });
+          //           }
+          //           proyecto.involved = proyecto.involved.concat(id);
+          //           proyecto.save();
+          //         }
+          //       );
+          //     }
+          //     break;
 
-            default:
-              res.status(500).json({
-                message: `No coincide con los casos - ${error}`,
-              });
-              break;
-          }
+          //   default:
+          //     res.status(500).json({
+          //       message: `No coincide con los casos - ${error}`,
+          //     });
+          //     break;
+          // }
 
           Persona.findByIdAndUpdate(
             id,
@@ -372,7 +370,7 @@ const controller = {
               email,
               rol,
               password,
-              proyects,
+              //proyects,
               seniority,
               avatar,
               active,
