@@ -3,7 +3,7 @@ const Persona = require("../models/Persona");
 const Proyecto = require("../models/Proyecto");
 const mongoose = require("mongoose");
 const moment = require("moment");
-const { ObjectId } = require("mongodb"); ;
+const { findByIdAndDelete } = require("../models/Persona");
 
 let datosPersonal = [];
 
@@ -307,11 +307,18 @@ const controller = {
         });
       }
       for (let i = 0; i < personas.length; i++) {
-        let indiceArray = personas[i].projectInfo.indexOf(id);
-        if (indiceArray != -1) {
-          personas[i].projectInfo.splice(indiceArray, 1);
-          personas[i].save();
-        }
+        Persona.findById(personas[i]._id, (error, persona) => {
+          if (error) {
+            return res.status(500).json({
+              message: `Error: ${error}`,
+            });
+          }
+          let indiceArray = persona.projectInfo.indexOf(id);
+          if (indiceArray != -1) {
+            persona.projectInfo.splice(indiceArray, 1);
+            persona.save();
+          }
+        });
       }
     });
 
@@ -329,7 +336,7 @@ const controller = {
           toAssign.push(datosPersonal[i]);
         }
       }
-      //console.log(toAssign);
+      console.log(toAssign);
 
       if (error) {
         return res.status(500).json({
@@ -343,7 +350,7 @@ const controller = {
           let condition = req.body.condition;
           let dateStart = req.body.dateStart;
           let dateEnd = req.body.dateEnd;
-          let involved = req.body.involved;
+          let involved = [];
           let projectsInfo = [];
           let link = req.body.link;
           let observations = req.body.observations;
@@ -353,11 +360,9 @@ const controller = {
 
           switch (typeof involved) {
             case "undefined":
-              involved = [];
               break;
 
             case "string":
-              involved = [];
               involved.push(req.body.involved);
 
               Persona.findById(req.body.involved, (error, persona) => {
@@ -381,18 +386,11 @@ const controller = {
                   observationsUser: req.body.observationsUser[i],
                   _id: new mongoose.Types.ObjectId(),
                 };
-                console.log(involved.toString());
-                console.log(projectInfo.person.toString());
 
-                
-
-                const objectId1 = new ObjectId(projectInfo.person);  
-                const objectId2 = new ObjectId(req.body.involved);
-                console.log(objectId1.equals(objectId2));
-                console.log(projectsInfo);
-                if (objectId1.equals(objectId2)) {
-                  projectsInfo.push(projectInfo);
-                  console.log(projectsInfo);
+                for (let j = 0; j < proyect.involved.length; j++) {
+                  if (proyect.involved[j]._id.equals(projectInfo.person)) {
+                    proyect.projectsInfo.push(projectInfo);
+                  }
                 }
               }
 
@@ -400,7 +398,6 @@ const controller = {
 
             case "object":
               let personalInvolucrado = req.body.involved;
-              involved = [];
               for (let i = 0; i < personalInvolucrado.length; i++) {
                 involved.push(personalInvolucrado[i]);
 
@@ -428,7 +425,7 @@ const controller = {
                   _id: new mongoose.Types.ObjectId(),
                 };
 
-                //console.log(projectInfo);
+                console.log(projectInfo);
                 for (let j = 0; j < involved.length; j++) {
                   if (
                     proyectToEdit.involved[j].equals(
@@ -440,7 +437,15 @@ const controller = {
                 }
               }
 
+              
               break;
+
+            
+            
+
+              
+            
+              
 
             default:
               res.status(500).json({
