@@ -414,7 +414,6 @@ const controller = {
                   persona.save();
                 });
               }
-              console.log(req.body);
 
               for (let i = 0; i < toAssign.length; i++) {
                 let projectInfo = {
@@ -428,13 +427,8 @@ const controller = {
                   _id: new mongoose.Types.ObjectId(),
                 };
 
-                //console.log(projectInfo);
                 for (let j = 0; j < involved.length; j++) {
-                  if (
-                    proyectToEdit.involved[j].equals(
-                      projectInfo.person.toString()
-                    )
-                  ) {
+                  if (projectInfo.person.equals(involved[j])) {
                     projectsInfo.push(projectInfo);
                   }
                 }

@@ -2058,3 +2058,241 @@ Mongoose uses the mongodb-native driver, which uses the custom ObjectID type. Yo
 
           
 /* TENGO QUE GUARDAR LOS DATOS EXTRAS EN PROJECT UPDATE Y LISTO!! */
+
+update: (req, res) => {
+  const resultValidation = validationResult(req);
+  let id = req.params.id;
+
+  // Busco en c/persona si ya estaba involucrada en este proyecto, y si estaba, lo borro
+  // para guardar solamente donde corresponda
+  Persona.find({}, (error, personas) => {
+    if (error) {
+      return res.status(500).json({
+        message: `Error: ${error}`,
+      });
+    }
+
+    /* Acá había hecho un find dentro de otro find.. funcionaba, pero totalmente innecesario. 
+    En cada objecto "personas", busco en la propiedad "projectInfo", la ubicación del ID del proyecto.
+    Si efectivamente tiene una ubicación, lo corto de ese array.
+    Guardo los cambios
+    */
+    for (let i = 0; i < personas.length; i++) {
+      let indiceArray = personas[i].projectInfo.indexOf(id);
+      if (indiceArray != -1) {
+        personas[i].projectInfo.splice(indiceArray, 1);
+        personas[i].save();
+      }
+    }
+  });
+
+  /*Encuentro al proyecto por su ID.
+  Utilicé el array "toAssign", que ya lo tenía creado de una de las versiones del schema anterior,
+  para no hacer tantas modificaciones, pero correspondía que lo pase una vez sola como variable a 
+  nivel general para todos los controladores. */
+
+  Proyecto.findById(id, (error, proyectToEdit) => {
+    let formattedDateStart = moment(proyectToEdit.dateStart)
+      .add(1, "days")
+      .format("YYYY-MM-DD");
+    let formattedDateEnd = moment(proyectToEdit.dateEnd)
+      .add(1, "days")
+      .format("YYYY-MM-DD");
+
+    let toAssign = [];
+    for (let i = 0; i < datosPersonal.length; i++) {
+      if (datosPersonal[i].rol != "Gestor de proyectos") {
+        toAssign.push(datosPersonal[i]);
+      }
+    }
+    //console.log(toAssign);
+
+    if (error) {
+      return res.status(500).json({
+        message: `Error buscando el proyecto con id: ${id}`,
+      });
+    } else {
+      /* Si todo está bien para que se dé el caso de comenzar la edición de los campos... Recordar que:
+      - como voy a utilizar findByIdAndUpdate - lo que voy a actualizar lo trato como VARIABLES, 
+      NO como: Objecto, ni como propiedadesa del mismo (proyectToEdit.name)
+       */
+      if (resultValidation.isEmpty()) {
+        let name = req.body.name;
+        let description = req.body.description;
+        let manager = req.body.manager;
+        let condition = req.body.condition;
+        let dateStart = req.body.dateStart;
+        let dateEnd = req.body.dateEnd;
+        /* Acá tuve otro error bobo... cuando defino la variable involved, la tengo que asociar a lo que venga en el body.
+        Si la definía como un array vacío de entrada, el switch debajo, no tenía sentido.. */
+        let involved = req.body.involved;
+        let projectsInfo = [];
+        let link = req.body.link;
+        let observations = req.body.observations;
+        let active = req.body.active;
+
+        console.log(typeof involved);
+
+        switch (typeof involved) {
+          case "undefined":
+            involved = [];
+            // viaje un undefined, pero me interesa recalcar que es un array, y no hay personal involucrado
+            break;
+
+          case "string":
+            /* Defino como array, y dentro va a tener un único string (el único involucrado) */
+            involved = [];
+            involved.push(req.body.involved);
+
+            /* Encuentro a este involucrado, y en su propiedad projectInfo, agrego al ID de este proyecto.
+            Teniendo en cuenta que previamente había borrado el ID de este proyecto, de todas las personas que 
+            estaban involucradas. Guardo los cambios que corresponden al schema persona */
+            Persona.findById(req.body.involved, (error, persona) => {
+              if (error) {
+                return res.status(500).json({
+                  message: "Error buscando el proyecto",
+                });
+              }
+              persona.projectInfo.push(id);
+              persona.save();
+            });
+
+            /* Lo siguiente me confundí varias veces al plantearlo. Y tiene que ver en como viajan los datos del body, en
+            el HTML de Edit.
+            Lo importante es entender, que, yo tenía que listar a todo el personal disponible, para que el usuario eligiera,quien iba o no participar en dicho proyecto. 
+            Como la cantidad de campos iba a aumentar mientras que más personal disponible haya, en el body, cada uno estos items, devolvía un array:
+            req.body.nivel traía [,,,"muy bueno",,"excelente"] 
+            Y que si bien estaban vacíos, también viajan los valores de los campos, de las personas disponibles
+            Por lo que voy a tener un conjunto de valores (un objecto, formado por los elementos en las mismas posiciones
+            de los arrays), por cada persona disponible.*/
+
+            for (let i = 0; i < toAssign.length; i++) {
+              let projectInfo = {
+                person: toAssign[i]._id,
+                nivel: req.body.nivel[i],
+                porcAsigXContrato: req.body.porcAsigXContrato[i],
+                porcAsigReal: req.body.porcAsigReal[i],
+                hsMensXContrato: req.body.hsMensXContrato[i],
+                hsReales: req.body.hsReales[i],
+                observationsUser: req.body.observationsUser[i],
+                _id: new mongoose.Types.ObjectId(),
+              };
+
+              console.log(involved.toString());
+              console.log(projectInfo.person.toString());
+
+              /* Lo siguiente es una funcionalidad de Mongo, para que si algo está como un simple string, 
+              lo convierta a un ObjectID. Lo tuve que implementar porque viendo que era el mismo string, no me lo tomaba..
+              (haciendo esto, y viendo que la comparación era verdadera, fue que me di cuenta que tenía un error en otro lado) */
+              const objectId1 = new ObjectId(projectInfo.person);
+              const objectId2 = new ObjectId(req.body.involved);
+              console.log(objectId1.equals(objectId2));
+              console.log(projectsInfo);
+
+              /* La lógica, es que solo grabe, cuando la persona (ID de la persona disponible - projectInfo.person ),
+              haya sido seleccionada como involucrada en el proyecto (req.body.involved). Y como estoy en el caso "string",
+              es decir, un solo involucrado, la comparación es directa: */
+              if (objectId1.equals(objectId2)) {
+                projectsInfo.push(projectInfo);
+                console.log(projectsInfo);
+              }
+            }
+
+            break;
+
+          case "object":
+            let personalInvolucrado = req.body.involved;
+            involved = [];
+            for (let i = 0; i < personalInvolucrado.length; i++) {
+              involved.push(personalInvolucrado[i]);
+
+              Persona.findById(personalInvolucrado[i], (error, persona) => {
+                if (error) {
+                  return res.status(500).json({
+                    message: `${error}`,
+                  });
+                }
+                persona.projectInfo.push(id);
+                persona.save();
+              });
+            }
+
+            for (let i = 0; i < toAssign.length; i++) {
+              let projectInfo = {
+                person: toAssign[i]._id,
+                nivel: req.body.nivel[i],
+                porcAsigXContrato: req.body.porcAsigXContrato[i],
+                porcAsigReal: req.body.porcAsigReal[i],
+                hsMensXContrato: req.body.hsMensXContrato[i],
+                hsReales: req.body.hsReales[i],
+                observationsUser: req.body.observationsUser[i],
+                _id: new mongoose.Types.ObjectId(),
+              };
+
+              /* Para el caso de Object, la única diferencia con string, es que la comparación,
+              no es directa, porque hay varios involucrados (involved tiene varios elementos), entonces
+              los tengo que comparar uno a 1 (projectInfo.person, va ir cambiando con la [i], osea, a
+              medida se recorre el personal a asignar, se va a ir generando un nuevo objecto projectInfo.
+              Y si este nuevo obj. en su prop. person (ID), coincide con el ID de uno de los involucrados
+              (involved[j] entonces, pusheo ese objeto a la prop. projectsInfo del proyecto en cuestiòn.)) */
+              for (let j = 0; j < involved.length; j++) {
+                if (projectInfo.person.equals(involved[j])) {
+                  projectsInfo.push(projectInfo);
+                }
+              }
+            }
+
+            break;
+
+          default:
+            res.status(500).json({
+              message: `No coincide con los casos - ${error}`,
+            });
+            break;
+        }
+
+        Proyecto.findByIdAndUpdate(
+          id,
+          {
+            name,
+            description,
+            manager,
+            condition,
+            dateStart,
+            dateEnd,
+            involved,
+            projectsInfo,
+            link,
+            observations,
+            active,
+          },
+          (error, proyect) => {
+            if (error) {
+              return res.status(500).json({
+                message: `Error ${error}`,
+              });
+            } else {
+              res.redirect("/proyectos");
+            }
+          }
+        );
+      } else {
+        res.render("./proyects/edit", {
+          proyectToEdit,
+          personal: datosPersonal,
+          estados,
+          errors: resultValidation.mapped(),
+          oldData: req.body,
+          formattedDateStart,
+          formattedDateEnd,
+          toAssign,
+        });
+      }
+    }
+  })
+    .populate({ path: "manager", strictPopulate: false })
+    .populate({
+      path: "involved",
+    });
+};
+
