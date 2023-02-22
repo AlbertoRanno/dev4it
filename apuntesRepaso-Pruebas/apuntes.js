@@ -2035,6 +2035,17 @@ git add . / git commit -m "" / git push , harán las modificaciones sobre esta r
 venía, porque el experimento se complica, solo cambio de rama, y esta la puedo eliminar:
 git branch -d cambioEstructura // la va a eliminar, siempre y cuando no esté parado sobre ella
 Si el experimento funcionan, luego hago el merge
+Puedo ver las diferencias entre ramas con "diff"
+git diff nombreRama1 nombreRama2 // con el cursos en la consola, y el Enter presionado, avanza en mostrarme los cambios,
+hasta que vea "(END)"
+Si cambio el orden de los nombres, cambia lo que devuelve: (muestra como adición y sustración - forma invertida)
+git diff nombreRama2 nombreRama1
+Unifico ramas con MERGE:
+Obs! si hiciera git merge cambioEstructura main - me dice "Already up to date.", porque estoy parado en la rama + Actualizada.
+Por lo que para actualizar main (o la rama que quiero que reciba los cambios), primero tengo que pararme sobre ella: 
+( PRIMERO COMITEAR LOS CAMBIOS ANTES DE CAMBIAR DE RAMA, SINO DA ERROR Y PIDE QUE LO HAGAS) - git checkout main
+
+
 */
 
 /* Req.body is not iterable in node.js!!
@@ -2054,10 +2065,9 @@ for (const property in object) {
 Mongoose uses the mongodb-native driver, which uses the custom ObjectID type. You can compare ObjectIDs with the .equals() method. With your example, results.userId.equals(AnotherMongoDocument._id). The ObjectID type also has a toString() method, if you wish to store a stringified version of the ObjectID in JSON format, or a cookie.
 */
 
-/*((proyect.projectsInfo[j].person).toString()).slice(1) == ((proyect._id).toString()).slice(1)*/
 
-          
-/* TENGO QUE GUARDAR LOS DATOS EXTRAS EN PROJECT UPDATE Y LISTO!! */
+
+
 
 update: (req, res) => {
   const resultValidation = validationResult(req);
