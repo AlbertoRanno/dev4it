@@ -2044,8 +2044,8 @@ Unifico ramas con MERGE:
 Obs! si hiciera git merge cambioEstructura main - me dice "Already up to date.", porque estoy parado en la rama + Actualizada.
 Por lo que para actualizar main (o la rama que quiero que reciba los cambios), primero tengo que pararme sobre ella: 
 ( PRIMERO COMITEAR LOS CAMBIOS ANTES DE CAMBIAR DE RAMA, SINO DA ERROR Y PIDE QUE LO HAGAS) - git checkout main
-
-
+y ahora si, estando parado en main:
+git merge cambioEstructura main (origen (desde la que quiero pasar los datos) a destino (la que quiero actualizar))
 */
 
 /* Req.body is not iterable in node.js!!
