@@ -2065,9 +2065,7 @@ for (const property in object) {
 Mongoose uses the mongodb-native driver, which uses the custom ObjectID type. You can compare ObjectIDs with the .equals() method. With your example, results.userId.equals(AnotherMongoDocument._id). The ObjectID type also has a toString() method, if you wish to store a stringified version of the ObjectID in JSON format, or a cookie.
 */
 
-
-
-
+// 19 y 22-2-23 *************
 
 update: (req, res) => {
   const resultValidation = validationResult(req);
@@ -2304,5 +2302,211 @@ update: (req, res) => {
     .populate({
       path: "involved",
     });
+};
+
+// 14 y 15-2-23 *************
+/*REACT
+Etiquetas HTML con minúscula siempre. Propias, con Mayúscula, siempre.
+Atributos que se escriben de forma distinta:
+-class pasa a className (xq class es palabra reservada)
+-for pasa htmlFor (en las labels)
+-style, acepta un obj, con propiedas, escritas en camelCase (background-image --> backgroundImage)
+const estiloDiv = {
+  color: "yellow",
+  backgroundColor: "black"
+}
+<div style={estiloDiv}> !Hola Mundo! </div> 
+Las llaves en JSX, indican que lo que está dentro es JS
+Si hubiera muy pocas propiedades, puedo usar estilo en linea:
+<div style={ {color: "yellow"} }> !Hola Mundo! </div> - unas llaves para indicar JS, las otras por el obj.
+ CREAR APP REACT
+En la consola, tipeo:
+npx create-react-app nombre-carpeta
+el nombre de la carpeta que quiero que cree y me almacene react en su totalidad, no acepta mayúsculas.
+luego, con "cd nombre-carpeta" (change directory), me posiciono en la misma, y con npm start, inicializo el proyecto
+(a lo nodemon)
+
+ORGANIZO ESTRUCTURA (elimino los tests y demases que no vaya a usar)
+public:
+favicon - icono de la solapa
+index, contiene:
+- el head para agregar fuentes, modificar el titulo, etc...
+- el body, donde se aloja el div con clase root (raíz) que es donde se almacenará todo lo que haga
+los logos en png, se pueden borrar
+manifest-pequeña descripción
+robots - para darle guías a los robots - no lo vi aun...
+
+src:
+index es el elemento contenedor de App, viene con su CSS default, y es el archivo que inserta el contenido
+en el HTML index de public, mediante el getElementById("root").
+App, es el componente sobre el que voy a comenzar a trabajar, con su forma básica:
+//import logo from './logo.svg';
+//import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      
+    </div>
+  );
+}
+
+export default App;
+*/
+
+//****** 27/2/23
+/*
+- Sintaxis JSX - Permite escribir todo el código dentro del HTML, en JS (similar al template engine - EJS) 
+- "Componentes" (bloques de código) para hacer la app + dinámica mediante la reutilización de código
+- Si bien React es una librería que se instala y ejecuta con node, todo lo que haga aquí, es agnóstico del back-end, a menos
+ que lo vincule. React no sabe del back, por lo que tendré que consumirlo mediante una API.
+- React es puro 100% front-end!
+- La gracia de React, es crear el front reutilizando componentes. Todos los componentes juntos forman el DOM. React, hace una 
+copia del DOM ("Virtual DOM"), y lo compara con el Real ( proceso que recibe el nombre de Diffing) , constantemente. 
+Cuando ve que un componente cambió, hace un renderizaciòn parcial del mismo ("Reconciliation"), ahorrando la necesidad de 
+volver a renderizar todo el documento. Estos cambios los percibe mediante los estados!
+- Los componentes son funciones. Lo más simples se conocen como "stateless" - sin estado -
+- Para que todos los componentes/funcionalidades, puedan terminar en un solo HTML (el index.html en Public), React utiliza
+la librerìa webpack (o "module bundler" o "empaquetador de módulos"). Gracias a ella al navegador le llega un solo archivo 
+html, con todos los .js empaquetados.
+-La otra librería que usa React es Babel, que lo que hace es traducir, todos los códigos nuevos, a lenguaje más antiguo y 
+estable, para que sea interpretado por todos los navegadores. ("Transpilación")
+-Todo esto viene configurado cuando corro el comando "npx create-react-app nombre-carpeta", pero si quisiera, se podría 
+modificar.
+- Estructura básica componente:
+
+*/
+import React from "react";
+
+function Saludo() {
+  return (
+    //siempre () luego del return, y una sola etiqueta HTML, que envuelve todas las internas. Incluso podría ser <></>
+    <div>
+      <h1>!hOLA mUNDO!</h1>
+      <h2>como va?</h2>
+    </div>
+  );
+}
+
+export default Saludo;
+
+/* JSX - JavaScript XML
+-cerrar las etiquetas! ojo con <img   />
+-class pasa a className
+-puedo imprimir variables: */
+function App(){
+  let nombre = "Diana";
+  return (
+    <h1> Hola {nombre}</h1> 
+  )
+}
+/*
+-Las { } permiten siempre escribir dentro, sentencias completas de JS
+-En JSX, no se pueden utilizar ciclos FOR / FOR EACH... Se reemplazan por MAP/FILTER/REDUCE
+
+MAP
+-crea un nuevo array, con los resultados de la llamada a la funciòn indicada, aplicada a cada uno de sus elementos:
+*/
+let numbers = [1,2,3]
+let doubles = numbers.map( nro => nro * 2)
+
+function Saludo() {
+  let apodos = ["corneta", "zapallo", "cuerno"];
+  return (
+    <div>
+      <h1>!hOLA mUNDO!</h1>
+      <h2>como va?</h2>
+      <ul>
+        {apodos.map((apodo) => (
+          <li> {apodo} </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* PROPS
+Es info que se pasa de padre a hijo, en forma de objeto literal:
+*/
+
+function App() {
+  return (
+    <div className="">
+      <Saludo nombre="Carlos" rango="Boina verde" />
+      <Saludo nombre="Mariano" rango="Soldado" />
+    </div>
+  );
+}
+
+function Saludo(props) {
+  return (
+    <div>
+      <h1>{props.nombre}</h1>
+      <h2>{props.rango}</h2>
+    </div>
+  );
+}
+
+/* KEY PROPS
+Como props, también puedo pasar un array de valores. Pero tengo que tener las siguientes consideraciones:
+-en el componente padre, el array, lo paso entre llaves, para que permite escribir otro tipo de elemento que no sea string:
+ apodos={["corneta", "zapallo", "cuerno"]}
+-en el componente hijo,solo puedo usar map. PEEEERO, ADEMAS, NECECITO UNA KEY. ESTO ES COMO UN ID PARA REACT IDENTIFIQUE
+CADA UNO DE LOS ELEMENTOS DE CADA ARRAY CON UN NOMBRE ÚNICO. DE NO HACERLO, EN CONSOLA VERÉ EL ERROR DE KEY PROPS.
+MAP, permite usar como segundo parámetro, un iterador (apodo,i), esto hará que cada nombre sea único
+{props.apodos.map((apodo,i) => <li key={apodo + i}> {apodo} </li>)}
+
+PROP TYPES
+-Cuando un proyecto crece, es una buena medida, delimitar el tipo de dato, que puede recibir cada una de las props.
+Si creo que el componente lo necesita, pero no es obligatorio, es mas bien una ayuda.
+Para esto, necesito instalar un paquete con: 
+npm install prop-types --save
+luego hay que requerirlo con:
+import propTypes from "prop-types"
+
+Saludo.propTypes = {
+  apodos: propTypes.array,
+};
+
+DEFAULT PROP
+-Una manera elegante para evitar que la generaciòn de un componente falle, por omisión de alguna prop
+Saludo.defaultProps = {
+  nombre: "Visitante Anónimo",
+  rango: "desconocido",
+};
+ */
+
+//import React from "react";
+//import propTypes from "prop-types";
+function Saludos(props) {
+  let listadoDeApodos // para que exista siempre
+
+  if (props.apodos != null){ // null es el valor default seteado abajo
+    listadoDeApodos= 
+<ul>
+  {props.apodos.map((apodo, i) => (
+    <li key={apodo + i}> {apodo} </li>
+  ))}
+</ul>;
+  } else {
+    listadoDeApodos=""
+  }
+  return (
+    <div>
+      <h1> Hola {props.nombre}</h1>
+      <h2>{props.rango}</h2>
+      {listadoDeApodos}
+    </div>
+  );
+}
+
+Saludos.propTypes = {
+  apodos: propTypes.array,
+};
+
+Saludos.defaultProps = {
+  nombre: "Visitante Anónimo",
+  rango: "desconocido",
+  apodos: null
 };
 
