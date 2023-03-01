@@ -1,5 +1,6 @@
 import React from "react";
 import propTypes from "prop-types";
+import "./Saludo.css"
 
 
 function Saludo(props) {
@@ -17,8 +18,10 @@ function Saludo(props) {
   }
   return (
     <div>
-      <h1> Hola {props.nombre}</h1>
-      <h2>{props.rango}</h2>
+      <h1 className="nombres"> Hola {props.nombre}</h1>
+      {props.children}
+      <h2>Tu rol será {props.rango}</h2>
+      <h3>Y tus nombres claves serán: </h3>
       {listadoDeApodos}
     </div>
   );
