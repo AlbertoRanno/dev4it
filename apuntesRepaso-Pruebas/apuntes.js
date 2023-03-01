@@ -2310,7 +2310,7 @@ Etiquetas HTML con minúscula siempre. Propias, con Mayúscula, siempre.
 Atributos que se escriben de forma distinta:
 -class pasa a className (xq class es palabra reservada)
 -for pasa htmlFor (en las labels)
--style, acepta un obj, con propiedas, escritas en camelCase (background-image --> backgroundImage)
+-style, acepta un obj, con propiedades, escritas en camelCase (background-image --> backgroundImage)
 const estiloDiv = {
   color: "yellow",
   backgroundColor: "black"
@@ -2449,9 +2449,9 @@ function Saludo(props) {
 
 /* KEY PROPS
 Como props, también puedo pasar un array de valores. Pero tengo que tener las siguientes consideraciones:
--en el componente padre, el array, lo paso entre llaves, para que permite escribir otro tipo de elemento que no sea string:
+-en el componente padre, el array, lo paso entre llaves, que permiten escribir otro tipo de elemento que no sea string:
  apodos={["corneta", "zapallo", "cuerno"]}
--en el componente hijo,solo puedo usar map. PEEEERO, ADEMAS, NECECITO UNA KEY. ESTO ES COMO UN ID PARA REACT IDENTIFIQUE
+-en el componente hijo,solo puedo usar map. PEEEERO, ADEMAS, NECECITO UNA KEY. ESTO ES COMO UN ID PARA REACT, QUE IDENTIFIQUE
 CADA UNO DE LOS ELEMENTOS DE CADA ARRAY CON UN NOMBRE ÚNICO. DE NO HACERLO, EN CONSOLA VERÉ EL ERROR DE KEY PROPS.
 MAP, permite usar como segundo parámetro, un iterador (apodo,i), esto hará que cada nombre sea único
 {props.apodos.map((apodo,i) => <li key={apodo + i}> {apodo} </li>)}
@@ -2510,3 +2510,50 @@ Saludos.defaultProps = {
   apodos: null
 };
 
+/* PROP CHILDREN
+Dentro del objeto props, SIEMPRE existe la propiedad CHILDREN.
+En la misma puedo pasar, de un padre a un hijo, CUALQUIER estructura que yo quiera.
+Teniendo en cuenta que:
+- en el hijo, dictamino donde van a aparecer los children mediante: {props.children}
+- en el padre, lo que envío a los children tiene que estar dentro de una etiqueta propia,
+que se ABRA Y CIERRE:
+      <Saludo>
+        <p>Acá está el children</p>
+        <h6>que puede ser ...</h6>
+        <ul>
+          <li>lo que..</li>
+          <li>yo quiera..</li>
+        </ul>
+      </Saludo>
+Es sumamente útil para darle flexibilidad a un componente, para dejar un expacio abierto, listo a cualquier
+cosa que quiera venir, por ejemplo, para espacios publicitarios
+Se puede decir que los children permiten renderizar un componente o HTML dentro de otro
+
+React permite una hoja de estilo por Compònente (potente, tiene grandes ventajas, como modularizar todo
+  al detalle, de modo que frente a un cambio, por ej, en el componente de publicidad, tengo todo a la mano)
+hay que vincularla: import "./EstiloDelComponente.css"
+Ojo! con los selectores, ser específico, porque un selector por atributo igualmente afectaría a todos
+los atributos de la página.
+
+o la clásica hoja de estilo gral en public, y vincularla en el html:
+<link rel="stylesheet" href="./styles.css" />
+Esta opción servirá en caso de estilos generales
+
+COMPONENTES CON ESTADO o STATEFUL
+Hasta ahora, los componentes que generaba solo se mostraban en pantalla, y, la forma en la que se generaban
+dependía únicamente de las props pasadas por el componente padre en el momento de su creación, pero
+luego, no quedaban preparados para ser modificados.. (por ejemplo algún efecto con el evento de seleccionarlo).
+Los stateful pueden cambiar el contenido interno, a partir de eventos externos, por lo que se utilizan cuando se espera
+interacción del usuario.
+
+Para que un componente sea sensible a cambiar durante un evento, tiene que tener estado.
+Para que un componente tenga estado, tengo que cambiar algunas cuestiones:
+- import Reac from "react", pasa a: impor React, { Component } from "react"
+- function Saludo () { }, pasa a: class Saludo extendes Component {  }
+- el return, es envuelto por un render: render(){ return ( )}
+Estos cambios hacen que el componente deje de ser una función nativa de JS, para pasar a ser una Clase
+
+Obs a completar:
+Los componentes con estado, son los padres, los que pasan los valores a los props.
+No puedo tener una class Saludo extends Component (props) {  }... porque no reconocen las props
+*/
