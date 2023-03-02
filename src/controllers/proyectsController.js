@@ -38,6 +38,10 @@ const controller = {
           message: "Error buscando los proyectos",
         });
       } else {
+        res.set({
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        });
         res.json({ total: proyectos.length, data: proyectos });
       }
     })

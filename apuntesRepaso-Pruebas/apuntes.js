@@ -2554,6 +2554,128 @@ Para que un componente tenga estado, tengo que cambiar algunas cuestiones:
 Estos cambios hacen que el componente deje de ser una función nativa de JS, para pasar a ser una Clase
 
 Obs a completar:
-Los componentes con estado, son los padres, los que pasan los valores a los props.
-No puedo tener una class Saludo extends Component (props) {  }... porque no reconocen las props
+-Los componentes con estado, son los padres, los que pasan los valores a los props.
+
+-No puedo tener una class Saludo extends Component (props) {  }... porque no reconocen las props-
+Si puedo tener clases con props, solo que se pasan así:
+class App extends Component {
+ constructor(props){
+  super(props);
+  this.state = {
+    valor: props.inicial
+  }
+ }
+
+El estado de un comp. es aquel que permite guardar info internamente. Es un obj. lit. (clave/valor), que guardará lo que 
+deseemos. Y que puede variar a lo largo del tiempo bajo distintas circunstancias, ej, eventos.
+
+Es necesario inicializar el estado en un valor determinado (partir de una base)
+Para esto es necesario la implementación de 2 cosas:
+-del método Constructor, con su método interno "super".
+-del estado en sí: this.state = { nombre:valor }
+y lo represento en el render como: <h2>{ this.state.nombre}</h2>
+
+Para CAMBIAR EL ESTADO -setState
+actualiza todas aquellas propiedades del estado interno del componente que sean escritas dentro de él
+
+-cómo lo cambio? antes del render defino un método (cómo una función pero sin la palabra function), 
+que utilice el método setState:
+ aumentarValor(){
+  this.setState({valor: this.state.valor + 1})
+ }
+-cuándo lo cambio? cuando se ejecute el evento que yo quiero:
+<button onClick={()=>this.aumentarValor()}>Aumentar</button>
+
+Cada vez que cambio el estado se vuelve a ejecutar el render, esta es la magia de React
+
+Eventos:
+Se manejan sobre el JSX del componente, y los mismos se escriben como si fuesen atributos.
+Siempre con la forma onClick // onMouseOver // onBlur // onSubmit (on + camelCase)
+Pasando, dentro de llaves, una arrow function que ejecute el método creado:
+onMouseOver= { () => this.aumentarValor() }
+*/
+
+import React, { Component } from "react";
+import Saludo from "./Saludo";
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      valor: props.inicial, //en el componente index paso inicial={0} - acordarse de las llaves!
+    };
+  }
+
+  aumentarValor() {
+    this.setState({ valor: this.state.valor + 1 });
+  }
+  decrementarValor() {
+    this.setState({ valor: this.state.valor - 1 });
+  }
+  cambiarVerde() {
+    document.querySelector("body").style.backgroundColor = "green";
+  }
+  cambiarCeleste() {
+    document.querySelector("body").style.backgroundColor = "aquamarine";
+  }
+  lanzarAlerta() {
+    alert("Me clickeaste!");
+  }
+
+  render() {
+    return (
+      <div // Más ejemplos de eventos. Notar que en este caso no Ejecuto los métodos
+        className=""
+        onMouseOver={this.cambiarVerde}
+        onMouseOut={this.cambiarCeleste}
+        onClick={this.lanzarAlerta}
+      >
+        <h2>{this.state.valor}</h2>
+        <button onClick={() => this.aumentarValor()}>Aumentar</button>
+        <button onClick={() => this.decrementarValor()}>Decrementar</button>
+        <Saludo nombre="Carlos" rango="Boina verde" apodos={["Groso"]} />
+        <Saludo
+          nombre="Mariano"
+          rango="Soldado"
+          apodos={["corneta", "zapallo", "cuerno"]}
+        />
+        <Saludo>
+          <p>Acá está el children</p>
+          <h6>que puede ser ...</h6>
+          <ul>
+            <li>lo que..</li>
+            <li>yo quiera..</li>
+          </ul>
+        </Saludo>
+        <Saludo />
+      </div>
+    );
+  }
+}
+
+//export default App;
+
+/*CICLO DE VIDA
+Serie de estados por los que pasa un componente: Montaje - Actualización - Desmontaje.
+Es fundamente en React.
+ComponentDidMount - Se ejecuta en el cliente,inmediatamente despues del 1er renderizado. Una vez
+q se ejecuta quedarán disponibles los elementos renderizados dentro del DOM.
+Si se realizan pedidos asincrónicos en ese componente, este es el momento ideal para llamarlos.
+ComponentDidUpdate - Se ejecuta cada vez que el componente sufre un cambio de estado, sea provocado,
+por si mismo, o por un componente padre.
+Puede recibir 2 parámetros: las props existentes previas a la actualización, y estado previo. En ambos
+casos son objetos.
+ComponentWillUnmount - se produce la limpieza necesaria, como por ej. la cancelación de solicitudes
+asíncronas a las APIS. Acá no tienen ningún sentido usar setState */
+
+
+
+/* Consumo de APIs 
+cuándo consigo la info? componentDidMount
+dónde guardo los datos? estado inicial
+Gracias a los ciclos de vida, puedo mostrar desde un primer momento, los datos extraidos de un pedido
+asíncrono a los endpoints de una API (es decir, antes de que se ejecute cualquier evento por parte
+del usuario) 
+  En React NO necesito importar Fetch porque viene incluido en el objeto window, de hecho podrìa hacer:
+  window.fetch, pero se puede omitir como siempre
 */

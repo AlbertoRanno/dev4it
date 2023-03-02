@@ -44,7 +44,7 @@ app.use("/proyectos", routerProyectos);
 app.use("/", routerMain);
 
 /*****************  Listen  ***************/
-const PUERTO = process.env.PORT || 3000;
+const PUERTO = process.env.PORT || 3001;
 app.listen(PUERTO, () => {
   console.log(`El servidor se esta escuchando en el puerto ${PUERTO}...`);
 });
