@@ -1,50 +1,47 @@
-import fetch from "node-fetch";
 import React, { Component } from "react";
-
+import ProjectsTable from "./ProjectsTable";
 class Projects extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      project: "",
+      projects: [],
     };
   }
 
-  // apiCall(url, consecuencia) {
-  //   fetch(url, {mode: "no-cors"})
-  //     .then((response) => response.json())
-  //     .then((data) => consecuencia(data))
-  //     .catch((error) => console.log(error));
-  // }
+  apiCall(url, consecuencia) {
+    fetch(url, {
+      "content-type": "application/json",
+      method: "GET",
+      redirect: "follow",
+    })
+      .then((response) => response.json())
+      .then((data) => consecuencia(data))
+      .catch((error) => console.log(error));
+  }
 
-  // mostrarData = (data) => {
-  //   console.log(data);
-  // };
+  mostrarData = (data) => {
+    //console.log(data.data[0].name);
+    console.log(data.data);
+    this.setState({
+      projects: data.data,
+    });
+  };
 
   componentDidMount() {
-    //this.apiCall("http://localhost:3001/proyectos/infoReact", this.mostrarData);
-
-
- var requestOptions = {
-   "content-type": "application/json",
-   method: "GET",
-   redirect: "follow",
- };
- fetch("http://localhost:3001/proyectos/infoReact", requestOptions)
-   .then((response) => response.json())
-   .then((data) => console.log(data));
-
+    this.apiCall("http://localhost:3001/proyectos/infoReact", this.mostrarData);
   }
-  componentDidUpdate() {
-  }
+  componentDidUpdate() {}
 
   render() {
-
     let contenido;
 
-    if (this.state.project === "") {
+    if (this.state.projects === []) {
       contenido = <p> Cargando... </p>;
     } else {
-      contenido = <h2> {this.state.project} </h2>;
+      contenido = 
+        <ProjectsTable projectsList={this.state.projects} ></ProjectsTable>
+
+    
     }
     return <div>{contenido}</div>;
   }

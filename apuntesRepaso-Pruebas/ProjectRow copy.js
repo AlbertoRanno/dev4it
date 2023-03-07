@@ -2,7 +2,7 @@ function ProductRow(props) {
   return (
     <>
       <td>
-        <h6>{props.id}</h6>
+        <h6>{props.name}</h6>
       </td>
       <td>
         <h6>

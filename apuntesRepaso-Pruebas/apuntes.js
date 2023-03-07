@@ -2671,11 +2671,11 @@ asíncronas a las APIS. Acá no tienen ningún sentido usar setState */
 
 
 /* Consumo de APIs 
-cuándo consigo la info? componentDidMount
+cuándo consigo la info de la Api? componentDidMount
 dónde guardo los datos? estado inicial
 Gracias a los ciclos de vida, puedo mostrar desde un primer momento, los datos extraidos de un pedido
 asíncrono a los endpoints de una API (es decir, antes de que se ejecute cualquier evento por parte
 del usuario) 
   En React NO necesito importar Fetch porque viene incluido en el objeto window, de hecho podrìa hacer:
-  window.fetch, pero se puede omitir como siempre
+window.fetch, pero se puede omitir como siempre.
 */

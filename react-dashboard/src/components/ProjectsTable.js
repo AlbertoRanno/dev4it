@@ -1,11 +1,11 @@
-import Fila from "./ProductRow";
+import ProjectRow from "./ProjectRow";
 
 function ProductsTable(props) {
   return (
     <>
       <h1 className="h3 mb-2 text-gray-800">
         {" "}
-        All the products in the Database
+        All the projects in the Database
       </h1>
 
       <div className="card shadow mb-4">
@@ -19,16 +19,19 @@ function ProductsTable(props) {
             >
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Categoría</th>
-                  <th>Descripción</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Manager</th>
+                  <th>Condition</th>
+                  <th>Start date</th>
+                  <th>Deadline</th>
+                  <th>Staff involved</th>
                 </tr>
               </thead>
               <tbody>
-                {props.productsList.map((product, i) => (
+                {props.projectsList.map((project, i) => (
                   <tr key={i}>
-                    <Fila {...product} />
+                    <ProjectRow {...project} />
                   </tr>
                 ))}
               </tbody>
