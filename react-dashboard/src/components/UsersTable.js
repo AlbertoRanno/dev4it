@@ -1,12 +1,9 @@
-import ProjectRow from "./ProjectRow";
+import UserRow from "./UserRow";
 
-function ProductsTable(props) {
+function UsersTable(props) {
   return (
     <>
-      <h1 className="h3 mb-2 text-gray-800">
-        {" "}
-        All the projects in the Database
-      </h1>
+      <h1 className="h3 mb-2 text-gray-800"> All the users in the Database</h1>
 
       <div className="card shadow mb-4">
         <div className="card-body">
@@ -20,18 +17,15 @@ function ProductsTable(props) {
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Description</th>
-                  <th>Manager</th>
-                  <th>Condition</th>
-                  <th>Start date</th>
-                  <th>Deadline</th>
-                  <th>Staff</th>
+                  <th>Rol</th>
+                  <th>Seniority</th>
+                  <th>Projects</th>
                 </tr>
               </thead>
               <tbody>
-                {props.projectsList.map((project, i) => (
+                {props.usersList.map((user, i) => (
                   <tr key={i}>
-                    <ProjectRow {...project} />
+                    <UserRow {...user} />
                   </tr>
                 ))}
               </tbody>
@@ -43,4 +37,4 @@ function ProductsTable(props) {
   );
 }
 
-export default ProductsTable;
+export default UsersTable;

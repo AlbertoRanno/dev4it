@@ -2678,4 +2678,27 @@ asíncrono a los endpoints de una API (es decir, antes de que se ejecute cualqui
 del usuario) 
   En React NO necesito importar Fetch porque viene incluido en el objeto window, de hecho podrìa hacer:
 window.fetch, pero se puede omitir como siempre.
+
+REACT ROUTER
+SPA- SIMPLE PAGE APPLICATION: Levanto un gran, pero único HTML, y mediante la barra de direcciones,
+y lo que configure se van a mostrar algunos componentes, y esconder otros, dando la sensación de que se
+está navegando por varias páginas de manera muy fluida. Esto es gracias a react router, el cual
+gestiona las rutas en las apps que utilizan React. lo instalo:
+
+npm install react-router-dom
+import { BrowserRouter, Link, Route, Switch } from "react-router-dom"
+
+ BrowserRouter envuelve toda la app para que la app sepa que voy a utilizar react router(en Index.js 
+cambio la etiqueta React.StrictMode por BrowserRouter)
+
+ Link - es el enlace para que pueda ir a cualquier lugar
+ <Link to="/">Home</Link> // <a href="/">Home</a>
+
+ Route - permite definir cual es el componente que quiero renderizar dependiendo de la ruta
+
+ Switch - va a permitir renderizar componentes dependiendo de la ruta, pero de forma más dinámica
+
+
+
+
 */

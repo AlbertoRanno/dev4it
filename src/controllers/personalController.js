@@ -33,6 +33,21 @@ Proyecto.find({}, (error, proyectos) => {
 });
 
 const controller = {
+  infoReact: (req, res) => {
+    Persona.find({}, (error, usuarios) => {
+      if (error) {
+        return res.status(500).json({
+          message: `Error buscando usuarios. Descripción: ${error}`,
+        });
+      } else {
+        res.set({
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        });
+        res.json({ total: usuarios.length, data: usuarios });
+      }
+    }).populate({ path: "projectInfo", strictPopulate: false });
+  },
   prueba: async (req, res) => {
     const personas = await Persona.find({}).populate({
       path: "proyects",
@@ -177,16 +192,16 @@ const controller = {
                   });
                 }
                 proyecto.involved = proyecto.involved.concat(personal._id);
-                 proyecto.projectsInfo = proyecto.projectsInfo.concat({
-                   person: personal._id,
-                   nivel: "A definir",
-                   porcAsigXContrato: 100,
-                   porcAsigReal: 100,
-                   hsMensXContrato: 0,
-                   hsReales: 0,
-                   observationsUser: "",
-                   _id: new mongoose.Types.ObjectId(),
-                 });
+                proyecto.projectsInfo = proyecto.projectsInfo.concat({
+                  person: personal._id,
+                  nivel: "A definir",
+                  porcAsigXContrato: 100,
+                  porcAsigReal: 100,
+                  hsMensXContrato: 0,
+                  hsReales: 0,
+                  observationsUser: "",
+                  _id: new mongoose.Types.ObjectId(),
+                });
                 proyecto.save();
               });
             }

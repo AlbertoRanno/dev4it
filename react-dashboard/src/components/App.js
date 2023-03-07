@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import Projects from "./Projects";
+import Users from "./Users";
+//import { Link, Route, Switch } from "react-router-dom";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -12,6 +15,7 @@ class App extends Component {
     return (
       <div>
         <Projects></Projects>
+        <Users></Users>
       </div>
     );
   }
