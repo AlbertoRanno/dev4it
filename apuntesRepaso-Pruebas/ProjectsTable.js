@@ -1,5 +1,4 @@
 import ProjectRow from "./ProjectRow";
-import Table from "react-bootstrap/Table";
 
 function ProductsTable(props) {
   return (
@@ -8,34 +7,7 @@ function ProductsTable(props) {
         {" "}
         All the projects in the Database
       </h1>
-      <Table striped bordered hover variant="dark">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Manager</th>
-            <th>Condition</th>
-            <th>Start date</th>
-            <th>Deadline</th>
-            <th>Staff</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {props.projectsList.map((project, i) => (
-            <tr key={i}>
-              <ProjectRow {...project} />
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </>
-  );
-}
 
-export default ProductsTable;
-
-/*
       <div className="card shadow mb-4">
         <div className="card-body">
           <div className="table-responsive">
@@ -71,5 +43,4 @@ export default ProductsTable;
   );
 }
 
-
-*/
+export default ProductsTable;

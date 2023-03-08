@@ -2777,3 +2777,18 @@ function Projects() {
 }
 
 //export default Projects;
+
+/* BOOTSTRAP-REACT
+https://react-bootstrap.github.io/getting-started/introduction/
+en la consola, parado en el directorio de React, lo instalo con:
+npm install react-bootstrap bootstrap
+y en el index.js, o app.js, importo lo siguiente:*/
+
+import "bootstrap/dist/css/bootstrap.min.css";
+/*luego importo cada componente que vaya a usar , y en el envoltorio de App, pongo un className, con
+con el tipo de container que mejor quede
+https://getbootstrap.com/docs/5.0/layout/containers/
+className="container-fluid" ajusta al 100% en todos los breakpoints (responsive)
+*/
+
+

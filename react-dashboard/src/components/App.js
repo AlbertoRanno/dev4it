@@ -6,7 +6,7 @@ import { Routes, Route, Link } from "react-router-dom";
 
 function App() {
   return (
-    <div>
+    <main className="container-fluid">
       <Link to="/projects" exact="true">
         Projects
       </Link>
@@ -14,7 +14,7 @@ function App() {
       <Link to="/users" exact="true">
         Users
       </Link>
-      <br></br>      
+      <br></br>
 
       <Routes>
         <Route path="/projects" element={<Projects />}></Route>
@@ -22,7 +22,7 @@ function App() {
         <Route path="/users" element={<Users />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
       </Routes>
-    </div>
+    </main>
   );
 }
 

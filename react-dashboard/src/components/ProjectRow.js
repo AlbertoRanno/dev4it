@@ -4,9 +4,7 @@ function ProjectRow(props) {
   return (
     <>
       <td>
-        <Link to={"/projectDetail/" + props._id}>
-          {props.name}
-        </Link>
+        <Link to={"/projectDetail/" + props._id}>{props.name}</Link>
       </td>
       <td>{props.description}</td>
       <td>{props.manager.name}</td>
@@ -15,16 +13,22 @@ function ProjectRow(props) {
       <td>{props.dateEnd}</td>
       <td>
         {props.involved.map((involved) => (
-          <h5>
-            <a
-              className="nav-link"
-              href={"http://localhost:3001/personal/detail/" + involved._id}
-            >
-              <span>
-                {involved.name} - {involved.rol}
-              </span>
-            </a>
-          </h5>
+          <a
+            className="nav-link"
+            href={"http://localhost:3001/personal/detail/" + involved._id}
+          >
+            {involved.name} - {involved.rol}
+          </a>
+        ))}
+      </td>
+      <td>
+        {props.projectsInfo.map((projectInfo) => (
+          <>
+            {" "}
+            {projectInfo.nivel} - {projectInfo.porcAsigXContrato} -{" "}
+            {projectInfo.porcAsigReal} - {projectInfo.hsMensXContrato} -{" "}
+            {projectInfo.hsReales} - {projectInfo.observationsUser}
+          </>
         ))}
       </td>
     </>
