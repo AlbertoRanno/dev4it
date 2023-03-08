@@ -1,24 +1,29 @@
-import React, { Component } from "react";
 import Projects from "./Projects";
 import Users from "./Users";
-//import { Link, Route, Switch } from "react-router-dom";
+import NotFound from "./NotFound";
+import ProjectDetail from "./ProjectDetail";
+import { Routes, Route, Link } from "react-router-dom";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      valor: props.inicial,
-    };
-  }
+function App() {
+  return (
+    <div>
+      <Link to="/projects" exact="true">
+        Projects
+      </Link>
+      <br></br>
+      <Link to="/users" exact="true">
+        Users
+      </Link>
+      <br></br>      
 
-  render() {
-    return (
-      <div>
-        <Projects></Projects>
-        <Users></Users>
-      </div>
-    );
-  }
+      <Routes>
+        <Route path="/projects" element={<Projects />}></Route>
+        <Route path="/projectDetail/:id" element={<ProjectDetail />}></Route>
+        <Route path="/users" element={<Users />}></Route>
+        <Route path="/*" element={<NotFound />}></Route>
+      </Routes>
+    </div>
+  );
 }
 
 export default App;

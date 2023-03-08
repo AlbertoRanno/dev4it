@@ -1,13 +1,12 @@
+import { Link } from "react-router-dom";
+
 function ProjectRow(props) {
   return (
     <>
       <td>
-        <a
-          className="nav-link"
-          href={"http://localhost:3001/proyectos/detail/" + props._id}
-        >
-          <span>{props.name}</span>
-        </a>
+        <Link to={"/projectDetail/" + props._id}>
+          {props.name}
+        </Link>
       </td>
       <td>{props.description}</td>
       <td>{props.manager.name}</td>

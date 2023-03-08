@@ -2394,11 +2394,9 @@ export default Saludo;
 -cerrar las etiquetas! ojo con <img   />
 -class pasa a className
 -puedo imprimir variables: */
-function App(){
+function App() {
   let nombre = "Diana";
-  return (
-    <h1> Hola {nombre}</h1> 
-  )
+  return <h1> Hola {nombre}</h1>;
 }
 /*
 -Las { } permiten siempre escribir dentro, sentencias completas de JS
@@ -2407,8 +2405,8 @@ function App(){
 MAP
 -crea un nuevo array, con los resultados de la llamada a la funciòn indicada, aplicada a cada uno de sus elementos:
 */
-let numbers = [1,2,3]
-let doubles = numbers.map( nro => nro * 2)
+let numbers = [1, 2, 3];
+let doubles = numbers.map((nro) => nro * 2);
 
 function Saludo() {
   let apodos = ["corneta", "zapallo", "cuerno"];
@@ -2479,17 +2477,19 @@ Saludo.defaultProps = {
 //import React from "react";
 //import propTypes from "prop-types";
 function Saludos(props) {
-  let listadoDeApodos // para que exista siempre
+  let listadoDeApodos; // para que exista siempre
 
-  if (props.apodos != null){ // null es el valor default seteado abajo
-    listadoDeApodos= 
-<ul>
-  {props.apodos.map((apodo, i) => (
-    <li key={apodo + i}> {apodo} </li>
-  ))}
-</ul>;
+  if (props.apodos != null) {
+    // null es el valor default seteado abajo
+    listadoDeApodos = (
+      <ul>
+        {props.apodos.map((apodo, i) => (
+          <li key={apodo + i}> {apodo} </li>
+        ))}
+      </ul>
+    );
   } else {
-    listadoDeApodos=""
+    listadoDeApodos = "";
   }
   return (
     <div>
@@ -2507,7 +2507,7 @@ Saludos.propTypes = {
 Saludos.defaultProps = {
   nombre: "Visitante Anónimo",
   rango: "desconocido",
-  apodos: null
+  apodos: null,
 };
 
 /* PROP CHILDREN
@@ -2668,8 +2668,6 @@ casos son objetos.
 ComponentWillUnmount - se produce la limpieza necesaria, como por ej. la cancelación de solicitudes
 asíncronas a las APIS. Acá no tienen ningún sentido usar setState */
 
-
-
 /* Consumo de APIs 
 cuándo consigo la info de la Api? componentDidMount
 dónde guardo los datos? estado inicial
@@ -2686,19 +2684,96 @@ está navegando por varias páginas de manera muy fluida. Esto es gracias a reac
 gestiona las rutas en las apps que utilizan React. lo instalo:
 
 npm install react-router-dom
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
 
  BrowserRouter envuelve toda la app para que la app sepa que voy a utilizar react router(en Index.js 
 cambio la etiqueta React.StrictMode por BrowserRouter)
 
  Link - es el enlace para que pueda ir a cualquier lugar
- <Link to="/">Home</Link> // <a href="/">Home</a>
+ <Link to="/">Home</Link> // Podría usar: <a href="/">Home</a> PEERO con <a> el documento se carga completo
+ y pierdo la gracia de React
 
- Route - permite definir cual es el componente que quiero renderizar dependiendo de la ruta
-
- Switch - va a permitir renderizar componentes dependiendo de la ruta, pero de forma más dinámica
-
-
-
-
+ Route - permite definir cual es el componente que quiero renderizar dependiendo de la ruta. En las
+ versiones recientes solo se puede utilizar dentro de Routes
 */
+import Projects from "./Projects";
+import Users from "./Users";
+import NotFound from "./NotFound";
+import { Routes, Route, Link } from "react-router-dom";
+
+//function App() {
+return (
+  /*En la V6, ya no se puede usar el prop "component". Este fue reemplazado por "element", 
+    con la siguiente sintaxis: <Route path="/" element={<Home />}></Route>
+      Además, <Route> solo puede ser usado como hijo de <Routes>, ya no más directamente.
+      Por lo que hay que importar también Routes. Y usarlo para envolver todos los <Route>*/
+  <div>
+    <Link to="/projects" exact="true">
+      {" "}
+      {/* exact="true" evita que si tuviera otra dirección, por ej,  "/projectsInfo",
+        al entrar a "/projects" NO se carguen ambos componentes. Sumamente útil para el caso
+        de la raíz "/". */}
+      Projects
+    </Link>
+    <br></br>
+    <Link to="/users" exact="true">
+      Users
+    </Link>
+    <Link to="/no-existe" exact="true">
+      No existe
+      {/* No muestra nada, porque la ruta no tiene ningún macheo con ningún path*/}
+    </Link>
+
+    <Routes>
+      <Route path="/projects" element={<Projects />}></Route>
+      <Route path="/users" element={<Users />}></Route>
+      <Route path="/*" element={<NotFound />}></Route>
+      {/* "/*" hace que cualquier ruta que no sea las mencionadas en este Routes, levanten el
+        componente de NotFound */}
+    </Routes>
+  </div>
+);
+//}
+
+//export default App;
+
+/* Rutas Parametrizadas:
+ */
+
+/* HOOKS
+Los hooks (desde aprox 2019), permiten prescindir de los componentes del tipo Class.
+Basicamente permiten que cualquier componente funcional tenga estados (mediante useState),
+y ciclo de vida (mediante useEffect).
+Hice una nueva versión del componente Projects, antiguamente con Class, y lo hice tipo Hooks:  */
+import ProjectsTable from "./ProjectsTable";
+import ProjectDetail from "./ProjectDetail";
+import { useState, useEffect } from "react";
+
+function Projects() {
+  const [projects, setProjects] = useState([]);
+  /* Así defino el estado inicial. El primer elemento, el que acá llamé "projects", será lo que defina
+  dentro del useState, en este caso, un array vacío. El 2do elemento, por convención se llamará siempre
+  "set + nombreDelPrimerElemento", es la función, mediante la cual se cambiará el estado inicial. */
+
+  useEffect(() => {
+    fetch("http://localhost:3001/proyectos/infoReact", {
+      "content-type": "application/json",
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => setProjects(data.data))
+      .catch((error) => console.log(error));
+  }, []);
+  /* El useEffect, se usa para los 3 ciclos de vida, cambiando la forma en que se lo llama. El equivalente
+  al componentDidMount, es "useEffect(()=>{ acá va la función que quiero ejecutar, por ej. Fetch}, [] )" 
+  y siempre va de 2do parámetro el "[]", (para el caso de que quiera que se ejecute al montarse).
+  Notar que uso, en el 2do then, la función que cambia el estado inicial "setProjects*/
+
+  return (
+    <div>
+      <ProjectsTable projectsList={projects}></ProjectsTable>
+    </div>
+  );
+}
+
+//export default Projects;

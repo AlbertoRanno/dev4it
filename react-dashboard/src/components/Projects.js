@@ -1,50 +1,27 @@
-import React, { Component } from "react";
 import ProjectsTable from "./ProjectsTable";
-class Projects extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      projects: [],
-    };
-  }
+import ProjectDetail from "./ProjectDetail";
+import { useState, useEffect } from "react";
 
-  apiCall(url, consecuencia) {
-    fetch(url, {
+function Projects() {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/proyectos/infoReact", {
       "content-type": "application/json",
       method: "GET",
-      redirect: "follow",
     })
       .then((response) => response.json())
-      .then((data) => consecuencia(data))
+      .then((data) => setProjects(data.data))
       .catch((error) => console.log(error));
-  }
+  }, []);
 
-  mostrarData = (data) => {
-    //console.log(data.data[0].name);
-    console.log(data.data);
-    this.setState({
-      projects: data.data,
-    });
-  };
-
-  componentDidMount() {
-    this.apiCall("http://localhost:3001/proyectos/infoReact", this.mostrarData);
-  }
-  componentDidUpdate() {}
-
-  render() {
-    let contenido;
-
-    if (this.state.projects === []) {
-      contenido = <p> Cargando... </p>;
-    } else {
-      contenido = 
-        <ProjectsTable projectsList={this.state.projects} ></ProjectsTable>
-
-    
-    }
-    return <div>{contenido}</div>;
-  }
+  <ProjectDetail projectsList={projects}></ProjectDetail>;
+  
+  return (
+    <div>
+      <ProjectsTable projectsList={projects}></ProjectsTable>
+    </div>
+  );
 }
 
 export default Projects;
