@@ -1,6 +1,6 @@
-import ProjectsTable from "./ProjectsTable";
-import ProjectDetail from "./ProjectDetail";
 import { useState, useEffect } from "react";
+import ProjectRow from "./ProjectRow";
+import Table from "react-bootstrap/Table";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
@@ -15,12 +15,33 @@ function Projects() {
       .catch((error) => console.log(error));
   }, []);
 
-  <ProjectDetail projectsList={projects}></ProjectDetail>;
-  
   return (
-    <div>
-      <ProjectsTable projectsList={projects}></ProjectsTable>
-    </div>
+    <>
+      <h1 className="h3 mb-2 text-gray-800">
+        {" "}
+        All the projects in the Database
+      </h1>
+      <Table striped bordered hover variant="dark">
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>description</th>
+            <th>manager</th>
+            <th>condition</th>
+            <th>start date</th>
+            <th>deadline</th>
+            <th>staff</th>
+          </tr>
+        </thead>
+        <tbody>
+          {projects.map((project, i) => (
+            <tr key={i}>
+              <ProjectRow {...project} />
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 }
 
