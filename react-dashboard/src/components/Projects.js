@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ProjectRow from "./ProjectRow";
 import Table from "react-bootstrap/Table";
+import "../assets/styles.css";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
@@ -16,32 +17,26 @@ function Projects() {
   }, []);
 
   return (
-    <>
-      <h1 className="h3 mb-2 text-gray-800">
-        {" "}
-        All the projects in the Database
-      </h1>
-      <Table striped bordered hover variant="dark">
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>description</th>
-            <th>manager</th>
-            <th>condition</th>
-            <th>start date</th>
-            <th>deadline</th>
-            <th>staff</th>
+    <Table striped bordered hover variant="dark">
+      <thead>
+        <tr className="encabezadosTabla">
+          <th>Projects</th>
+          <th>Description</th>
+          <th>Manager</th>
+          <th>Condition</th>
+          <th>Start date</th>
+          <th>Deadline</th>
+          <th>Staff</th>
+        </tr>
+      </thead>
+      <tbody>
+        {projects.map((project, i) => (
+          <tr key={i}>
+            <ProjectRow {...project} />
           </tr>
-        </thead>
-        <tbody>
-          {projects.map((project, i) => (
-            <tr key={i}>
-              <ProjectRow {...project} />
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </>
+        ))}
+      </tbody>
+    </Table>
   );
 }
 

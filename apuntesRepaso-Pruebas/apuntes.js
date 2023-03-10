@@ -2792,3 +2792,150 @@ className="container-fluid" ajusta al 100% en todos los breakpoints (responsive)
 */
 
 
+/* Componente que brinda la tabla de "detalles del proyecto" 
+Tiene varias cosas interesantes a repasar:*/
+function DetailsProjectsTable() {
+  const params = useParams();
+  console.log(params.projectId);
+  /* -Capturo el parámetro que viene por la URL, mediante useParams.
+   -Notar que para obtenerlo, del objeto params, le paso la propiedad con el nombre que le puse en la ruta.
+   -Ver el enrutador en el componente App, por eso el "projectId"
+   ( <Route  path="/details-projects/:projectId" element={<DetailsProjectsTable />}></Route>) */
+  const [project, setProjects] = useState([]);
+  /* -uso useState para cargar los datos de los proyectos en el estado inicial.
+   -el estado inicial es un array vacío
+   -fetch para consumirlos desde la API. Con los headers sino me daba error. VER CORS
+   -el 1er then, lo mismo the siempre
+   -el 2do, le aplico la funcion "setProjects" para actualizar el estado, así, de una sola vez, camio el array vacío, por
+   el proyecto en cuestión.
+   -"data.data" es el array que consumo, y ya ahí mismo le aplico el find, para que me lo deje actualizado
+   -mediante el uso del parámetro, utilizo "find", para encontrar el proyecto indicado (si usara filter recordar que 
+    devuelve un array)
+   - Etiquetas de tabla:
+  <Table>
+        <thead> "table headers" - encabezados agrupados
+          <tr> "table row" - filas
+            <th>staff</th> "table head" - encabezado columna
+            <th>rol</th>
+            ...
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr> 
+            <td>algo..</td> - celdas
+            <td></td>
+            ...
+          </tr>
+         </tbody>
+      </Table>
+   -luego, LO QUE ME HABÍA COMPLICADO DE ESTE COMPONENTE, fue: como armar una tabla, cuando los datos vienen de 2 arrays, 
+   ergo, 2 maps, que tenían que coincidir en la misma linea los mismos datos...
+   -Seguir los nros...
+   */
+
+  useEffect(() => {
+    fetch("http://localhost:3001/proyectos/infoReact", {
+      "content-type": "application/json",
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) =>
+        setProjects(data.data.find((proy) => proy._id === params.projectId))
+      )
+      .catch((error) => console.log(error));
+  }, []);
+
+
+  /* 6- Entonces, defino las variables, utilizco el condicional para asegurarme que renderice una vez cargado los datos... 
+  y...  */
+  let nombre,
+    contenido,
+    nivel,
+    porcAsigXContrato,
+    porcAsigReal,
+    hsMensXContrato,
+    hsReales,
+    observationsUser;
+
+  if (project.projectsInfo) {
+    /* 7- PLANTEO UN MAP CADA CELDA!! TENIENDO EN CUENTA LAS KEY PROPS!!
+    Con esto, recorro todo los valores de cara array, y los puedo ubicar en orden gracias a ...
+     */
+    nivel = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.nivel}</td>
+    ));
+    porcAsigXContrato = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.porcAsigXContrato}</td>
+    ));
+    porcAsigReal = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.porcAsigReal}</td>
+    ));
+    hsMensXContrato = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.hsMensXContrato}</td>
+    ));
+    hsReales = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.hsReales}</td>
+    ));
+    observationsUser = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.observationsUser}</td>
+    ));
+  }
+
+  /* 1- Con "if (project.involved)" le indico que lo ejecute una vez que el componente cargó el estado. Evito Errores.  */
+  if (project.involved) {
+    nombre = project.name;
+    /* 2- Lo importante viene acá. Por CADA PERSONA, quería una fila (tr), entonces, un map, sobre el array de involucrados */
+    contenido = project.involved.map((involved, i) => (
+      <tr>
+        <td>
+          {" "}
+          {/* 3- La primer celda de esta fila, será el nombre de la persona, el cual se desprende de este array sin problemas */}
+          <a
+            key={involved + i}
+            href={"http://localhost:3001/personal/detail/" + involved._id}
+          >
+            {involved.name}
+          </a>
+        </td>
+        <td key={involved + i}>{involved.rol}</td>{" "}
+        {/*4 Esto también se desprende del mismo array, por lo que uso el mismo map  */}
+        {/*5 Con lo que me había trabado mal, fue con lo que sigue, cada una de las siguientes celdas, vienen de otro array */}
+        {/*8- gracias a esta [i], que es la que itera cada componente en este map
+        9- El hecho te tener que definir cada variable afuera, y traerla dentro de la celda también me había trabado */}
+        <td>{nivel[i]}</td>
+        <td>{porcAsigXContrato[i]}</td>
+        <td>{porcAsigReal[i]}</td>
+        <td>{hsMensXContrato[i]}</td>
+        <td>{hsReales[i]}</td>
+        <td>{observationsUser[i]}</td>
+      </tr>
+    ));
+  }
+
+  return (
+    <>
+      <h1 className="h3 mb-2 text-gray-800">{nombre}</h1>
+      <Table striped bordered hover variant="dark">
+        <thead>
+          <tr className="encabezadosTabla">
+            <th>staff</th>
+            <th>rol</th>
+            <th>level</th>
+            <th>% assignment contract</th>
+            <th>% assignment real</th>
+            <th>monthly hours contract</th>
+            <th>monthly hours real</th>
+            <th>observations</th>
+          </tr>
+        </thead>
+
+        <tbody>{contenido}</tbody>
+      </Table>
+    </>
+  );
+}
+
+/* CSS en React
+los archivos css no se pueden colocar en la carpeta Public externa, tienen que estar
+dentro de src, por eso la creación de la carpeta "assets (activos)" */
