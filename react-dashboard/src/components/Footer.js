@@ -3,7 +3,7 @@ import imagen from "../assets/dev4it_iso_naranja_2.ico";
 function Footer() {
   return (
     <footer className="bg-light text-center text-white">
-      <div claclassNamess="footer">
+      <div className="footer">
         <section className="mb-4">
           <a href="/" role="button">
             <img style={{ width: 40 }} src={imagen} alt="Imagen logo" />
@@ -69,7 +69,7 @@ function Footer() {
         className="text-center p-3"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
       >
-        <i class="fa-solid fa-copyright"></i> 2023 <b>Dev4it</b> Todos los
+        <i className="fa-solid fa-copyright"></i> 2023 <b>Dev4it</b> Todos los
         derechos Reservados
       </div>
     </footer>

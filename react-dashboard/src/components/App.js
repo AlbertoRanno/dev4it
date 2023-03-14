@@ -2,6 +2,7 @@ import Projects from "./Projects";
 import Users from "./Users";
 import NotFound from "./NotFound";
 import DetailsProjectsTable from "./DetailsProjectsTable";
+import DetailsUsersTable from "./DetailsUsersTable";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Routes, Route } from "react-router-dom";
@@ -18,6 +19,10 @@ function App() {
           element={<DetailsProjectsTable />}
         ></Route>
         <Route path="/users" element={<Users />}></Route>
+        <Route
+          path="/details-users/:userId"
+          element={<DetailsUsersTable />}
+        ></Route>
         <Route path="/*" element={<NotFound />}></Route>
       </Routes>
 

@@ -4,13 +4,16 @@ function UserRow(props) {
   return (
     <>
       <td>
-        <span>{props.name}</span>
+        <Link to={"/details-users/" + props._id}>{props.name}</Link>
       </td>
       <td>{props.rol}</td>
       <td>{props.seniority}</td>
       <td>
         {props.projectInfo.map((project) => (
-          <Link to={"/details-projects/" + project._id}>{project.name}<br/></Link>
+          <Link to={"/details-projects/" + project._id}>
+            {project.name}
+            <br />
+          </Link>
         ))}
       </td>
     </>

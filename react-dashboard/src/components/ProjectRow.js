@@ -13,13 +13,10 @@ function ProjectRow(props) {
       <td>{props.dateEnd}</td>
       <td>
         {props.involved.map((involved, i) => (
-          <a
-            key={involved + i}
-            href={"http://localhost:3001/personal/detail/" + involved._id}
-          >
+          <Link key={involved + i} to={"/details-users/" + involved._id}>
             {involved.name}
             <br />
-          </a>
+          </Link>
         ))}
       </td>
     </>

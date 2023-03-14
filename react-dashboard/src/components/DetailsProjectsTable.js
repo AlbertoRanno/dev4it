@@ -1,6 +1,6 @@
 import Table from "react-bootstrap/Table";
 import "../assets/styles.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function DetailsProjectsTable() {
@@ -31,37 +31,34 @@ function DetailsProjectsTable() {
     observationsUser;
 
   if (project.projectsInfo) {
+
     nivel = project.projectsInfo.map((projectInfo, i) => (
       <td key={projectInfo + i}>{projectInfo.nivel}</td>
     ));
     porcAsigXContrato = project.projectsInfo.map((projectInfo, i) => (
       <td key={projectInfo + i}>{projectInfo.porcAsigXContrato}</td>
     ));
-      porcAsigReal = project.projectsInfo.map((projectInfo, i) => (
-        <td key={projectInfo + i}>{projectInfo.porcAsigReal}</td>
-      ));
-      hsMensXContrato = project.projectsInfo.map((projectInfo, i) => (
-        <td key={projectInfo + i}>{projectInfo.hsMensXContrato}</td>
-      ));
-      hsReales = project.projectsInfo.map((projectInfo, i) => (
-        <td key={projectInfo + i}>{projectInfo.hsReales}</td>
-      ));
-      observationsUser = project.projectsInfo.map((projectInfo, i) => (
-        <td key={projectInfo + i}>{projectInfo.observationsUser}</td>
-      ));
-
+    porcAsigReal = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.porcAsigReal}</td>
+    ));
+    hsMensXContrato = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.hsMensXContrato}</td>
+    ));
+    hsReales = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.hsReales}</td>
+    ));
+    observationsUser = project.projectsInfo.map((projectInfo, i) => (
+      <td key={projectInfo + i}>{projectInfo.observationsUser}</td>
+    ));
   }
   if (project.involved) {
     nombre = project.name;
     contenido = project.involved.map((involved, i) => (
       <tr>
         <td>
-          <a
-            key={involved + i}
-            href={"http://localhost:3001/personal/detail/" + involved._id}
-          >
+          <Link key={involved + i} to={"/details-users/" + involved._id}>
             {involved.name}
-          </a>
+          </Link>         
         </td>
         <td key={involved + i}>{involved.rol}</td>
         <td>{nivel[i]}</td>
@@ -76,7 +73,12 @@ function DetailsProjectsTable() {
 
   return (
     <>
-      <h1 className="h3 mb-2 text-gray-800">{nombre}</h1>
+      <h1 className="h3 mb-2 text-gray-800">
+        {nombre} -
+        <a href={"http://localhost:3001/proyectos/detail/" + params.projectId}>
+          Edit
+        </a>
+      </h1>
       <Table striped bordered hover variant="dark">
         <thead>
           <tr className="encabezadosTabla">
