@@ -1,9 +1,6 @@
 *Correciones pendientes:
 - register users, salen primero las validaciones del backend... por?
 
-*Vistas:
-- Not Found
-
 *Dudas puntuales:
 - sigue siendo necesario methodOverride?? los navegadores aun no consideran put/delete/.. ? .. ya murió "e"..
 

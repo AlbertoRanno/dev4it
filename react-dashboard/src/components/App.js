@@ -3,12 +3,13 @@ import Users from "./Users";
 import NotFound from "./NotFound";
 import DetailsProjectsTable from "./DetailsProjectsTable";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <main className="container-fluid">
-      <Navbar/>
+      <Navbar />
 
       <Routes>
         <Route path="/projects" element={<Projects />}></Route>
@@ -19,6 +20,8 @@ function App() {
         <Route path="/users" element={<Users />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
       </Routes>
+
+      <Footer />
     </main>
   );
 }

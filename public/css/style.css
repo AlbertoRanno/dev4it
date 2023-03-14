@@ -1,3 +1,20 @@
+html {
+  min-height: 100%;
+  position: relative;
+}
+
+body {
+  margin: 0;
+  margin-bottom: 35px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 35px;
+}
+
 .variables {
   --color-variable: purple;
 }
@@ -13,6 +30,7 @@
   max-width: 100px;
   animation: aumentar 1000ms linear 2 alternate;
 }
+
 @keyframes aumentar {
   0% {
     transform: scale(1);
@@ -23,6 +41,13 @@
   100% {
     transform: scale(1.5);
   }
+}
+
+.footer {
+  margin-top: 50px;
+}
+.logo-footer {
+  max-width: 40px;
 }
 
 /*Avatar*/

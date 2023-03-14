@@ -2939,3 +2939,24 @@ function DetailsProjectsTable() {
 /* CSS en React
 los archivos css no se pueden colocar en la carpeta Public externa, tienen que estar
 dentro de src, por eso la creación de la carpeta "assets (activos)" */
+
+/* Posicionar footer al pie de la página:
+-Obs, footer va dentro del body si lo que quiero es un pie de página, sino será el pie de otro elemento
+
+html {
+  min-height: 100%; //si hay más contenido, que esta caja mínima, la caja va a crecer hasta envolver el contenido
+  position: relative; //el elemento esta posicionado relativo respecto a si mismo, pero un "absolute", se posiciona en relacion
+                     // a este
+}
+
+body {
+  margin: 0; // no dejo ningún margen
+  margin-bottom: 35px; // css es procedural, en el borde inferior dejo un espacio de 35px
+}
+
+footer {
+  position: absolute; //se a ubicar en relación al elemento con position relative
+  bottom: 0; // al pie del elemento con relative
+  width: 100%;
+  height: 35px; //ocupando este espacio, que es el que le deja el body
+}*/
