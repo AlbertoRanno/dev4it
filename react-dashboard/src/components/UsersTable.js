@@ -1,6 +1,6 @@
 import UserRow from "./UserRow";
 import Table from "react-bootstrap/Table";
-import "../assets/styles.css";
+import "../assets/encabezadosTabla.css";
 
 function UsersTable(props) {
   return (

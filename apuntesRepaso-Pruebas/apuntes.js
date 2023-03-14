@@ -2944,7 +2944,7 @@ dentro de src, por eso la creación de la carpeta "assets (activos)" */
 -Obs, footer va dentro del body si lo que quiero es un pie de página, sino será el pie de otro elemento
 
 html {
-  min-height: 100%; //si hay más contenido, que esta caja mínima, la caja va a crecer hasta envolver el contenido
+  min-height: 75%; //si hay más contenido, que esta caja mínima, la caja va a crecer hasta envolver el contenido
   position: relative; //el elemento esta posicionado relativo respecto a si mismo, pero un "absolute", se posiciona en relacion
                      // a este
 }

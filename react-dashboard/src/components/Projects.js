@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ProjectRow from "./ProjectRow";
 import Table from "react-bootstrap/Table";
-import "../assets/styles.css";
+import "../assets/encabezadosTabla.css";
 
 function Projects() {
   const [projects, setProjects] = useState([]);

@@ -1,5 +1,5 @@
 import Table from "react-bootstrap/Table";
-import "../assets/styles.css";
+import "../assets/encabezadosTabla.css";
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
